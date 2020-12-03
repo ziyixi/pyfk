@@ -1,1 +1,5 @@
 .vscode/*
+*.pyc
+.coverage
+.pytest_cache/*
+cov.xml

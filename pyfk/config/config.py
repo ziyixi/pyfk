@@ -1,3 +1,4 @@
+import warnings
 from copy import copy
 from typing import Optional, Tuple, Union
 
@@ -38,25 +39,29 @@ class SeisModel(object):
         self.model_values[-1, 0] = 0.
         self.model_values[:, 1] = model[:, 1]*fl
         if(use_kappa):
-            self.model_values[:, 2] = model[:, 2]*self.model_values[:, 1]*fl
+            # already have fl in self.model_values[:, 1]
+            self.model_values[:, 2] = model[:, 2]*self.model_values[:, 1]
         else:
             self.model_values[:, 2] = model[:, 2]*fl
-        flag: bool = True
-        if(column < 4 or np.any(model[:, 3] > 20.)):
-            # cp qs to [:,4] and scale rho
-            flag = False
-            self.model_values[:, 4] = model[:, 3]
+        # * handle other columns
+        if(column == 3):
             self.model_values[:, 3] = 0.77+0.32*self.model_values[:, 2]
-        else:
-            self.model_values[:, 3] = model[:, 3]
-        if(column < 5 and flag):
             self.model_values[:, 4] = 500.
-        else:
-            self.model_values[:, 4] = model[:, 4]
-        if(column < 6):
             self.model_values[:, 5] = 2*self.model_values[:, 4]
-        else:
-            self.model_values[:, 5] = model[:, 5]
+        elif(column == 4):
+            if(np.any(model[:, 3] > 20.)):
+                self.model_values[:, 3] = 0.77+0.32*self.model_values[:, 2]
+                self.model_values[:, 4] = model[:, 3]
+                self.model_values[:, 5] = 2*self.model_values[:, 4]
+            else:
+                self.model_values[:, 3] = model[:, 3]
+                self.model_values[:, 4] = 500.
+                self.model_values[:, 5] = 2*self.model_values[:, 4]
+        elif(column == 5):
+            self.model_values[:, 3:5] = model[:, 3:5]
+            self.model_values[:, 5] = 2*self.model_values[:, 4]
+        elif(column == 6):
+            self.model_values[:, 3:] = model[:, 3:]
 
     @property
     def th(self) -> np.ndarray:
@@ -84,11 +89,11 @@ class SeisModel(object):
 
     @property
     def flattening(self) -> bool:
-        return self.flattening
+        return self._flattening
 
     @flattening.setter
     def flattening(self, value: bool) -> None:
-        self.flattening = value
+        self._flattening = value
 
     def add_layer(self, dd: float, idep: int) -> None:
         self.model_values = np.concatenate(
@@ -114,8 +119,6 @@ class SourceModel(object):
         self._sdep = sdep
         self._srcType = srcType
 
-        if(self._sdep <= 0):
-            raise PyfkError("Must use a positive source depth.")
         if(self._srcType not in ["dc", "sf", "ep"]):
             raise PyfkError(
                 "Source type should be one of 'dc', 'sf', or 'ep'.")
@@ -166,19 +169,20 @@ class Config(object):
         if(dk <= 0 or dk >= 0.5):
             raise PyfkError("dk should be within (0,0.5)")
         if(dk <= 0.1 or dk >= 0.4):
-            raise PyfkWarning("dk is recommended to be within (0.1,0.4)")
+            warnings.warn(PyfkWarning(
+                "dk is recommended to be within (0.1,0.4)"))
         self.dk = dk
         # smth
         if(smth <= 0):
             raise PyfkError("smth should be positive.")
         self.smth = smth
         # pmin
-        if(pmin < 0 or pmin >= 1):
-            raise PyfkError("pmin should be within (0,1)")
+        if(pmin < 0 or pmin > 1):
+            raise PyfkError("pmin should be within [0,1]")
         self.pmin = pmin
         # pmax
-        if(pmax < 0 or pmax >= 1):
-            raise PyfkError("pmax should be within (0,1)")
+        if(pmax < 0 or pmax > 1):
+            raise PyfkError("pmax should be within [0,1]")
         if(pmin >= pmax):
             raise PyfkError("pmin should be smaller than pmax")
         self.pmax = pmax
@@ -187,24 +191,27 @@ class Config(object):
             raise PyfkError("kmax should be larger or equal to 10")
         self.kmax = kmax
         # rdep
-        if(rdep < 0):
-            raise PyfkError("the receiver depth should be positive")
         self.rdep = rdep
+        # updn
         if(updn not in ["all", "up", "down"]):
             raise PyfkError(
                 "the selection of phases should be either 'up', 'down' or 'all'")
         self.updn = updn
+        # samples_before_first_arrival
         if(samples_before_first_arrival <= 0):
             raise PyfkError("samples_before_first_arrival should be positive")
         self.samples_before_first_arrival = samples_before_first_arrival
         # source and model
-        if(source == None):
+        if((source == None) or (not isinstance(source, SourceModel))):
             raise PyfkError("Must provide a source")
-        if(model == None):
+        if((model == None) or (not isinstance(model, SeisModel))):
             raise PyfkError("Must provide a seisModel")
         self.source = source
         # use copy since the model will be modified
         self.model = copy(model)
+        self._couple_model_and_source()
+
+    def _couple_model_and_source(self) -> None:
         # * dealing with the coupling with the source and the seismodel
         if(self.model.flattening):
             self.source.sdep = self._flattening(self.source.sdep)
@@ -218,9 +225,9 @@ class Config(object):
             raise PyfkError("The source or receivers are located in the air.")
         if(self.source.sdep < self.rdep):
             self.src_layer = self._insert_intf(self.source.sdep)
-            self.rcv_layer = self._insert_intf(self.rcv_layer)
+            self.rcv_layer = self._insert_intf(self.rdep)
         else:
-            self.rcv_layer = self._insert_intf(self.rcv_layer)
+            self.rcv_layer = self._insert_intf(self.rdep)
             self.src_layer = self._insert_intf(self.source.sdep)
         # two src layers should have same vp
         if((self.model.vp[self.src_layer] != self.model.vp[self.src_layer-1]) or (self.model.vs[self.src_layer] != self.model.vs[self.src_layer-1])):
