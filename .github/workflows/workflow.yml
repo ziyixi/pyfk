@@ -10,14 +10,17 @@ jobs:
       OS: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependecies
-        uses: VaultVulp/action-pipenv@v2.0.1
+      - uses: actions/setup-python@v2
         with:
-          command: install -d # Install all dependencies, including development ones
+          python-version: "3.8"
+      - name: Install pipenv
+        run: |
+          pip install pipenv
+          pipenv install --dev
       - name: Generate coverage report
         run: |
-          coverage run --source=. -m pytest pyfk/tests
-          coverage xml
+          pipenv run coverage run --source=. -m pytest pyfk/tests
+          pipenv run coverage xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
