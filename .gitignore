@@ -9,3 +9,5 @@ coverage.xml
 build/*
 *.DS_Store
 *.html
+pyfk.egg-info/*
+htmlcov/*

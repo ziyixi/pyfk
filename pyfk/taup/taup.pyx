@@ -1,15 +1,18 @@
 #!python
-#cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
+#cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, embedsignature=True, linetrace=True
+# note even we have linetrace=True, it still need to be enabled by define_macros=[("CYTHON_TRACE_NOGIL", "1")]
 import numpy as np
 cimport numpy as np
 cimport cython
 from libc.math cimport fabs
 
-cpdef taup(int src_lay,int rcv_lay,double[:] thickness,double[:] velocity,double[:] receiver_distance):
+cpdef taup(const int src_lay_input,const int rcv_lay_input,const double[:] thickness,const double[:] velocity,const double[:] receiver_distance):
     # * init some values
     cdef int num_lay = len(velocity)
-    if(src_lay < rcv_lay):
-        src_lay, rcv_lay = rcv_lay, src_lay
+    if(src_lay_input < rcv_lay_input):
+        src_lay, rcv_lay = rcv_lay_input, src_lay_input
+    else:
+        src_lay, rcv_lay = src_lay_input, rcv_lay_input
 
     # * wave number root
     # cdef double[:] p2 = 1./velocity**2
@@ -37,7 +40,7 @@ cpdef taup(int src_lay,int rcv_lay,double[:] thickness,double[:] velocity,double
 
         # * consider direct wave
         ray_len[(topp-1):bttm] = thickness[(topp-1):bttm]
-        min_p2 = p2[(topp-1):bttm].min()
+        min_p2 = np.min(p2[(topp-1):bttm])
         # set min_p as initial gauss of p0, the ray parameter
         pd[irec] = findp0(distance, min_p2**0.5,
                           topp, bttm, ray_len, p2)
@@ -78,7 +81,7 @@ cpdef taup(int src_lay,int rcv_lay,double[:] thickness,double[:] velocity,double
             t = travel(distance, p, topp, bttm, ray_len, p2)
             if(t < t0[irec]):
                 t0[irec], p0[irec] = t, p
-    return t0, td, p0, pd
+    return np.asarray(t0), np.asarray(td), np.asarray(p0), np.asarray(pd)
 
 cdef double findp0(double distance,double p0_gauss,int topp,int bttm,double[:] ray_len,double[:] p2):
     cdef double p1_search = 0, p2_search=0
