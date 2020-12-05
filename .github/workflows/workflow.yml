@@ -16,7 +16,7 @@ jobs:
       - name: Install pipenv
         run: |
           pip install pipenv
-          pipenv install
+          pipenv install -d
       - name: Generate coverage report
         run: |
           pipenv run python setup.py develop --CYTHON_TRACE

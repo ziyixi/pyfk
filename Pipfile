@@ -5,17 +5,16 @@ name = "pypi"
 
 [packages]
 numpy = "*"
-pytest = "*"
 obspy = "*"
-coverage = "*"
 cython = "*"
-autopep8 = "*"
 
 [dev-packages]
 autopep8 = "*"
 numba = "*"
 ipython = "*"
 pipenv-setup = "*"
+coverage = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.8"
