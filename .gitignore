@@ -4,3 +4,8 @@
 .pytest_cache/*
 cov.xml
 coverage.xml
+*.c 
+*.so
+build/*
+*.DS_Store
+*.html

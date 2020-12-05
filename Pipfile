@@ -8,8 +8,12 @@ numpy = "*"
 pytest = "*"
 obspy = "*"
 coverage = "*"
+cython = "*"
+autopep8 = "*"
 
 [dev-packages]
+autopep8 = "*"
+numba = "*"
 
 [requires]
 python_version = "3.8"
