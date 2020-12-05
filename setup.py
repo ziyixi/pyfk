@@ -2,18 +2,18 @@
 """
 import inspect
 import os
-
-from setuptools import setup, find_packages, Extension
-from Cython.Build import cythonize
-import numpy as np
-from setuptools.command.install import install
-from setuptools.command.develop import develop
 import sys
+
+import numpy as np
+from Cython.Build import cythonize
+from setuptools import Extension, find_packages, setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 
 DOCSTRING = __doc__.strip().split("\n")
 root_dir = os.path.join(
-    os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))),
-    "pyfk"
+    os.path.dirname(os.path.abspath(
+        inspect.getfile(inspect.currentframe()))), "pyfk"
 )
 
 CYTHON_TRACE = 0
@@ -23,8 +23,12 @@ if "--CYTHON_TRACE" in sys.argv:
     sys.argv.remove("--CYTHON_TRACE")
 
 extensions = [
-    Extension("pyfk.taup.taup", [os.path.join(root_dir, "taup/taup.pyx")],
-              include_dirs=[np.get_include()], define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))])
+    Extension(
+        "pyfk.taup.taup",
+        [os.path.join(root_dir, "taup/taup.pyx")],
+        include_dirs=[np.get_include()],
+        define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
+    )
 ]
 
 
@@ -83,7 +87,7 @@ setup_config = dict(
         "Topic :: Scientific/Engineering :: Physics",
     ],
     ext_modules=cythonize(extensions, language_level="3", annotate=True),
-    zip_safe=False
+    zip_safe=False,
 )
 
 

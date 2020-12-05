@@ -1,11 +1,10 @@
-import enum
+from os.path import dirname, join
+
 import numpy as np
-import pytest
-from pyfk.taup.taup import taup  # pylint: disable=reportMissingImports
-from os.path import join, dirname
-from pyfk.config.config import Config, SeisModel, SourceModel
-from obspy.taup import TauPyModel
 from obspy.geodetics.base import kilometer2degrees
+from obspy.taup import TauPyModel
+from pyfk.config.config import Config, SeisModel, SourceModel
+from pyfk.taup.taup import taup  # pylint: disable=reportMissingImports
 
 
 class TestFunctionTaup(object):
