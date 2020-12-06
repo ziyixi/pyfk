@@ -9,7 +9,7 @@ from pyfk.config.config import Config, SeisModel, SourceModel
 
 class TestFunctionTaup(object):
     @staticmethod
-    def gen_test_model(self, model_name):
+    def gen_test_model(model_name):
         model_path = join(dirname(__file__), f"../data/{model_name}.nd")
         model_data_raw = np.loadtxt(model_path)
         # generate the model file used for taup
