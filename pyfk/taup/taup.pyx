@@ -2,14 +2,12 @@
 #cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, embedsignature=True, linetrace=True
 # note even we have linetrace=True, it still need to be enabled by define_macros=[("CYTHON_TRACE_NOGIL", "1")]
 import numpy as np
-cimport numpy as np
-cimport cython
 from libc.math cimport fabs
 
 cpdef taup(const int src_lay_input,const int rcv_lay_input,const double[:] thickness,const double[:] velocity,const double[:] receiver_distance):
     # * init some values
     cdef int num_lay = len(velocity)
-    if(src_lay_input < rcv_lay_input):
+    if src_lay_input < rcv_lay_input:
         src_lay, rcv_lay = rcv_lay_input, src_lay_input
     else:
         src_lay, rcv_lay = src_lay_input, rcv_lay_input
@@ -52,17 +50,17 @@ cpdef taup(const int src_lay_input,const int rcv_lay_input,const double[:] thick
         topp = rcv_lay+1
         for bttm in range(src_lay+1, num_lay):
             ray_len[bttm-1] = 2.*thickness[bttm-1]
-            if(min_p2 > p2[bttm-1]):
+            if min_p2 > p2[bttm - 1]:
                 min_p2 = p2[bttm-1]
             p = findp0(distance, min_p2**0.5,
                        topp, bttm, ray_len, p2)
-            if(min_p2 > p2[bttm]):
+            if min_p2 > p2[bttm]:
                 min_p2 = p2[bttm]
-            if(p > min_p2**0.5):
+            if p > min_p2**0.5:
                 p = min_p2**0.5
             # t for current assumed layers
             t = travel(distance, p, topp, bttm, ray_len, p2)
-            if(t < t0[irec]):
+            if t < t0[irec]:
                 t0[irec], p0[irec] = t, p
 
         # * consider reflected wave from above
@@ -70,28 +68,28 @@ cpdef taup(const int src_lay_input,const int rcv_lay_input,const double[:] thick
         for topp in range(rcv_lay, 0, -1):
             ray_len[topp-1] = 2.*thickness[topp-1]
             # the strange thing is that whether we should reset min_p2, maybe also consider sSMS?
-            if(min_p2 > p2[topp-1]):
+            if min_p2 > p2[topp - 1]:
                 min_p2 = p2[topp-1]
             p = findp0(distance, min_p2**0.5,
                        topp, bttm, ray_len, p2)
-            if((topp > 1) and (min_p2 > p2[topp-2])):
+            if (topp > 1) and (min_p2 > p2[topp - 2]):
                 min_p2 = p2[topp-2]
-            if(p > min_p2**0.5):
+            if p > min_p2**0.5:
                 p = min_p2**0.5
             t = travel(distance, p, topp, bttm, ray_len, p2)
-            if(t < t0[irec]):
+            if t < t0[irec]:
                 t0[irec], p0[irec] = t, p
     return np.asarray(t0), np.asarray(td), np.asarray(p0), np.asarray(pd)
 
 cdef double findp0(double distance,double p0_gauss,int topp,int bttm,double[:] ray_len,double[:] p2):
     cdef double p1_search = 0, p2_search=0
-    while(p1_search != p0_gauss):
+    while p1_search != p0_gauss:
         p2_search = p0_gauss
         p0_gauss = (p1_search+p2_search)/2
         dtdp_gauss = dtdp(distance, p0_gauss, topp, bttm, ray_len, p2)
-        if((fabs(dtdp_gauss) < 1.e-7) or (p0_gauss == p1_search) or (p0_gauss == p2_search)):
+        if (fabs(dtdp_gauss) < 1.e-7) or (p0_gauss == p1_search) or (p0_gauss == p2_search):
             return p0_gauss
-        if(dtdp_gauss > 0):
+        if dtdp_gauss > 0:
             p1_search = p0_gauss
             p0_gauss = p2_search
     return p0_gauss

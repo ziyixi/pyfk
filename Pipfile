@@ -10,8 +10,6 @@ cython = "*"
 
 [dev-packages]
 autopep8 = "*"
-numba = "*"
-ipython = "*"
 pipenv-setup = "*"
 coverage = "*"
 pytest = "*"

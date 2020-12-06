@@ -1,4 +1,3 @@
-
 class PyfkError(Exception):
     pass
 

@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 from obspy.geodetics.base import degrees2kilometers
+
 from pyfk.config.config import Config, SeisModel, SourceModel
 from pyfk.setting import R_EARTH
 from pyfk.utils import PyfkError, PyfkWarning
@@ -23,7 +24,7 @@ class TestClassSeisModel(object):
 
     def test_init_noflattening_kappa_6column(self):
         to_test = TestClassSeisModel.test_model_6column.copy()
-        to_test[:, 2] = to_test[:, 2]/to_test[:, 1]
+        to_test[:, 2] = to_test[:, 2] / to_test[:, 1]
         test_model = SeisModel(
             to_test, flattening=False, use_kappa=True)
         prefered_output = TestClassSeisModel.test_model_6column.copy()
@@ -37,9 +38,8 @@ class TestClassSeisModel(object):
         fl = np.ones(
             TestClassSeisModel.test_model_6column.shape[0], dtype=np.float)
         for irow in range(TestClassSeisModel.test_model_6column.shape[0]):
-            r = r-TestClassSeisModel.test_model_6column[irow, 0]
-            fl[irow] = R_EARTH / \
-                (r+0.5*TestClassSeisModel.test_model_6column[irow, 0])
+            r = r - TestClassSeisModel.test_model_6column[irow, 0]
+            fl[irow] = R_EARTH / (r + 0.5 * TestClassSeisModel.test_model_6column[irow, 0])
         prefered_output = TestClassSeisModel.test_model_6column.copy()
         prefered_output[-1, 0] = 0
         prefered_output[:, 0] *= fl
@@ -49,16 +49,15 @@ class TestClassSeisModel(object):
 
     def test_init_flattening_kappa_6column(self):
         to_test = TestClassSeisModel.test_model_6column.copy()
-        to_test[:, 2] = to_test[:, 2]/to_test[:, 1]
+        to_test[:, 2] = to_test[:, 2] / to_test[:, 1]
         test_model = SeisModel(
             to_test, flattening=True, use_kappa=True)
         r = R_EARTH
         fl = np.ones(
             TestClassSeisModel.test_model_6column.shape[0], dtype=np.float)
         for irow in range(TestClassSeisModel.test_model_6column.shape[0]):
-            r = r-TestClassSeisModel.test_model_6column[irow, 0]
-            fl[irow] = R_EARTH / \
-                (r+0.5*TestClassSeisModel.test_model_6column[irow, 0])
+            r = r - TestClassSeisModel.test_model_6column[irow, 0]
+            fl[irow] = R_EARTH / (r + 0.5 * TestClassSeisModel.test_model_6column[irow, 0])
         prefered_output = TestClassSeisModel.test_model_6column.copy()
         prefered_output[-1, 0] = 0
         prefered_output[:, 0] *= fl
@@ -72,7 +71,7 @@ class TestClassSeisModel(object):
             test_model_5column, flattening=False, use_kappa=False)
         prefered_output = TestClassSeisModel.test_model_6column.copy()
         prefered_output[-1, 0] = 0
-        prefered_output[:, -1] = prefered_output[:, -2]*2
+        prefered_output[:, -1] = prefered_output[:, -2] * 2
         assert np.allclose(test_model.model_values, prefered_output)
 
     def test_init_noflattening_nokappa_4column_normal(self):
@@ -94,7 +93,7 @@ class TestClassSeisModel(object):
         prefered_output[-1, 0] = 0
         prefered_output[:, -1] = 1000.
         prefered_output[:, -2] = 500.
-        prefered_output[:, -3] = 0.77+0.32*prefered_output[:, 2]
+        prefered_output[:, -3] = 0.77 + 0.32 * prefered_output[:, 2]
         assert np.allclose(test_model.model_values, prefered_output)
 
     def test_init_noflattening_nokappa_4column_abnormal(self):
@@ -106,7 +105,7 @@ class TestClassSeisModel(object):
             test_model_4column, flattening=False, use_kappa=False)
         prefered_output = TestClassSeisModel.test_model_6column.copy()
         prefered_output[-1, 0] = 0
-        prefered_output[:, 3] = 0.77+0.32*prefered_output[:, 2]
+        prefered_output[:, 3] = 0.77 + 0.32 * prefered_output[:, 2]
         prefered_output[:, 5] = prefered_output[:, 4] * 2
         assert np.allclose(test_model.model_values, prefered_output)
 
@@ -126,7 +125,7 @@ class TestClassSeisModel(object):
         assert np.all(test_model.qb ==
                       TestClassSeisModel.test_model_6column[:, 5])
         test_model.flattening = True
-        assert test_model.flattening == True
+        assert test_model.flattening is True
         test_model.flattening = False
 
     def test_catch_exceptions(self):
@@ -409,9 +408,9 @@ class TestClassConfig(object):
         test_config = Config(
             model=test_model, source=test_source, receiver_distance=[10, 20, 30], rdep=22)
         assert test_config.source.sdep == R_EARTH * \
-            np.log(R_EARTH/(R_EARTH-12))
+               np.log(R_EARTH / (R_EARTH - 12))
         assert test_config.rdep == R_EARTH * \
-            np.log(R_EARTH/(R_EARTH-22))
+               np.log(R_EARTH / (R_EARTH - 22))
 
     def test_topo(self):
         test_model_data = np.array([

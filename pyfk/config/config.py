@@ -26,7 +26,6 @@ class SeisModel(object):
             raise PyfkError(
                 "Must provide at least three columns for the model")
         self.model_values: np.ndarray = np.zeros((row, 6), dtype=np.float)
-
         # * read model values and apply flattening
         fl: np.ndarray = np.ones(row, dtype=np.float)
         if(self._flattening):

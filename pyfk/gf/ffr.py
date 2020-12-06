@@ -1,0 +1,2 @@
+def ffr():
+    pass

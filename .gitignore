@@ -11,3 +11,4 @@ build/*
 *.html
 pyfk.egg-info/*
 htmlcov/*
+.idea
