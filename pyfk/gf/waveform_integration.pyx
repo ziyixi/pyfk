@@ -3,7 +3,7 @@
 # note even we have linetrace=True, it still need to be enabled by define_macros=[("CYTHON_TRACE_NOGIL", "1")]
 from scipy.special.cython_special cimport jv
 import numpy as np
-from libc.math cimport fabs, pi
+from libc.math cimport fabs, pi, cos, sin
 from pyfk.gf.complex cimport clog
 from pyfk.setting import SIGMA
 
@@ -48,24 +48,24 @@ cdef double complex[:,:] kernel(double k, double complex[:,:] u, double complex[
     return u
 
 
-cpdef waveform_integration(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
+cdef double complex[:,:,:] waveform_integration(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
                            double[:] receiver_distance, int wc1, double smth,
                            double[:] vs, double[:] vp, double[:] qs, double[:] qp,
-                           int flip_val, double filter_const, bint dynamic, int wc2, double t0, str src_type,
+                           bint flip, double filter_const, bint dynamic, int wc2, double t0, str src_type,
                            double taper, double wc, double[:] mu, double[:] thickness, double[:,:] si):
     # * get jv
     cdef double[:,:,:] aj0list,aj1list,aj2list
     aj0list, aj1list, aj2list=calbessel(nfft2, dw, pmin, dk, kc, pmax, receiver_distance, wc1)
 
     # * init some values
-    cdef double complex sum_waveform=np.zeros((len(receiver_distance), 9, int(nfft2*smth)), dtype=np.complex)
+    cdef double complex[:,:,:] sum_waveform=np.zeros((len(receiver_distance), 9, int(nfft2*smth)), dtype=np.complex)
     cdef double sigma=SIGMA
 
     # # * main loop, the index in ik, means each wave number
     cdef:
-        int ik, idep, n, i
-        double ztemp, k, kc2, omega, z
-        double complex w, att
+        int ik, idep, n, i, irec, flip_val, icom
+        double ztemp, k, kc2, omega, z, aj0, aj1, aj2, filtering, phi
+        double complex w, att, atttemp, nf
     # * init some arrays
     cdef:
         double complex[:] kp = np.zeros(len(thickness), dtype=np.complex)
@@ -92,11 +92,44 @@ cpdef waveform_integration(int nfft2, double dw, double pmin, double dk, double 
             ks[idep] = (w/(vs[idep]*(1.+att/qs[idep])))**2
         k = omega*pmin+0.5*dk
         n = int(((kc2+(pmax*omega)**2)**0.5-k)/dk)
+        if flip:
+            flip_val = -1
+        else:
+            flip_val = 1
         for i in range(n):
             u = kernel(k, u, kp, ks, aaa, bbb, ccc, eee, ggg, zzz, sss, temppp, mu, si, thickness)
-            aj0 = aj0list[ik-wc1+1, i, :]
-            aj1 = aj1list[ik-wc1+1, i, :]
-            aj2 = aj2list[ik-wc1+1, i, :]
             # * loop irec to get the value of sum_waveform
-            # for irec in range(len(receiver_distance)):
-            #
+            for irec in range(len(receiver_distance)):
+                aj0 = aj0list[ik-wc1+1, i, irec]
+                aj1 = aj1list[ik-wc1+1, i, irec]
+                aj2 = aj2list[ik-wc1+1, i, irec]
+                z = k*receiver_distance[irec]
+                # do the numerical integration here
+                sum_waveform[irec, 0, ik] += u[0, 0]*aj0*flip_val
+                sum_waveform[irec, 1, ik] += -u[0, 1]*aj1
+                sum_waveform[irec, 2, ik] += -u[0, 2]*aj1
+
+                nf = (u[1, 1]+u[1, 2])*aj1/z
+                sum_waveform[irec, 3, ik] += u[1, 0]*aj1*flip_val
+                sum_waveform[irec, 4, ik] += u[1, 1]*aj0-nf
+                sum_waveform[irec, 5, ik] += u[1, 2]*aj0-nf
+
+                nf = 2.*(u[2, 1]+u[2, 2])*aj2/z
+                sum_waveform[irec, 6, ik] += u[2, 0]*aj2*flip_val
+                sum_waveform[irec, 7, ik] += u[2, 1]*aj1-nf
+                sum_waveform[irec, 8, ik] += u[2, 2]*aj1-nf
+
+                k = k+dk
+        # * for each ik, we apply the filtering and apply the time shift in the frequency domain
+        filtering = filter_const
+        if dynamic and (ik+1 > wc):
+            filtering = 0.5*(1.+cos((ik+1-wc)*taper))*filtering
+        if dynamic and (ik+1 < wc2):
+            filtering = 0.5*(1.+cos((wc2-ik-1)*pi/(wc2-wc1)))*filtering
+        phi = omega*t0
+        atttemp = filtering*(cos(phi)+sin(phi)*1j)
+        # in fk's code, only apply atttemp for ncom, here we apply to all, with no difference
+        for icom in range(9):
+            for irec in range(len(receiver_distance)):
+                sum_waveform[irec, icom, ik] *= atttemp
+    return sum_waveform
