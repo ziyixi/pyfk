@@ -7,6 +7,7 @@ name = "pypi"
 numpy = "*"
 obspy = "*"
 cython = "*"
+scipy = "*"
 
 [dev-packages]
 autopep8 = "*"

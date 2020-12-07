@@ -120,9 +120,9 @@ class TestClassSeisModel(object):
                       TestClassSeisModel.test_model_6column[:, 2])
         assert np.all(test_model.rh ==
                       TestClassSeisModel.test_model_6column[:, 3])
-        assert np.all(test_model.qa ==
+        assert np.all(test_model.qs ==
                       TestClassSeisModel.test_model_6column[:, 4])
-        assert np.all(test_model.qb ==
+        assert np.all(test_model.qp ==
                       TestClassSeisModel.test_model_6column[:, 5])
         test_model.flattening = True
         assert test_model.flattening is True

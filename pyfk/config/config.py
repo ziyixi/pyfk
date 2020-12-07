@@ -79,11 +79,11 @@ class SeisModel(object):
         return self.model_values[:, 3]
 
     @property
-    def qa(self) -> np.ndarray:
+    def qs(self) -> np.ndarray:
         return self.model_values[:, 4]
 
     @property
-    def qb(self) -> np.ndarray:
+    def qp(self) -> np.ndarray:
         return self.model_values[:, 5]
 
     @property

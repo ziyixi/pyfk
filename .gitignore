@@ -4,7 +4,8 @@
 .pytest_cache/*
 cov.xml
 coverage.xml
-*.c 
+*.c
+*.cpp
 *.so
 build/*
 *.DS_Store
