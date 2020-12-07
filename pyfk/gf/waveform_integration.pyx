@@ -64,7 +64,7 @@ cpdef waveform_integration(int nfft2, double dw, double pmin, double dk, double 
     # # * main loop, the index in ik, means each wave number
     cdef:
         int ik, idep, n, i
-        double ztemp, k, kc2, omega
+        double ztemp, k, kc2, omega, z
         double complex w, att
     # * init some arrays
     cdef:
@@ -97,7 +97,6 @@ cpdef waveform_integration(int nfft2, double dw, double pmin, double dk, double 
             aj0 = aj0list[ik-wc1+1, i, :]
             aj1 = aj1list[ik-wc1+1, i, :]
             aj2 = aj2list[ik-wc1+1, i, :]
-            z = k*receiver_distance
             # * loop irec to get the value of sum_waveform
             # for irec in range(len(receiver_distance)):
             #
