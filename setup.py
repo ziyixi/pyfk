@@ -32,8 +32,7 @@ extensions = [
         [os.path.join(root_dir, "gf/waveform_integration.pyx")],
         include_dirs=[np.get_include()],
         define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
-        # language="c++"
-    )
+    ),
 ]
 
 
