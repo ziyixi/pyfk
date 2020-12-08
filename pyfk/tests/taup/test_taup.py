@@ -17,17 +17,17 @@ class TestFunctionTaup(object):
         model_data = np.zeros((len_interface - 1, 6), dtype=np.float)
         for index in range(len_interface - 1):
             model_data[index, 0] = model_data_raw[index + 1, 0] - \
-                                   model_data_raw[index, 0]
+                model_data_raw[index, 0]
             model_data[index, 1] = (
-                                           model_data_raw[index, 2] + model_data_raw[index + 1, 2]) / 2
+                model_data_raw[index, 2] + model_data_raw[index + 1, 2]) / 2
             model_data[index, 2] = (
-                                           model_data_raw[index, 1] + model_data_raw[index + 1, 1]) / 2
+                model_data_raw[index, 1] + model_data_raw[index + 1, 1]) / 2
             model_data[index, 3] = (
-                                           model_data_raw[index, 3] + model_data_raw[index + 1, 3]) / 2
+                model_data_raw[index, 3] + model_data_raw[index + 1, 3]) / 2
             model_data[index, 4] = (
-                                           model_data_raw[index, 5] + model_data_raw[index + 1, 5]) / 2
+                model_data_raw[index, 5] + model_data_raw[index + 1, 5]) / 2
             model_data[index, 5] = (
-                                           model_data_raw[index, 4] + model_data_raw[index + 1, 4]) / 2
+                model_data_raw[index, 4] + model_data_raw[index + 1, 4]) / 2
         return model_data
 
     def test_earth_models(self):
@@ -40,13 +40,21 @@ class TestFunctionTaup(object):
                 test_source = SourceModel(sdep=source_depth, srcType="dc")
                 receiver_distance = [1, 10, 50]
                 test_config = Config(
-                    model=test_model, source=test_source, receiver_distance=receiver_distance, degrees=True)
-                t0_list, _, _, _ = taup(test_config.src_layer, test_config.rcv_layer,
-                                        test_config.model.th.astype(np.float64),
-                                        test_config.model.vp.astype(np.float64),
-                                        test_config.receiver_distance.astype(np.float64))
+                    model=test_model,
+                    source=test_source,
+                    receiver_distance=receiver_distance,
+                    degrees=True)
+                t0_list, _, _, _ = taup(
+                    test_config.src_layer, test_config.rcv_layer, test_config.model.th.astype(
+                        np.float64), test_config.model.vp.astype(
+                        np.float64), test_config.receiver_distance.astype(
+                        np.float64))
                 for index, each_distance in enumerate(receiver_distance):
-                    arrivals = earthmodel.get_travel_times(source_depth_in_km=source_depth,
-                                                           distance_in_degree=each_distance, phase_list=["p", "P"])
+                    arrivals = earthmodel.get_travel_times(
+                        source_depth_in_km=source_depth,
+                        distance_in_degree=each_distance,
+                        phase_list=[
+                            "p",
+                            "P"])
                     assert np.allclose(
                         arrivals[0].time, t0_list[index], rtol=0.01)
