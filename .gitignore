@@ -13,3 +13,4 @@ build/*
 pyfk.egg-info/*
 htmlcov/*
 .idea
+cython_debug/*

@@ -1,9 +1,8 @@
 #!python
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, embedsignature=True, linetrace=True
+# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, linetrace=True
 # note even we have linetrace=True, it still need to be enabled by
 # define_macros=[("CYTHON_TRACE_NOGIL", "1")]
 import numpy as np
-
 from libc.math cimport fabs
 
 cpdef taup(const int src_lay_input, const int rcv_lay_input, const double[:] thickness, const double[:] velocity, const double[:] receiver_distance):

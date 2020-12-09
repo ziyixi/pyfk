@@ -18,16 +18,13 @@ class TestFunctionTaup(object):
         for index in range(len_interface - 1):
             model_data[index, 0] = model_data_raw[index + 1, 0] - \
                 model_data_raw[index, 0]
-            model_data[index, 1] = (
-                model_data_raw[index, 2] + model_data_raw[index + 1, 2]) / 2
-            model_data[index, 2] = (
-                model_data_raw[index, 1] + model_data_raw[index + 1, 1]) / 2
-            model_data[index, 3] = (
-                model_data_raw[index, 3] + model_data_raw[index + 1, 3]) / 2
-            model_data[index, 4] = (
-                model_data_raw[index, 5] + model_data_raw[index + 1, 5]) / 2
-            model_data[index, 5] = (
-                model_data_raw[index, 4] + model_data_raw[index + 1, 4]) / 2
+            model_data[index, 1] = model_data_raw[index, 2]
+            model_data[index, 2] = model_data_raw[index, 1]
+            model_data[index, 3] = model_data_raw[index, 3]
+            model_data[index, 4] = model_data_raw[index, 5]
+            model_data[index, 5] = model_data_raw[index, 4]
+        # remove the rows that thickness==0
+        model_data = model_data[model_data[:, 0] > 0.05]
         return model_data
 
     def test_earth_models(self):

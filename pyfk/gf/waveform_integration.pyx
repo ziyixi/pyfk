@@ -1,5 +1,5 @@
 #!python
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, embedsignature=True, linetrace=True
+# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, linetrace=True
 # note even we have linetrace=True, it still need to be enabled by
 # define_macros=[("CYTHON_TRACE_NOGIL", "1")]
 import numpy as np
@@ -159,7 +159,6 @@ cdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double 
         if dynamic and (ik + 1 < wc2):
             filtering = 0.5 * \
                 (1. + cos((wc2 - ik - 1) * pi / (wc2 - wc1))) * filtering
-
         # in fk's code, only apply atttemp for ncom, here we apply to all, with
         # no difference
         for icom in range(9):
