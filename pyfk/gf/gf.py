@@ -1,17 +1,18 @@
 from copy import copy
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
+import scipy.fft
 from obspy.core.trace import Trace
+from obspy.core.stream import Stream
 from pyfk.taup.taup import taup
 
 from pyfk.config.config import Config, SeisModel
-from pyfk.gf.ffr import ffr
 from pyfk.gf.waveform_integration import waveform_integration
 from pyfk.setting import EPSILON, SIGMA
 
 
-def calculate_gf(config: Optional[Config] = None) -> None:
+def calculate_gf(config: Optional[Config] = None) -> dict:
     # * firstly, we calculate the travel time and ray parameter for vp and vs
     t0_vp: np.ndarray
     td_vp: np.ndarray
@@ -21,14 +22,18 @@ def calculate_gf(config: Optional[Config] = None) -> None:
     td_vs: np.ndarray
     p0_vs: np.ndarray
     pd_vs: np.ndarray
-    t0_vp, td_vp, p0_vp, pd_vp = taup(config.src_layer, config.rcv_layer,
-                                      config.model.th.astype(np.float64), config.model.vp.astype(np.float64),
-                                      config.receiver_distance.astype(np.float64))
-    t0_vs, td_vs, p0_vs, pd_vs = taup(config.src_layer, config.rcv_layer,
-                                      config.model.th.astype(np.float64), config.model.vs.astype(np.float64),
-                                      config.receiver_distance.astype(np.float64))
+    t0_vp, td_vp, p0_vp, pd_vp = taup(
+        config.src_layer, config.rcv_layer, config.model.th.astype(
+            np.float64), config.model.vp.astype(
+            np.float64), config.receiver_distance.astype(
+                np.float64))
+    t0_vs, td_vs, p0_vs, pd_vs = taup(
+        config.src_layer, config.rcv_layer, config.model.th.astype(
+            np.float64), config.model.vs.astype(
+            np.float64), config.receiver_distance.astype(
+                np.float64))
     # * extract information from taup
-    # first arrival
+    # first arrival array
     t0 = t0_vp
     # calculate the ray angle at the source
     dn, pa, sa = np.zeros(len(config.receiver_distance), dtype=np.float)
@@ -94,7 +99,7 @@ def calculate_gf(config: Optional[Config] = None) -> None:
     wc = int(nfft2 * (1. - config.taper))
     if wc < 1:
         wc = 1
-    # ! note, we will use taper, pmin, pmax, dk later
+    # ! note, we will use taper, pmin, pmax, dk, sigma later
     taper = np.pi / (nfft2 - wc + 1)
     if wc2 > wc:
         wc2 = wc
@@ -109,14 +114,65 @@ def calculate_gf(config: Optional[Config] = None) -> None:
     dk = config.dk * np.pi / xmax
     filter_const = dk / (np.pi * 2)
 
-    # * main loop, calculate the green function
-    numerical_integration_sum: np.ndarray = waveform_integration()
-    gf_data_all = ffr(numerical_integration_sum)
-    gf_head = generate_gf_head()
-    # ! to be continued
+    # * main loop, calculate the green's function
+    # * call the function from the cython module
+    sum_waveform: np.ndarray = waveform_integration(
+        model,
+        config,
+        src_layer,
+        rcv_layer,
+        taper,
+        pmin,
+        pmax,
+        dk,
+        nfft2,
+        dw,
+        kc,
+        flip,
+        filter_const,
+        dynamic,
+        wc1,
+        wc2,
+        t0,
+        wc,
+        si,
+        sigma)
+
+    # * with sum_waveform, we can apply the inverse fft acting as the frequency integration
+    dt_smth = config.dt / config.smth
+    nfft_smth = int(config.npt * config.smth)
+    dfac = np.exp(sigma * dt_smth)
+    fac = np.array([dfac**index for index in range(nfft_smth)])
+    nCom_mapper = {"dc": 9, "sf": 6, "ep": 3}
+    nCom = nCom_mapper[config.source.srcType]
+
+    # * do the ifftr
+    gf_streamall = {}
+    for irec in range(config.receiver_distance):
+        gf_streamall[irec] = Stream()
+        for icom in range(nCom):
+            waveform_freqdomain = np.hstack([sum_waveform[irec, icom, :], np.zeros(
+                int(nfft_smth / 2) - nfft2, dtype=np.complex)])
+            gf_data = scipy.fft.irfft(waveform_freqdomain, nfft_smth) / dt_smth
+            # now we apply the frequency correction
+            fac_icom = fac * np.exp(sigma * t0[irec])
+            gf_data = gf_data * fac_icom
+            gf_streamall[irec] += Trace(data=gf_data, header={
+                "dist": config.receiver_distance[irec],
+                "t1": t0_vp[irec],
+                "t2": t0_vs[irec],
+                "user1": pa[irec],
+                "user2": sa[irec]
+            })
+
+    # * here the green's function is gf_streamall
+    return gf_streamall
 
 
-def calculate_gf_source(src_type: str, model: SeisModel, flip: bool) -> np.ndarray:
+def calculate_gf_source(
+        src_type: str,
+        model: SeisModel,
+        flip: bool) -> np.ndarray:
     s: np.ndarray = np.zeros((3, 6), dtype=np.float)
     mu = model.rh * model.vs * model.vs
     xi = (model.vs ** 2) / (model.vp ** 2)
@@ -139,19 +195,3 @@ def calculate_gf_source(src_type: str, model: SeisModel, flip: bool) -> np.ndarr
         s[1, 3] = -1.
         s[1, 5] = 1.
     return s
-
-
-def generate_gf_head():
-    pass
-
-
-class GF(object):
-    def __init__(self, gf_data: Tuple[np.ndarray, ...], gf_head: dict) -> None:
-        # * the gf will be a simple list, and its number should be determined by src_type
-        self._gf = []
-        for each_gf_data in gf_data:
-            self._gf.append(Trace(data=each_gf_data, header=gf_head))
-
-    @property
-    def gf(self):
-        return self._gf

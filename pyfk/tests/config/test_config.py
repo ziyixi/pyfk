@@ -4,7 +4,7 @@ from obspy.geodetics.base import degrees2kilometers
 
 from pyfk.config.config import Config, SeisModel, SourceModel
 from pyfk.setting import R_EARTH
-from pyfk.utils import PyfkError, PyfkWarning
+from pyfk.utils.error_message import PyfkError, PyfkWarning
 
 
 class TestClassSeisModel(object):

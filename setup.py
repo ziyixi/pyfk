@@ -45,14 +45,6 @@ def get_package_data():
     'pyfk' subfolder.
     """
     filenames = []
-    # The lasif root dir.
-    root_dir = os.path.join(
-        os.path.dirname(
-            os.path.abspath(
-                inspect.getfile(
-                    inspect.currentframe()))),
-        "pyfk",
-    )
     # Recursively include all files in these folders:
     folders = [os.path.join(root_dir, "tests", "data")]
     for folder in folders:
