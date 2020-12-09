@@ -353,17 +353,17 @@ class TestClassConfig(object):
             _ = Config(model=test_model, source=test_source,
                        receiver_distance=[10, 20, 30], filter=(4, -0.2))
         assert str(
-            execinfo.value) == "Filter must be a tuple (f1,f2), f1 and f2 should be within (0,1)"
+            execinfo.value) == "Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]"
         with pytest.raises(PyfkError) as execinfo:
             _ = Config(model=test_model, source=test_source,
                        receiver_distance=[10, 20, 30], filter=(0.5, -0.2))
         assert str(
-            execinfo.value) == "Filter must be a tuple (f1,f2), f1 and f2 should be within (0,1)"
+            execinfo.value) == "Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]"
         with pytest.raises(PyfkError) as execinfo:
             _ = Config(model=test_model, source=test_source,
                        receiver_distance=[10, 20, 30], filter=(-0.2, 0.5))
         assert str(
-            execinfo.value) == "Filter must be a tuple (f1,f2), f1 and f2 should be within (0,1)"
+            execinfo.value) == "Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]"
         # npt
         with pytest.raises(PyfkError) as execinfo:
             _ = Config(

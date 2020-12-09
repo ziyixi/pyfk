@@ -12,7 +12,7 @@ from pyfk.gf.waveform_integration import waveform_integration
 from pyfk.setting import EPSILON, SIGMA
 
 
-def calculate_gf(config: Optional[Config] = None) -> dict:
+def calculate_gf(config: Optional[Config] = None) -> list:
     # * firstly, we calculate the travel time and ray parameter for vp and vs
     t0_vp: np.ndarray
     td_vp: np.ndarray
@@ -36,7 +36,8 @@ def calculate_gf(config: Optional[Config] = None) -> dict:
     # first arrival array
     t0 = t0_vp
     # calculate the ray angle at the source
-    dn, pa, sa = np.zeros(len(config.receiver_distance), dtype=np.float)
+    dn, pa, sa = [np.zeros(len(config.receiver_distance),
+                           dtype=np.float) for index in range(3)]
     # for each receiver, see calculate pa and sa
     for irec in range(len(config.receiver_distance)):
         if t0_vp[irec] < td_vp[irec] and p0_vp[irec] < 1. / 7:
@@ -81,7 +82,7 @@ def calculate_gf(config: Optional[Config] = None) -> dict:
     vs_source = model.vs[src_layer]
 
     # * calculate the si matrix representing source
-    si = calculate_gf_source(config.source.srcType, model, flip)
+    si = calculate_gf_source(config.source.srcType, model, flip, src_layer)
 
     # * initialize some parameters for waveform intergration
     dynamic = True
@@ -147,9 +148,9 @@ def calculate_gf(config: Optional[Config] = None) -> dict:
     nCom = nCom_mapper[config.source.srcType]
 
     # * do the ifftr
-    gf_streamall = {}
-    for irec in range(config.receiver_distance):
-        gf_streamall[irec] = Stream()
+    gf_streamall = []
+    for irec in range(len(config.receiver_distance)):
+        stream_irec = Stream()
         for icom in range(nCom):
             waveform_freqdomain = np.hstack([sum_waveform[irec, icom, :], np.zeros(
                 int(nfft_smth / 2) - nfft2, dtype=np.complex)])
@@ -157,13 +158,14 @@ def calculate_gf(config: Optional[Config] = None) -> dict:
             # now we apply the frequency correction
             fac_icom = fac * np.exp(sigma * t0[irec])
             gf_data = gf_data * fac_icom
-            gf_streamall[irec] += Trace(data=gf_data, header={
+            stream_irec += Trace(data=gf_data, header={
                 "dist": config.receiver_distance[irec],
                 "t1": t0_vp[irec],
                 "t2": t0_vs[irec],
                 "user1": pa[irec],
                 "user2": sa[irec]
             })
+        gf_streamall.append(stream_irec)
 
     # * here the green's function is gf_streamall
     return gf_streamall
@@ -172,7 +174,8 @@ def calculate_gf(config: Optional[Config] = None) -> dict:
 def calculate_gf_source(
         src_type: str,
         model: SeisModel,
-        flip: bool) -> np.ndarray:
+        flip: bool,
+        src_layer: int) -> np.ndarray:
     s: np.ndarray = np.zeros((3, 6), dtype=np.float)
     mu = model.rh * model.vs * model.vs
     xi = (model.vs ** 2) / (model.vp ** 2)
@@ -181,15 +184,15 @@ def calculate_gf_source(
     else:
         flip_val = 1
     if src_type == "dc":
-        s[0, 1] = 2. * xi / mu
-        s[0, 3] = 4. * xi - 3.
-        s[1, 0] = flip_val / mu
+        s[0, 1] = 2. * xi[src_layer] / mu[src_layer]
+        s[0, 3] = 4. * xi[src_layer] - 3.
+        s[1, 0] = flip_val / mu[src_layer]
         s[1, 4] = -s[1, 0]
         s[2, 3] = 1.
         s[2, 5] = -1.
     elif src_type == "ep":
-        s[0, 1] = xi / mu
-        s[0, 3] = 2. * xi
+        s[0, 1] = xi[src_layer] / mu[src_layer]
+        s[0, 3] = 2. * xi[src_layer]
     elif src_type == "sf":
         s[0, 2] = -flip_val
         s[1, 3] = -1.

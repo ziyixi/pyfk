@@ -162,7 +162,7 @@ class Config(object):
         # receiver_distance
         if receiver_distance is None:
             raise PyfkError("Must provide a list of receiver distance")
-        self.receiver_distance: np.ndarray = np.array(receiver_distance)
+        self.receiver_distance: np.ndarray = np.array(receiver_distance,dtype=np.float64)
         # degrees
         if degrees:
             self.receiver_distance = np.array(
@@ -174,7 +174,7 @@ class Config(object):
         # filter
         if filter[0] < 0 or filter[0] > 1 or filter[1] < 0 or filter[1] > 1:
             raise PyfkError(
-                "Filter must be a tuple (f1,f2), f1 and f2 should be within (0,1)")
+                "Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]")
         self.filter = filter
         # npt
         if npt <= 0:

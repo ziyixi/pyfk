@@ -17,12 +17,9 @@ cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, do
         double z = pmax * nfft2 * dw / kc, k = (z**2 + 1)**0.5
         double kc2 = kc**2
         int row = nfft2 - wc1 + 1
-        int column = int((fabs(kc2 + (pmax * (nfft2 * dw))) - k) / dk)
-        double[:, :, :] aj0list = np.zeros((row, column, len(receiver_distance)))
-        double[:, :, :] aj1list = np.zeros((row, column, len(receiver_distance)))
-        double[:, :, :] aj2list = np.zeros((row, column, len(receiver_distance)))
+        int column = 0
 
-    # * main loop for calculating the first order bessel function
+    # * find the appropriate value of column
     cdef:
         int j, index_n, index_receiver
         double omega
@@ -31,7 +28,20 @@ cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, do
     for j in range(row):
         omega = (j + wc1 - 1) * dw
         k = omega * pmin + 0.5 * dk
-        n = int((fabs(kc2 + (pmax * omega)) - k) / dk)
+        n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
+        if column < n:
+            column = n
+
+    cdef:
+        double[:, :, :] aj0list = np.zeros((row, column, len(receiver_distance)))
+        double[:, :, :] aj1list = np.zeros((row, column, len(receiver_distance)))
+        double[:, :, :] aj2list = np.zeros((row, column, len(receiver_distance)))
+
+    # * main loop for calculating the first order bessel function
+    for j in range(row):
+        omega = (j + wc1 - 1) * dw
+        k = omega * pmin + 0.5 * dk
+        n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
         klist = np.zeros((len(receiver_distance), n), dtype=np.float64)
         for index_receiver in range(len(receiver_distance)):
             for index_n in range(n):
@@ -81,7 +91,7 @@ cdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double 
         double complex[:, :] zzz = np.zeros((3, 5), dtype=np.complex)
         double complex[:, :] sss = np.zeros((3, 6), dtype=np.complex)
         double complex[:, :] temppp = np.zeros((4, 4), dtype=np.complex)
-    for ik in range(wc1, nfft2):
+    for ik in range(wc1 - 1, nfft2):
         # * the code below is modified from FK
         ztemp = pmax * nfft2 * dw / kc
         kc2 = kc**2
@@ -141,7 +151,7 @@ cdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double 
                 sum_waveform[irec, 7, ik] += u[2, 1] * aj1 - nf
                 sum_waveform[irec, 8, ik] += u[2, 2] * aj1 - nf
 
-                k = k + dk
+            k = k + dk
         # * for each ik, we apply the filtering and apply the time shift in the frequency domain
         filtering = filter_const
         if dynamic and (ik + 1 > wc):
@@ -154,8 +164,8 @@ cdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double 
         # no difference
         for icom in range(9):
             for irec in range(len(receiver_distance)):
-                phi = omega*t0[irec]
-                atttemp = filtering*(cos(phi)+sin(phi)*1j)
+                phi = omega * t0[irec]
+                atttemp = filtering * (cos(phi) + sin(phi) * 1j)
                 sum_waveform[irec, icom, ik] *= atttemp
     return sum_waveform
 
@@ -210,7 +220,7 @@ cdef double complex[:, :] kernel(double k, double complex[:, :] u, double comple
         double complex r2, r3
         # ilayer==src_layer
         double complex ra1, rb1, dum, temp_sh
-    for ilayer in range(len(thickness), -1, -1):
+    for ilayer in range(len(thickness) - 1, -1, -1):
         kka = kp[ilayer] / (k**2)
         kkb = ks[ilayer] / (k**2)
         r = 2. / kkb
@@ -442,11 +452,11 @@ cdef double complex[:, :] kernel(double k, double complex[:, :] u, double comple
                 # * end haskellMatrix(a)
 
                 # * begin propagateZ(a, z)
-                zzz[:, :] = np.asarray(zzz) @ np.asarray(aaa)
+                zzz = np.asarray(zzz) @ np.asarray(aaa)
                 # * end propagateZ(a, z)
             else:
                 # * begin propagateB(c, b)
-                bbb[:, :] = np.asarray(bbb) @ np.asarray(ccc)
+                bbb = np.asarray(bbb) @ np.asarray(ccc)
                 # * end propagateB(c, b)
     # c add the top halfspace boundary condition
     eee_np = np.asarray(eee)
@@ -495,6 +505,7 @@ cdef inline(double complex, double complex, double complex, double) sh_ch(double
     x = x * a
     return c, y, x, ex
 
+
 def waveform_integration(
         model: SeisModel,
         config: Config,
@@ -537,7 +548,7 @@ def waveform_integration(
             dynamic,
             wc2,
             t0,
-            config.srcType,
+            config.source.srcType,
             taper,
             wc,
             mu,
