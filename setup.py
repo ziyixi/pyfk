@@ -11,11 +11,8 @@ from setuptools import Extension, find_packages, setup
 
 DOCSTRING = __doc__.strip().split("\n")
 root_dir = os.path.join(
-    os.path.dirname(
-        os.path.abspath(
-            inspect.getfile(
-                inspect.currentframe()))),
-    "pyfk")
+    os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))), "pyfk"
+)
 
 CYTHON_TRACE = 0
 if "--CYTHON_TRACE" in sys.argv:
@@ -58,11 +55,8 @@ def get_package_data():
                 if filename.startswith("."):
                     continue
                 filenames.append(
-                    os.path.relpath(
-                        os.path.join(
-                            directory,
-                            filename),
-                        root_dir))
+                    os.path.relpath(os.path.join(directory, filename), root_dir)
+                )
     return filenames
 
 
@@ -77,8 +71,7 @@ setup_config = dict(
     packages=find_packages(),
     license="MIT",
     platforms="OS Independent",
-    package_data={
-        "pyfk": get_package_data()},
+    package_data={"pyfk": get_package_data()},
     python_requires=">=3.6",
     classifiers=[
         "Development Status :: 1 - Planning",
@@ -89,16 +82,12 @@ setup_config = dict(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6"
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.6" "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Physics",
     ],
-    ext_modules=cythonize(
-        extensions,
-        language_level="3",
-        annotate=True),
+    ext_modules=cythonize(extensions, language_level="3", annotate=True),
     zip_safe=False,
 )
 
@@ -107,11 +96,8 @@ if __name__ == "__main__":
         extras_require={
             "dev": [
                 "appdirs==1.4.4",
-                "appnope==0.1.2; sys_platform == 'darwin'",
-                "astroid==2.4.2; python_version >= '3.5'",
                 "attrs==20.3.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "autopep8==1.5.4",
-                "backcall==0.2.0",
                 "black==19.10b0; python_version >= '3.6'",
                 "cached-property==1.5.2",
                 "cerberus==1.3.2",
@@ -120,35 +106,21 @@ if __name__ == "__main__":
                 "click==7.1.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
                 "colorama==0.4.4; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
                 "coverage==5.3",
-                "decorator==4.4.2",
                 "distlib==0.3.1",
                 "idna==2.10; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "importlib-metadata==3.1.1; python_version < '3.8'",
                 "iniconfig==1.1.1",
-                "ipython==7.19.0",
-                "ipython-genutils==0.2.0",
-                "isort==5.6.4; python_version >= '3.6' and python_version < '4'",
-                "jedi==0.17.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
-                "lazy-object-proxy==1.4.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-                "mccabe==0.6.1",
                 "orderedmultidict==1.0.1",
                 "packaging==20.7; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-                "parso==0.7.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "pathspec==0.8.1",
                 "pep517==0.9.1",
-                "pexpect==4.8.0; sys_platform != 'win32'",
-                "pickleshare==0.7.5",
                 "pip-shims==0.5.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
                 "pipenv-setup==3.1.1",
                 "pipfile==0.0.2",
                 "plette[validation]==0.2.3; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "pluggy==0.13.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-                "prompt-toolkit==3.0.8; python_full_version >= '3.6.1'",
-                "ptyprocess==0.6.0",
                 "py==1.9.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "pycodestyle==2.6.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-                "pygments==2.7.3; python_version >= '3.5'",
-                "pylint==2.6.0",
                 "pyparsing==2.4.7; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "pytest==6.1.2",
                 "python-dateutil==2.8.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
@@ -158,15 +130,13 @@ if __name__ == "__main__":
                 "six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "toml==0.10.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "tomlkit==0.7.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
-                "traitlets==5.0.5; python_version >= '3.7'",
                 "typed-ast==1.4.1; python_version < '3.8' and implementation_name == 'cpython'",
                 "urllib3==1.26.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
                 "vistir==0.5.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-                "wcwidth==0.2.5",
                 "wheel==0.36.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
-                "wrapt==1.12.1",
                 "zipp==3.4.0; python_version < '3.8'",
-            ]},
+            ]
+        },
         install_requires=[
             "certifi==2020.12.5",
             "chardet==3.0.4",
@@ -189,4 +159,5 @@ if __name__ == "__main__":
             "sqlalchemy==1.3.20; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "urllib3==1.26.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
         ],
-        **setup_config)
+        **setup_config
+    )
