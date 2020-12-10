@@ -9,9 +9,9 @@ obspy = "*"
 cython = "*"
 scipy = "*"
 
-[dev - packages]
+[dev-packages]
 autopep8 = "*"
-pipenv - setup = "*"
+pipenv-setup = "*"
 coverage = "*"
 pytest = "*"
 pylint = "*"
