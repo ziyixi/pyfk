@@ -39,3 +39,16 @@ class TestFunctioncalculateGf(object):
                 if np.isnan(coef):
                     coef = 1.0
                 assert coef > 0.99
+
+    def test_big_array(self):
+        # model_data = TestFunctionTaup.gen_test_model("prem")
+        model_data = np.loadtxt(join(dirname(__file__), f"../data/hk"))
+        model_hk = SeisModel(model=model_data)
+        source_hk = SourceModel(sdep=16.5)
+        config_hk = Config(
+            model=model_hk,
+            source=source_hk,
+            npt=512,
+            dt=0.1,
+            receiver_distance=np.arange(10, 110, 10))
+        _ = calculate_gf(config_hk)

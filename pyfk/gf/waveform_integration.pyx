@@ -8,7 +8,7 @@ from pyfk.config.config import SeisModel, Config
 from pyfk.setting import EPSILON
 
 from scipy.special.cython_special cimport jv
-from libc.math cimport fabs, pi, cos, sin, exp
+from libc.math cimport pi, cos, sin, exp
 from pyfk.utils.complex cimport clog, csqrt, creal, cimag, conj
 
 cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, double pmax, double[:] receiver_distance,

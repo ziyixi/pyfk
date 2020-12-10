@@ -2,7 +2,7 @@ from copy import copy
 from typing import Optional
 
 import numpy as np
-import scipy.fft
+from numpy.fft import irfft
 from obspy.core.trace import Trace
 from obspy.core.stream import Stream
 from pyfk.taup.taup import taup
@@ -154,7 +154,7 @@ def calculate_gf(config: Optional[Config] = None) -> list:
         for icom in range(nCom):
             waveform_freqdomain = np.hstack([sum_waveform[irec, icom, :], np.zeros(
                 int(nfft_smth / 2) - nfft2, dtype=np.complex)])
-            gf_data = scipy.fft.irfft(waveform_freqdomain, nfft_smth) / dt_smth
+            gf_data = irfft(waveform_freqdomain, nfft_smth) / dt_smth
             # now we apply the frequency correction
             fac_icom = fac * np.exp(sigma * t0[irec])
             gf_data = gf_data * fac_icom
