@@ -7,8 +7,8 @@ from pyfk.tests.taup.test_taup import TestFunctionTaup
 
 
 def main():
-    # model_data = TestFunctionTaup.gen_test_model("prem")
-    model_data = np.loadtxt(join(dirname(__file__), f"../pyfk/tests/data/hk"))
+    model_data = TestFunctionTaup.gen_test_model("prem")
+    # model_data = np.loadtxt(join(dirname(__file__), f"../pyfk/tests/data/hk"))
     model_hk = SeisModel(model=model_data)
     source_hk = SourceModel(sdep=16.5)
     config_hk = Config(
@@ -17,7 +17,7 @@ def main():
         npt=512,
         dt=0.1,
         receiver_distance=np.arange(10, 110, 10))
-    result = calculate_gf(config_hk)
+    _ = calculate_gf(config_hk)
 
 
 if __name__ == '__main__':

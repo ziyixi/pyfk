@@ -42,6 +42,8 @@ class TestFunctioncalculateGf(object):
 
     def test_big_array(self):
         # model_data = TestFunctionTaup.gen_test_model("prem")
+        # there is a possibility that we write x=f(x) where x is a memoryview in the code
+        # this might cause segmentation fault
         model_data = np.loadtxt(join(dirname(__file__), f"../data/hk"))
         model_hk = SeisModel(model=model_data)
         source_hk = SourceModel(sdep=16.5)

@@ -8,7 +8,7 @@ from obspy.core.stream import Stream
 from pyfk.taup.taup import taup
 
 from pyfk.config.config import Config, SeisModel
-from pyfk.gf.waveform_integration import waveform_integration
+from pyfk.gf.waveform_integration import _waveform_integration
 from pyfk.setting import EPSILON, SIGMA
 
 
@@ -198,3 +198,61 @@ def calculate_gf_source(
         s[1, 3] = -1.
         s[1, 5] = 1.
     return s
+
+
+def waveform_integration(
+        model: SeisModel,
+        config: Config,
+        src_layer: int,
+        rcv_layer: int,
+        taper: float,
+        pmin: float,
+        pmax: float,
+        dk: float,
+        nfft2: int,
+        dw: float,
+        kc: float,
+        flip: bool,
+        filter_const: float,
+        dynamic: bool,
+        wc1: int,
+        wc2: int,
+        t0: np.ndarray,
+        wc: int,
+        si: np.ndarray,
+        sigma: float):
+    # * note, here we use parameters within config as their value is different from config
+    mu = model.rh * model.vs * model.vs
+    sum_waveform = np.zeros(
+        (len(config.receiver_distance), 9, int(nfft2)), dtype=np.complex)
+    _waveform_integration(
+        nfft2,
+        dw,
+        pmin,
+        dk,
+        kc,
+        pmax,
+        config.receiver_distance,
+        wc1,
+        model.vs,
+        model.vp,
+        model.qs,
+        model.qp,
+        flip,
+        filter_const,
+        dynamic,
+        wc2,
+        t0,
+        config.source.srcType,
+        taper,
+        wc,
+        mu,
+        model.th,
+        si,
+        src_layer,
+        rcv_layer,
+        config.updn,
+        EPSILON,
+        sigma,
+        sum_waveform)
+    return sum_waveform

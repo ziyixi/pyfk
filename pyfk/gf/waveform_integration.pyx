@@ -4,9 +4,6 @@
 # define_macros=[("CYTHON_TRACE_NOGIL", "1")]
 import numpy as np
 
-from pyfk.config.config import SeisModel, Config
-from pyfk.setting import EPSILON
-
 from scipy.special.cython_special cimport jv
 from libc.math cimport pi, cos, sin, exp
 from pyfk.utils.complex cimport clog, csqrt, creal, cimag, conj
@@ -33,9 +30,9 @@ cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, do
             column = n
 
     cdef:
-        double[:, :, :] aj0list = np.zeros((row, column, len(receiver_distance)))
-        double[:, :, :] aj1list = np.zeros((row, column, len(receiver_distance)))
-        double[:, :, :] aj2list = np.zeros((row, column, len(receiver_distance)))
+        double[:, :, :] aj0list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
+        double[:, :, :] aj1list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
+        double[:, :, :] aj2list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
 
     # * main loop for calculating the first order bessel function
     for j in range(row):
@@ -59,19 +56,16 @@ cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, do
     return aj0list, aj1list, aj2list
 
 
-cdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
-                                                   double[:] receiver_distance, int wc1,
-                                                   double[:] vs, double[:] vp, double[:] qs, double[:] qp,
-                                                   bint flip, double filter_const, bint dynamic, int wc2, double[:] t0, str src_type,
-                                                   double taper, int wc, double[:] mu, double[:] thickness, double[:, :] si,
-                                                   int src_layer, int rcv_layer, str updn, double epsilon, double sigma):
+cpdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
+                                                    double[:] receiver_distance, int wc1,
+                                                    double[:] vs, double[:] vp, double[:] qs, double[:] qp,
+                                                    bint flip, double filter_const, bint dynamic, int wc2, double[:] t0, str src_type,
+                                                    double taper, int wc, double[:] mu, double[:] thickness, double[:, :] si,
+                                                    int src_layer, int rcv_layer, str updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
     # * get jv
     cdef double[:, :, :] aj0list, aj1list, aj2list
     aj0list, aj1list, aj2list = calbessel(
         nfft2, dw, pmin, dk, kc, pmax, receiver_distance, wc1)
-
-    # * init some values
-    cdef double complex[:, :, :] sum_waveform = np.zeros((len(receiver_distance), 9, int(nfft2)), dtype=np.complex)
 
     # # * main loop, the index in ik, means each wave number
     cdef:
@@ -109,7 +103,7 @@ cdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double 
         else:
             flip_val = 1
         for i in range(n):
-            u = kernel(
+            kernel(
                 k,
                 u,
                 kp,
@@ -168,11 +162,11 @@ cdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double 
                 sum_waveform[irec, icom, ik] *= atttemp
     return sum_waveform
 
-cdef double complex[:, :] kernel(double k, double complex[:, :] u, double complex[:] kp, double complex[:] ks,
-                                 double complex[:, :] aaa, double complex[:, :] bbb, double complex[:, :] ccc, double complex[:] eee,
-                                 double complex[:] ggg, double complex[:, :] zzz, double complex[:, :] sss, double complex[:, :] temppp,
-                                 double[:] mu, double[:, :] si, double[:] thickness, str src_type, int src_layer, int rcv_layer,
-                                 str updn, double epsilon):
+cdef void kernel(double k, double complex[:, :] u, double complex[:] kp, double complex[:] ks,
+                 double complex[:, :] aaa, double complex[:, :] bbb, double complex[:, :] ccc, double complex[:] eee,
+                 double complex[:] ggg, double complex[:, :] zzz, double complex[:, :] sss, double complex[:, :] temppp,
+                 double[:] mu, double[:, :] si, double[:] thickness, str src_type, int src_layer, int rcv_layer,
+                 str updn, double epsilon):
     # * the code below is directly modified from the FK code
     cdef int index, ilayer, isrc_type, nsrc_type
 
@@ -188,7 +182,7 @@ cdef double complex[:, :] kernel(double k, double complex[:, :] u, double comple
     # ? zzz --- z(n,j)=s(i)*X|_{ij}^{12} for p-sv and s(i)*X_5i for sh.
 
     # * we should initialize all the matrix and vectors
-    u[:, :] = 0.
+    u[:, :] = 0. + 0.j
     aaa[:, :] = 0. + 0.j
     bbb[:, :] = 0. + 0.j
     ccc[:, :] = 0. + 0.j
@@ -483,8 +477,6 @@ cdef double complex[:, :] kernel(double k, double complex[:, :] u, double comple
     u_np[:, 2] = val * zzz_np[:, 4] / love
     u = u_np
 
-    return u
-
 
 cdef inline(double complex, double complex, double complex, double) sh_ch(double complex c, double complex y, double complex x,
                                                                           double ex, double complex a, double kd) nogil:
@@ -503,59 +495,3 @@ cdef inline(double complex, double complex, double complex, double) sh_ch(double
     y = x / a
     x = x * a
     return c, y, x, ex
-
-
-def waveform_integration(
-        model: SeisModel,
-        config: Config,
-        src_layer: int,
-        rcv_layer: int,
-        taper: float,
-        pmin: float,
-        pmax: float,
-        dk: float,
-        nfft2: int,
-        dw: float,
-        kc: float,
-        flip: bool,
-        filter_const: float,
-        dynamic: bool,
-        wc1: int,
-        wc2: int,
-        t0: np.ndarray,
-        wc: int,
-        si: np.ndarray,
-        sigma: float):
-    # * note, here we use parameters within config as their value is different from config
-    mu = model.rh * model.vs * model.vs
-    sum_waveform = np.asarray(
-        _waveform_integration(
-            nfft2,
-            dw,
-            pmin,
-            dk,
-            kc,
-            pmax,
-            config.receiver_distance,
-            wc1,
-            model.vs,
-            model.vp,
-            model.qs,
-            model.qp,
-            flip,
-            filter_const,
-            dynamic,
-            wc2,
-            t0,
-            config.source.srcType,
-            taper,
-            wc,
-            mu,
-            model.th,
-            si,
-            src_layer,
-            rcv_layer,
-            config.updn,
-            EPSILON,
-            sigma))
-    return sum_waveform
