@@ -91,19 +91,19 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
     cdef:
         double complex[:] kp = np.zeros(len(thickness), dtype=np.complex)
         double complex[:] ks = np.zeros(len(thickness), dtype=np.complex)
-        double complex[:, :] u = np.zeros((3, 3), dtype=np.complex)
-        double complex[:, :] aaa = np.zeros((5, 5), dtype=np.complex)
-        double complex[:, :] bbb = np.zeros((7, 7), dtype=np.complex)
-        double complex[:, :] ccc = np.zeros((7, 7), dtype=np.complex)
+        double complex[:, ::1] u = np.zeros((3, 3), dtype=np.complex)
+        double complex[:, ::1] aaa = np.zeros((5, 5), dtype=np.complex)
+        double complex[:, ::1] bbb = np.zeros((7, 7), dtype=np.complex)
+        double complex[:, ::1] ccc = np.zeros((7, 7), dtype=np.complex)
         double complex[:] eee = np.zeros(7, dtype=np.complex)
         double complex[:] ggg = np.zeros(7, dtype=np.complex)
-        double complex[:, :] zzz = np.zeros((3, 5), dtype=np.complex)
-        double complex[:, :] sss = np.zeros((3, 6), dtype=np.complex)
-        double complex[:, :] temppp = np.zeros((4, 4), dtype=np.complex)
+        double complex[:, ::1] zzz = np.zeros((3, 5), dtype=np.complex)
+        double complex[:, ::1] sss = np.zeros((3, 6), dtype=np.complex)
+        double complex[:, ::1] temppp = np.zeros((4, 4), dtype=np.complex)
 
         double complex[:] ggg_temp = np.zeros(7, dtype=np.complex)
-        double complex[:, :] zzz_temp = np.zeros((3, 5), dtype=np.complex)
-        double complex[:, :] bbb_temp = np.zeros((7, 7), dtype=np.complex)
+        double complex[:, ::1] zzz_temp = np.zeros((3, 5), dtype=np.complex)
+        double complex[:, ::1] bbb_temp = np.zeros((7, 7), dtype=np.complex)
     for ik in range(wc1 - 1, nfft2):
         # * the code below is modified from FK
         ztemp = pmax * nfft2 * dw / kc
