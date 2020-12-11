@@ -3,7 +3,11 @@ from copy import copy
 from typing import Optional, Tuple, Union
 
 import numpy as np
+from obspy.core.event.event import Event
+from obspy.core.event.source import Tensor
 from obspy.geodetics.base import degrees2kilometers
+
+from pyfk.config.radiats import dc_radiat, sf_radiat, mt_radiat
 from pyfk.setting import R_EARTH
 from pyfk.utils.error_message import PyfkError, PyfkWarning
 
@@ -116,13 +120,16 @@ class SeisModel(object):
 
 
 class SourceModel(object):
-    def __init__(self, sdep: float = 0, srcType: str = "dc") -> None:
+    def __init__(self, sdep: float = 0, srcType: str = "dc",
+                 source_mechanism: Optional[Union[list, np.ndarray]] = None) -> None:
         self._sdep = sdep
         self._srcType = srcType
 
         if self._srcType not in ["dc", "sf", "ep"]:
             raise PyfkError(
                 "Source type should be one of 'dc', 'sf', or 'ep'.")
+
+        self._update_source_mechanism(source_mechanism)
 
     @property
     def sdep(self) -> float:
@@ -135,6 +142,89 @@ class SourceModel(object):
     @sdep.setter
     def sdep(self, value: float) -> None:
         self._sdep = value
+
+    @property
+    def nn(self) -> int:
+        return self._nn
+
+    @property
+    def m0(self) -> float:
+        return self._m0
+
+    @property
+    def rad(self) -> float:
+        return self._rad
+
+    def _calculate_radiation_pattern(self, az: float) -> None:
+        mt = np.zeros((2, 3))
+        if len(self._source_mechanism) == 1:
+            self._m0 = self._source_mechanism[0] * 1e-20
+            self._nn = 1
+            self._rad = None
+        elif len(self._source_mechanism) == 3:
+            self._m0 = self._source_mechanism[0] * 1e-15
+            self._nn = 2
+            mt[0, :2] = self._source_mechanism[1:3]
+            self._rad = sf_radiat(az - mt[0, 0], mt[0, 1])
+        elif len(self._source_mechanism) == 4:
+            self._m0 = np.power(
+                10., 1.5 * self._source_mechanism[0] + 16.1 - 20)
+            self._nn = 3
+            mt[0, :] = self._source_mechanism[1:]
+            self._rad = dc_radiat(az - mt[0, 0], mt[0, 1], mt[0, 2])
+        elif len(self._source_mechanism) == 7:
+            self._m0 = self._source_mechanism[0] * 1e-20
+            self._nn = 4
+            mt[0, :] = self._source_mechanism[1:4]
+            mt[1, :] = self._source_mechanism[4:]
+            self._rad = mt_radiat(az, mt)
+        else:
+            raise PyfkError("length of source_mechanism must be 1, 3, 4, 7")
+
+    def _update_source_mechanism(
+            self, source_mechanism: Optional[Union[list, np.ndarray]]):
+        self._source_mechanism: Optional[np.ndarray]
+        if isinstance(
+                source_mechanism,
+                list) or isinstance(
+                source_mechanism,
+                np.ndarray):
+            if len(np.shape(source_mechanism)) != 1:
+                raise PyfkError("source_mechanism should be a 1D array")
+            typemapper = {
+                "dc": [4, 7],
+                "sf": [3],
+                "ep": [1]
+            }
+            if len(source_mechanism) not in typemapper[self._srcType]:
+                raise Exception("length of source_mechanism is not correct")
+            self._source_mechanism = np.array(source_mechanism)
+        elif isinstance(source_mechanism, Event):
+            tensor: Tensor = source_mechanism.focal_mechanisms[0].moment_tensor
+            # convert the tensor in RTP(USE) to NED, refer to
+            # https://gfzpublic.gfz-potsdam.de/rest/items/item_272892/component/file_541895/content
+            # page4
+            # we should use dyn/cm here
+            m_zz = tensor.m_rr * 1e7
+            m_xx = tensor.m_tt * 1e7
+            m_yy = tensor.m_pp * 1e7
+            m_xz = tensor.m_rt * 1e7
+            m_yz = -tensor.m_rp * 1e7
+            m_xy = -tensor.m_tp * 1e7
+            m0 = source_mechanism.focal_mechanisms[0].moment_tensor.scalar_moment * 1e7
+            self._source_mechanism = np.array(
+                [m0, m_xx, m_xy, m_xz, m_yy, m_yz, m_zz])
+        elif source_mechanism is None:
+            self._source_mechanism = None
+        else:
+            raise PyfkError(
+                "source_mechanism must be None, a list or numpy.ndarray")
+
+    def update_source_mechanism(
+            self, source_mechanism: Union[list, np.ndarray]):
+        if source_mechanism is None:
+            raise PyfkError("source mechanism couldn't be None")
+        self._update_source_mechanism(source_mechanism)
 
 
 class Config(object):
@@ -162,7 +252,8 @@ class Config(object):
         # receiver_distance
         if receiver_distance is None:
             raise PyfkError("Must provide a list of receiver distance")
-        self.receiver_distance: np.ndarray = np.array(receiver_distance,dtype=np.float64)
+        self.receiver_distance: np.ndarray = np.array(
+            receiver_distance, dtype=np.float64)
         # degrees
         if degrees:
             self.receiver_distance = np.array(
@@ -249,7 +340,8 @@ class Config(object):
             self.rcv_layer = self._insert_intf(self.rdep)
             self.src_layer = self._insert_intf(self.source.sdep)
         # two src layers should have same vp
-        if (self.model.vp[self.src_layer] != self.model.vp[self.src_layer-1]) or (self.model.vs[self.src_layer] != self.model.vs[self.src_layer-1]):
+        if (self.model.vp[self.src_layer] != self.model.vp[self.src_layer - 1]) or (
+                self.model.vs[self.src_layer] != self.model.vs[self.src_layer - 1]):
             raise PyfkError("The source is located at a real interface.")
 
     @staticmethod
@@ -264,7 +356,8 @@ class Config(object):
             searching_depth += self.model.th[idep]
             if searching_depth > depth:
                 break
-        if (idep > 0 and depth == searching_depth-self.model.th[idep]) or (idep == 0 and depth == 0):
+        if (idep > 0 and depth == searching_depth -
+                self.model.th[idep]) or (idep == 0 and depth == 0):
             return idep
         dd = searching_depth - depth
         self.model.add_layer(dd, idep)
