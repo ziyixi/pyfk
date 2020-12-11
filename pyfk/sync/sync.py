@@ -22,9 +22,15 @@ def calculate_sync(gf: Union[List[Stream], Stream],
         raise PyfkError("must provide a source time function")
     for irec in range(len(gf)):
         for each_trace in gf[irec]:
-            if each_trace.stats["npts"] != source_time_function.stats["npts"]:
+            if each_trace.stats["delta"] != source_time_function.stats["delta"]:
+                print(
+                    each_trace.stats["delta"],
+                    source_time_function.stats["delta"])
                 raise PyfkError(
-                    "npts for the source time function and the Green's function should be the same")
+                    "delta for the source time function and the Green's function should be the same")
+
+    # * calculate the radiation pattern
+    config.source.calculate_radiation_pattern(az)
 
     # * handle gf, project to the three component with amplitude from radiation pattern
     sync_gf = sync_calculate_gf(gf, config.source)
@@ -36,7 +42,7 @@ def calculate_sync(gf: Union[List[Stream], Stream],
         sync_result.append(Stream())
         for icom in range(3):
             # do the convolution
-            data_conv = np.conv(
+            data_conv = np.convolve(
                 source_time_function.data,
                 sync_gf[irec][icom].data)[
                 :len(
@@ -72,3 +78,23 @@ def sync_calculate_gf(gf: List[Stream], source: SourceModel):
                     coef *= source.rad[inn, icom]
                 result[irec][icom].data += gf[irec][3 * inn + icom].data * coef
     return result
+
+
+def generate_source_time_function(
+        dura: float = 0.,
+        rise: float = 0.5,
+        delta: float = 0.1):
+    ns = int(dura / delta)
+    if ns < 2:
+        ns = 2
+    result_data = np.zeros(ns + 1, dtype=np.float)
+    nr = int(rise * ns)
+    if nr < 1:
+        nr = 1
+    if 2 * nr > ns:
+        nr = ns / 2
+    amp = 1. / (nr * (ns - nr))
+    result_data[:nr] = amp * np.arange(nr)
+    result_data[nr:ns - nr] = nr * amp
+    result_data[ns - nr:] = (ns - np.arange(ns - nr, ns + 1)) * amp
+    return Trace(header={}, data=result_data)

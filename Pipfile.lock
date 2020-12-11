@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "dfaf316e87c8ecbbd20f8eeab63e9f1d3f6c8740ddb73ada6074a63b3e1a1599"
+            "sha256": "204c97b0d329411aa3016391ec6be54c9dfd7a44bca4cc5cd389b0b152086faf"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -36,6 +36,13 @@
                 "sha256:cd7b2d1018258d7247a71425e9f26463dfb444d411c39569972f4ce586b0c9d8"
             ],
             "version": "==0.10.0"
+        },
+        "cysignals": {
+            "hashes": [
+                "sha256:8107b67a0c5991f74b0e000c6fa9fe8efcb2a22c7ede5b017aac4c3e20fb7db2"
+            ],
+            "index": "pypi",
+            "version": "==1.10.2"
         },
         "cython": {
             "hashes": [

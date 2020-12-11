@@ -52,5 +52,5 @@ class TestFunctioncalculateGf(object):
             source=source_hk,
             npt=512,
             dt=0.1,
-            receiver_distance=np.arange(10, 110, 10))
+            receiver_distance=np.arange(10, 40, 10))
         _ = calculate_gf(config_hk)

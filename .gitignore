@@ -14,3 +14,6 @@ pyfk.egg-info/*
 htmlcov/*
 .idea
 cython_debug/*
+test_fk/*
+profile/*
+profile_pyfk/*

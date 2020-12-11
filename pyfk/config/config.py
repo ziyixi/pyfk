@@ -155,8 +155,8 @@ class SourceModel(object):
     def rad(self) -> float:
         return self._rad
 
-    def _calculate_radiation_pattern(self, az: float) -> None:
-        mt = np.zeros((2, 3))
+    def calculate_radiation_pattern(self, az: float) -> None:
+        mt = np.zeros((3, 3))
         if len(self._source_mechanism) == 1:
             self._m0 = self._source_mechanism[0] * 1e-20
             self._nn = 1
@@ -174,9 +174,10 @@ class SourceModel(object):
             self._rad = dc_radiat(az - mt[0, 0], mt[0, 1], mt[0, 2])
         elif len(self._source_mechanism) == 7:
             self._m0 = self._source_mechanism[0] * 1e-20
-            self._nn = 4
+            self._nn = 3
             mt[0, :] = self._source_mechanism[1:4]
-            mt[1, :] = self._source_mechanism[4:]
+            mt[1, 1:] = self._source_mechanism[4:6]
+            mt[2,2]=self._source_mechanism[6]
             self._rad = mt_radiat(az, mt)
         else:
             raise PyfkError("length of source_mechanism must be 1, 3, 4, 7")
@@ -200,7 +201,7 @@ class SourceModel(object):
                 raise Exception("length of source_mechanism is not correct")
             self._source_mechanism = np.array(source_mechanism)
         elif isinstance(source_mechanism, Event):
-            tensor: Tensor = source_mechanism.focal_mechanisms[0].moment_tensor
+            tensor: Tensor = source_mechanism.focal_mechanisms[0].moment_tensor.tensor
             # convert the tensor in RTP(USE) to NED, refer to
             # https://gfzpublic.gfz-potsdam.de/rest/items/item_272892/component/file_541895/content
             # page4
@@ -221,7 +222,7 @@ class SourceModel(object):
                 "source_mechanism must be None, a list or numpy.ndarray")
 
     def update_source_mechanism(
-            self, source_mechanism: Union[list, np.ndarray]):
+            self, source_mechanism: Union[list, np.ndarray, Event]):
         if source_mechanism is None:
             raise PyfkError("source mechanism couldn't be None")
         self._update_source_mechanism(source_mechanism)

@@ -8,6 +8,7 @@ numpy = "*"
 obspy = "*"
 cython = "*"
 scipy = "*"
+cysignals = "*"
 
 [dev-packages]
 autopep8 = "*"

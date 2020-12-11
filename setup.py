@@ -141,6 +141,7 @@ if __name__ == "__main__":
             "certifi==2020.12.5",
             "chardet==3.0.4",
             "cycler==0.10.0",
+            "cysignals==1.10.2",
             "cython==0.29.21",
             "decorator==4.4.2",
             "future==0.18.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",

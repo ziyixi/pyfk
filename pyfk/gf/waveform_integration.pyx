@@ -7,6 +7,8 @@ import numpy as np
 from scipy.special.cython_special cimport jv
 from libc.math cimport pi, cos, sin, exp
 from pyfk.utils.complex cimport clog, csqrt, creal, cimag, conj
+from cysignals.signals cimport sig_on, sig_off
+from cython.view cimport array as cvarray
 
 cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, double pmax, double[:] receiver_distance,
                      int wc1):
@@ -21,7 +23,6 @@ cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, do
         int j, index_n, index_receiver
         double omega
         int n
-        double[:, :] klist, xlist, zzlist
     for j in range(row):
         omega = (j + wc1 - 1) * dw
         k = omega * pmin + 0.5 * dk
@@ -33,18 +34,28 @@ cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, do
         double[:, :, :] aj0list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
         double[:, :, :] aj1list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
         double[:, :, :] aj2list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
+        double[:, :] xlist = np.diag(receiver_distance)
+        double[:, :] klist = np.zeros((len(receiver_distance), column), dtype=np.float64)
+        double[:, :] zzlist = np.zeros((column, len(receiver_distance)), dtype=np.float64)
+        int imat, jmat, kmat
 
     # * main loop for calculating the first order bessel function
     for j in range(row):
         omega = (j + wc1 - 1) * dw
         k = omega * pmin + 0.5 * dk
         n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
-        klist = np.zeros((len(receiver_distance), n), dtype=np.float64)
+        klist[:, :] = 0.
         for index_receiver in range(len(receiver_distance)):
             for index_n in range(n):
                 klist[index_receiver, index_n] = k + index_n * dk
-        xlist = np.diag(receiver_distance)
-        zzlist = np.asarray(klist).T @ np.asarray(xlist)
+        # xlist = np.diag(receiver_distance)
+        # zzlist = np.asarray(klist).T @ np.asarray(xlist)
+        zzlist[:, :] = 0.
+        for imat in range(n):
+            for jmat in range(len(receiver_distance)):
+                for kmat in range(len(receiver_distance)):
+                    zzlist[imat, kmat] = zzlist[imat, kmat] + \
+                        klist.T[imat, jmat] * xlist[jmat, kmat]
         for index_n in range(n):
             for index_receiver in range(len(receiver_distance)):
                 aj0list[j, index_n, index_receiver] = jv(
@@ -56,12 +67,76 @@ cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, do
     return aj0list, aj1list, aj2list
 
 
-cpdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
-                                                    double[:] receiver_distance, int wc1,
-                                                    double[:] vs, double[:] vp, double[:] qs, double[:] qp,
-                                                    bint flip, double filter_const, bint dynamic, int wc2, double[:] t0, str src_type,
-                                                    double taper, int wc, double[:] mu, double[:] thickness, double[:, :] si,
-                                                    int src_layer, int rcv_layer, str updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
+def _waveform_integration(
+        nfft2,
+        dw,
+        pmin,
+        dk,
+        kc,
+        pmax,
+        receiver_distance,
+        wc1,
+        vs,
+        vp,
+        qs,
+        qp,
+        flip,
+        filter_const,
+        dynamic,
+        wc2,
+        t0,
+        src_type,
+        taper,
+        wc,
+        mu,
+        thickness,
+        si,
+        src_layer,
+        rcv_layer,
+        updn,
+        epsilon,
+        sigma,
+        sum_waveform):
+    sig_on()
+    _waveform_integration_sigin(
+        nfft2,
+        dw,
+        pmin,
+        dk,
+        kc,
+        pmax,
+        receiver_distance,
+        wc1,
+        vs,
+        vp,
+        qs,
+        qp,
+        flip,
+        filter_const,
+        dynamic,
+        wc2,
+        t0,
+        src_type,
+        taper,
+        wc,
+        mu,
+        thickness,
+        si,
+        src_layer,
+        rcv_layer,
+        updn,
+        epsilon,
+        sigma,
+        sum_waveform)
+    sig_off()
+
+
+cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
+                                      double[:] receiver_distance, int wc1,
+                                      double[:] vs, double[:] vp, double[:] qs, double[:] qp,
+                                      bint flip, double filter_const, bint dynamic, int wc2, double[:] t0, str src_type,
+                                      double taper, int wc, double[:] mu, double[:] thickness, double[:, :] si,
+                                      int src_layer, int rcv_layer, str updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
     # * get jv
     cdef double[:, :, :] aj0list, aj1list, aj2list
     aj0list, aj1list, aj2list = calbessel(
@@ -85,6 +160,10 @@ cpdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double
         double complex[:, :] zzz = np.zeros((3, 5), dtype=np.complex)
         double complex[:, :] sss = np.zeros((3, 6), dtype=np.complex)
         double complex[:, :] temppp = np.zeros((4, 4), dtype=np.complex)
+
+        double complex[:] ggg_temp = np.zeros(7, dtype=np.complex)
+        double complex[:, :] zzz_temp = np.zeros((3, 5), dtype=np.complex)
+        double complex[:, :] bbb_temp = np.zeros((7, 7), dtype=np.complex)
     for ik in range(wc1 - 1, nfft2):
         # * the code below is modified from FK
         ztemp = pmax * nfft2 * dw / kc
@@ -123,7 +202,11 @@ cpdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double
                 src_layer,
                 rcv_layer,
                 updn,
-                epsilon)
+                epsilon,
+                # temp
+                ggg_temp,
+                zzz_temp,
+                bbb_temp)
             # * loop irec to get the value of sum_waveform
             for irec in range(len(receiver_distance)):
                 aj0 = aj0list[ik - wc1 + 1, i, irec]
@@ -160,13 +243,14 @@ cpdef double complex[:, :, :] _waveform_integration(int nfft2, double dw, double
                 phi = omega * t0[irec]
                 atttemp = filtering * (cos(phi) + sin(phi) * 1j)
                 sum_waveform[irec, icom, ik] *= atttemp
-    return sum_waveform
 
 cdef void kernel(double k, double complex[:, :] u, double complex[:] kp, double complex[:] ks,
                  double complex[:, :] aaa, double complex[:, :] bbb, double complex[:, :] ccc, double complex[:] eee,
                  double complex[:] ggg, double complex[:, :] zzz, double complex[:, :] sss, double complex[:, :] temppp,
                  double[:] mu, double[:, :] si, double[:] thickness, str src_type, int src_layer, int rcv_layer,
-                 str updn, double epsilon):
+                 str updn, double epsilon,
+                 # temps
+                 double complex[:] ggg_temp, double complex[:, :] zzz_temp, double complex[:, :] bbb_temp):
     # * the code below is directly modified from the FK code
     cdef int index, ilayer, isrc_type, nsrc_type
 
@@ -213,6 +297,10 @@ cdef void kernel(double k, double complex[:, :] u, double complex[:] kp, double 
         double complex r2, r3
         # ilayer==src_layer
         double complex ra1, rb1, dum, temp_sh
+        # for loop
+        int imat, jmat, kmat
+        double complex ctemp
+        # for temp
     for ilayer in range(len(thickness) - 1, -1, -1):
         kka = kp[ilayer] / (k**2)
         kkb = ks[ilayer] / (k**2)
@@ -322,7 +410,13 @@ cdef void kernel(double k, double complex[:, :] u, double complex[:] kp, double 
             # * begin propagateG(c, g)
             # ? propagate g vector upward using the compound matrix
             # ?       g = g*a
-            ggg = np.asarray(ggg) @ np.asarray(ccc)
+            # ggg = np.asarray(ggg) @ np.asarray(ccc)
+            ggg_temp[:] = 0. + 0.j
+            for imat in range(7):
+                for jmat in range(7):
+                    ggg_temp[imat] = ggg_temp[imat] + \
+                        ggg[jmat] * ccc[jmat, imat]
+            ggg[:] = ggg_temp[:]
             # * end propagateG(c, g)
         if ilayer == src_layer:
             # * begin separatS
@@ -369,17 +463,28 @@ cdef void kernel(double k, double complex[:, :] u, double complex[:] kp, double 
                 temppp[3, 2] = dum * (r1 * rb1 - ra)
                 temppp[3, 3] = 1.
 
-                sss[:nsrc_type + 1,
-                    :4] = (np.asarray(si)[:nsrc_type + 1,
-                                          :4] @ np.asarray(temppp).T) / 2.
-                sss[:nsrc_type + 1,
-                    4] = (np.asarray(si)[:nsrc_type + 1,
-                                         4] + temp_sh * np.asarray(si)[:nsrc_type + 1,
-                                                                       5]) / 2.
-                sss[:nsrc_type + 1,
-                    5] = (np.asarray(si)[:nsrc_type + 1,
-                                         5] + np.asarray(si)[:nsrc_type + 1,
-                                                             4] / temp_sh) / 2
+                # sss[:nsrc_type + 1,
+                #     :4] = (np.asarray(si)[:nsrc_type + 1,
+                #                           :4] @ np.asarray(temppp).T) / 2.
+                # sss[:nsrc_type + 1,
+                #     4] = (np.asarray(si)[:nsrc_type + 1,
+                #                          4] + temp_sh * np.asarray(si)[:nsrc_type + 1,
+                #                                                        5]) / 2.
+                # sss[:nsrc_type + 1,
+                #     5] = (np.asarray(si)[:nsrc_type + 1,
+                #                          5] + np.asarray(si)[:nsrc_type + 1,
+                #                                              4] / temp_sh) / 2
+                # sss (3,6) si (3,6) tempp (4,4)
+                for imat in range(nsrc_type + 1):
+                    for kmat in range(4):
+                        ctemp = 0. + 0.j
+                        for jmat in range(4):
+                            ctemp = ctemp + si[imat, jmat] * \
+                                temppp.T[jmat, kmat]
+                        sss[imat, kmat] = ctemp / 2.
+                    sss[imat, 4] = (si[imat, 4] + temp_sh * si[imat, 5]) / 2.
+                    sss[imat, 5] = (si[imat, 5] + si[imat, 4] / temp_sh) / 2.
+
             # * end separatS
 
             # * begin initialZ(ss, g, z)
@@ -445,37 +550,80 @@ cdef void kernel(double k, double complex[:, :] u, double complex[:] kp, double 
                 # * end haskellMatrix(a)
 
                 # * begin propagateZ(a, z)
-                zzz = np.asarray(zzz) @ np.asarray(aaa)
+                # zzz = np.asarray(zzz) @ np.asarray(aaa)
+                # zzz (3,5) aaa(5,5)
+                zzz_temp[:, :] = 0. + 0.j
+                for imat in range(3):
+                    for jmat in range(5):
+                        for kmat in range(5):
+                            zzz_temp[imat, kmat] = zzz_temp[imat,
+                                                            kmat] + zzz[imat, jmat] * aaa[jmat, kmat]
+                zzz[:, :] = zzz_temp[:, :]
                 # * end propagateZ(a, z)
             else:
                 # * begin propagateB(c, b)
-                bbb = np.asarray(bbb) @ np.asarray(ccc)
+                # bbb = np.asarray(bbb) @ np.asarray(ccc)
+                bbb_temp[:, :] = 0. + 0.j
+                for imat in range(7):
+                    for jmat in range(7):
+                        for kmat in range(7):
+                            bbb_temp[imat, kmat] = bbb_temp[imat,
+                                                            kmat] + bbb[imat, jmat] * ccc[jmat, kmat]
+                bbb[:, :] = bbb_temp[:, :]
+                # bbb (7,7) ccc (7,7)
                 # * end propagateB(c, b)
     # c add the top halfspace boundary condition
-    eee_np = np.asarray(eee)
-    ggg_np = np.asarray(ggg)
-    bbb_np = np.asarray(bbb)
-    zzz_np = np.asarray(zzz)
-    rayl = np.sum(ggg_np[:5] * eee_np[:5])
-    love = np.sum(ggg_np[5:] * eee_np[5:])
-    ggg_np[:4] = (bbb_np[:4, :5] @ eee_np[:5])
-    ggg_np[2] /= 2.
-    ggg_np[5] = bbb_np[5, 5] * eee_np[5] + bbb_np[5, 6] * eee_np[6]
+    # eee_np = np.asarray(eee)
+    # ggg_np = np.asarray(ggg)
+    # bbb_np = np.asarray(bbb)
+    # zzz_np = np.asarray(zzz)
+    # rayl = np.sum(ggg_np[:5] * eee_np[:5])
+    # love = np.sum(ggg_np[5:] * eee_np[5:])
+    # ggg_np[:4] = (bbb_np[:4, :5] @ eee_np[:5])
+    # ggg_np[2] /= 2.
+    # ggg_np[5] = bbb_np[5, 5] * eee_np[5] + bbb_np[5, 6] * eee_np[6]
+    # for index in range(3):
+    #     val = zzz_np[index, 1] * ggg_np[0] + zzz_np[index, 2] * \
+    #         ggg_np[1] - zzz_np[index, 3] * ggg_np[2]
+    #     zzz_np[index, 1] = -zzz_np[index, 0] * ggg_np[0] + \
+    #         zzz_np[index, 2] * ggg_np[2] + zzz_np[index, 3] * ggg_np[3]
+    #     zzz_np[index, 0] = val
+    #     zzz_np[index, 4] = zzz_np[index, 4] * ggg_np[5]
+    # val = k
+    # if src_type == "sf":
+    #     val = 1
+    # u_np = np.asarray(u)
+    # u_np[:, 0] = val * zzz_np[:, 1] / rayl
+    # u_np[:, 1] = val * zzz_np[:, 0] / rayl
+    # u_np[:, 2] = val * zzz_np[:, 4] / love
+    # u = u_np
+
+    cdef:
+        double complex rayl = 0. + 0.j, love = 0. + 0.j, val
+    for index in range(5):
+        rayl = rayl + ggg[index] * eee[index]
+    for index in range(5, 7):
+        love = love + ggg[index] * eee[index]
+    ggg[:4] = 0. + 0.j
+    for imat in range(4):
+        for jmat in range(5):
+            ggg[imat] = ggg[imat] + bbb[imat, jmat] * eee[jmat]
+    ggg[2] /= 2.
+    ggg[5] = bbb[5, 5] * eee[5] + bbb[5, 6] * eee[6]
     for index in range(3):
-        val = zzz_np[index, 1] * ggg_np[0] + zzz_np[index, 2] * \
-            ggg_np[1] - zzz_np[index, 3] * ggg_np[2]
-        zzz_np[index, 1] = -zzz_np[index, 0] * ggg_np[0] + \
-            zzz_np[index, 2] * ggg_np[2] + zzz_np[index, 3] * ggg_np[3]
-        zzz_np[index, 0] = val
-        zzz_np[index, 4] = zzz_np[index, 4] * ggg_np[5]
+        val = zzz[index, 1] * ggg[0] + zzz[index, 2] * \
+            ggg[1] - zzz[index, 3] * ggg[2]
+        zzz[index, 1] = -zzz[index, 0] * ggg[0] + \
+            zzz[index, 2] * ggg[2] + zzz[index, 3] * ggg[3]
+        zzz[index, 0] = val
+        zzz[index, 4] = zzz[index, 4] * ggg[5]
     val = k
     if src_type == "sf":
-        val = 1
-    u_np = np.asarray(u)
-    u_np[:, 0] = val * zzz_np[:, 1] / rayl
-    u_np[:, 1] = val * zzz_np[:, 0] / rayl
-    u_np[:, 2] = val * zzz_np[:, 4] / love
-    u = u_np
+        val = 1.
+    for index in range(3):
+        u[index, 0] = u[index, 0] + val * zzz[index, 1] / rayl
+        u[index, 1] = u[index, 1] + val * zzz[index, 0] / rayl
+        u[index, 2] = u[index, 2] + val * zzz[index, 4] / love
 
 
 cdef inline(double complex, double complex, double complex, double) sh_ch(double complex c, double complex y, double complex x,
