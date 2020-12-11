@@ -8,64 +8,6 @@ from scipy.special.cython_special cimport jv
 from libc.math cimport pi, cos, sin, exp
 from pyfk.utils.complex cimport clog, csqrt, creal, cimag, conj
 from cysignals.signals cimport sig_on, sig_off
-from cython.view cimport array as cvarray
-
-cdef tuple calbessel(int nfft2, double dw, double pmin, double dk, double kc, double pmax, double[:] receiver_distance,
-                     int wc1):
-    cdef:
-        double z = pmax * nfft2 * dw / kc, k = (z**2 + 1)**0.5
-        double kc2 = kc**2
-        int row = nfft2 - wc1 + 1
-        int column = 0
-
-    # * find the appropriate value of column
-    cdef:
-        int j, index_n, index_receiver
-        double omega
-        int n
-    for j in range(row):
-        omega = (j + wc1 - 1) * dw
-        k = omega * pmin + 0.5 * dk
-        n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
-        if column < n:
-            column = n
-
-    cdef:
-        double[:, :, :] aj0list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
-        double[:, :, :] aj1list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
-        double[:, :, :] aj2list = np.zeros((row, column, len(receiver_distance)), dtype=np.float64)
-        double[:, :] xlist = np.diag(receiver_distance)
-        double[:, :] klist = np.zeros((len(receiver_distance), column), dtype=np.float64)
-        double[:, :] zzlist = np.zeros((column, len(receiver_distance)), dtype=np.float64)
-        int imat, jmat, kmat
-
-    # * main loop for calculating the first order bessel function
-    for j in range(row):
-        omega = (j + wc1 - 1) * dw
-        k = omega * pmin + 0.5 * dk
-        n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
-        klist[:, :] = 0.
-        for index_receiver in range(len(receiver_distance)):
-            for index_n in range(n):
-                klist[index_receiver, index_n] = k + index_n * dk
-        # xlist = np.diag(receiver_distance)
-        # zzlist = np.asarray(klist).T @ np.asarray(xlist)
-        zzlist[:, :] = 0.
-        for imat in range(n):
-            for jmat in range(len(receiver_distance)):
-                for kmat in range(len(receiver_distance)):
-                    zzlist[imat, kmat] = zzlist[imat, kmat] + \
-                        klist.T[imat, jmat] * xlist[jmat, kmat]
-        for index_n in range(n):
-            for index_receiver in range(len(receiver_distance)):
-                aj0list[j, index_n, index_receiver] = jv(
-                    0., zzlist[index_n, index_receiver])
-                aj1list[j, index_n, index_receiver] = jv(
-                    1., zzlist[index_n, index_receiver])
-                aj2list[j, index_n, index_receiver] = jv(
-                    2., zzlist[index_n, index_receiver])
-    return aj0list, aj1list, aj2list
-
 
 def _waveform_integration(
         nfft2,
@@ -139,8 +81,6 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
                                       int src_layer, int rcv_layer, str updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
     # * get jv
     cdef double[:, :, :] aj0list, aj1list, aj2list
-    aj0list, aj1list, aj2list = calbessel(
-        nfft2, dw, pmin, dk, kc, pmax, receiver_distance, wc1)
 
     # # * main loop, the index in ik, means each wave number
     cdef:
@@ -209,10 +149,10 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
                 bbb_temp)
             # * loop irec to get the value of sum_waveform
             for irec in range(len(receiver_distance)):
-                aj0 = aj0list[ik - wc1 + 1, i, irec]
-                aj1 = aj1list[ik - wc1 + 1, i, irec]
-                aj2 = aj2list[ik - wc1 + 1, i, irec]
                 z = k * receiver_distance[irec]
+                aj0 = jv(0., z)
+                aj1 = jv(1., z)
+                aj2 = jv(2., z)
                 # do the numerical integration here
                 sum_waveform[irec, 0, ik] += u[0, 0] * aj0 * flip_val
                 sum_waveform[irec, 1, ik] += -u[0, 1] * aj1
