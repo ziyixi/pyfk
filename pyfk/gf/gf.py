@@ -114,7 +114,6 @@ def calculate_gf(config: Optional[Config] = None) -> list:
     t0 -= config.samples_before_first_arrival * config.dt
     dk = config.dk * np.pi / xmax
     filter_const = dk / (np.pi * 2)
-
     # * main loop, calculate the green's function
     # * call the function from the cython module
     sum_waveform: np.ndarray = waveform_integration(
@@ -149,6 +148,7 @@ def calculate_gf(config: Optional[Config] = None) -> list:
 
     # * do the ifftr
     gf_streamall = []
+    # get correct t0 value
     for irec in range(len(config.receiver_distance)):
         stream_irec = Stream()
         for icom in range(nCom):
@@ -158,13 +158,28 @@ def calculate_gf(config: Optional[Config] = None) -> list:
             # now we apply the frequency correction
             fac_icom = fac * np.exp(sigma * t0[irec])
             gf_data = gf_data * fac_icom
-            stream_irec += Trace(data=gf_data, header={
+            stats_sac = {
+                "delta": dt_smth,
+                "b": t0_vp[irec],
+                "e": nfft_smth *
+                dt_smth +
+                t0_vp[irec],
+                "o": 0.0,
                 "dist": config.receiver_distance[irec],
-                "t1": t0_vp[irec],
+                "t1": t0_vp[irec] +
+                config.samples_before_first_arrival *
+                config.dt,
                 "t2": t0_vs[irec],
                 "user1": pa[irec],
-                "user2": sa[irec]
+                "user2": sa[irec],
+                "npts": nfft_smth,
+            }
+            trace_irec_icom = Trace(data=gf_data, header={
+                "sac": stats_sac
             })
+            trace_irec_icom.stats.starttime += t0_vp[irec]
+            trace_irec_icom.stats.delta = dt_smth
+            stream_irec += trace_irec_icom
         gf_streamall.append(stream_irec)
 
     # * here the green's function is gf_streamall
