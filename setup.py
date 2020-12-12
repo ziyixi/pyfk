@@ -11,8 +11,11 @@ from setuptools import Extension, find_packages, setup
 
 DOCSTRING = __doc__.strip().split("\n")
 root_dir = os.path.join(
-    os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))), "pyfk"
-)
+    os.path.dirname(
+        os.path.abspath(
+            inspect.getfile(
+                inspect.currentframe()))),
+    "pyfk")
 
 CYTHON_TRACE = 0
 if "--CYTHON_TRACE" in sys.argv:
@@ -55,8 +58,11 @@ def get_package_data():
                 if filename.startswith("."):
                     continue
                 filenames.append(
-                    os.path.relpath(os.path.join(directory, filename), root_dir)
-                )
+                    os.path.relpath(
+                        os.path.join(
+                            directory,
+                            filename),
+                        root_dir))
     return filenames
 
 
@@ -71,7 +77,8 @@ setup_config = dict(
     packages=find_packages(),
     license="MIT",
     platforms="OS Independent",
-    package_data={"pyfk": get_package_data()},
+    package_data={
+        "pyfk": get_package_data()},
     python_requires=">=3.6",
     classifiers=[
         "Development Status :: 1 - Planning",
@@ -82,12 +89,16 @@ setup_config = dict(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6" "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.6"
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Physics",
     ],
-    ext_modules=cythonize(extensions, language_level="3", annotate=True),
+    ext_modules=cythonize(
+        extensions,
+        language_level="3",
+        annotate=False),
     zip_safe=False,
 )
 
@@ -135,8 +146,7 @@ if __name__ == "__main__":
                 "vistir==0.5.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
                 "wheel==0.36.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
                 "zipp==3.4.0; python_version < '3.8'",
-            ]
-        },
+            ]},
         install_requires=[
             "certifi==2020.12.5",
             "chardet==3.0.4",
@@ -160,5 +170,4 @@ if __name__ == "__main__":
             "sqlalchemy==1.3.20; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "urllib3==1.26.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
         ],
-        **setup_config
-    )
+        **setup_config)

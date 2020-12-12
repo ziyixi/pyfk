@@ -97,4 +97,6 @@ def generate_source_time_function(
     result_data[:nr] = amp * np.arange(nr)
     result_data[nr:ns - nr] = nr * amp
     result_data[ns - nr:] = (ns - np.arange(ns - nr, ns + 1)) * amp
-    return Trace(header={}, data=result_data)
+    result_trace = Trace(header={}, data=result_data)
+    result_trace.stats.delta = delta
+    return result_trace

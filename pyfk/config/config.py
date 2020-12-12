@@ -177,7 +177,7 @@ class SourceModel(object):
             self._nn = 3
             mt[0, :] = self._source_mechanism[1:4]
             mt[1, 1:] = self._source_mechanism[4:6]
-            mt[2,2]=self._source_mechanism[6]
+            mt[2, 2] = self._source_mechanism[6]
             self._rad = mt_radiat(az, mt)
         else:
             raise PyfkError("length of source_mechanism must be 1, 3, 4, 7")
@@ -205,13 +205,13 @@ class SourceModel(object):
             # convert the tensor in RTP(USE) to NED, refer to
             # https://gfzpublic.gfz-potsdam.de/rest/items/item_272892/component/file_541895/content
             # page4
-            # we should use dyn/cm here
-            m_zz = tensor.m_rr * 1e7
-            m_xx = tensor.m_tt * 1e7
-            m_yy = tensor.m_pp * 1e7
-            m_xz = tensor.m_rt * 1e7
-            m_yz = -tensor.m_rp * 1e7
-            m_xy = -tensor.m_tp * 1e7
+            # * the reason why we mul 1e-19 here is to keep the value the same as global cmt website standard format
+            m_zz = tensor.m_rr * 1e-19
+            m_xx = tensor.m_tt * 1e-19
+            m_yy = tensor.m_pp * 1e-19
+            m_xz = tensor.m_rt * 1e-19
+            m_yz = -tensor.m_rp * 1e-19
+            m_xy = -tensor.m_tp * 1e-19
             m0 = source_mechanism.focal_mechanisms[0].moment_tensor.scalar_moment * 1e7
             self._source_mechanism = np.array(
                 [m0, m_xx, m_xy, m_xz, m_yy, m_yz, m_zz])
