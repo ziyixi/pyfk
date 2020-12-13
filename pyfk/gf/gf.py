@@ -3,12 +3,12 @@ from typing import Optional
 
 import numpy as np
 from numpy.fft import irfft
-from obspy.core.trace import Trace
 from obspy.core.stream import Stream
+from obspy.core.trace import Trace
+from pyfk.gf.waveform_integration import _waveform_integration
 from pyfk.taup.taup import taup
 
 from pyfk.config.config import Config, SeisModel
-from pyfk.gf.waveform_integration import _waveform_integration
 from pyfk.setting import EPSILON, SIGMA
 
 
@@ -92,14 +92,17 @@ def calculate_gf(config: Optional[Config] = None) -> list:
     wc2 = int(
         config.filter[1] * config.npt * config.dt) + 1
     if config.npt == 1:
+        # it will never happen!
         dynamic = False
         nfft2 = 1
         wc1 = 1
     dw = np.pi * 2 / (config.npt * config.dt)
     sigma = SIGMA * dw / (np.pi * 2)
-    wc = int(nfft2 * (1. - config.taper))
+    wc = nfft2 * (1. - config.taper)
     if wc < 1:
         wc = 1
+    else:
+        wc = int(wc)
     # ! note, we will use taper, pmin, pmax, dk, sigma later
     taper = np.pi / (nfft2 - wc + 1)
     if wc2 > wc:
@@ -137,11 +140,15 @@ def calculate_gf(config: Optional[Config] = None) -> list:
         wc,
         si,
         sigma)
-
     # * with sum_waveform, we can apply the inverse fft acting as the frequency integration
     dt_smth = config.dt / config.smth
     nfft_smth = int(config.npt * config.smth)
     dfac = np.exp(sigma * dt_smth)
+    if nfft2 == 1:
+        static_return_list = []
+        for irec in range(len(config.receiver_distance)):
+            static_return_list.append(sum_waveform[irec, :, 0])
+        return static_return_list
     fac = np.array([dfac**index for index in range(nfft_smth)])
     nCom_mapper = {"dc": 9, "sf": 6, "ep": 3}
     nCom = nCom_mapper[config.source.srcType]

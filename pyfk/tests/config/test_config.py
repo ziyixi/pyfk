@@ -621,3 +621,46 @@ class TestClassConfig(object):
                     30])
         assert str(
             execinfo.value) == "The source or receivers are located in the air."
+
+    def test_radiation_pattern(self):
+        with pytest.raises(PyfkError) as execinfo:
+            _ = SourceModel(sdep=12, srcType="dc", source_mechanism=[1])
+        assert str(
+            execinfo.value) == "length of source_mechanism is not correct"
+        with pytest.raises(PyfkError) as execinfo:
+            _ = SourceModel(sdep=12, srcType="sf", source_mechanism=[1, 1])
+        assert str(
+            execinfo.value) == "length of source_mechanism is not correct"
+        with pytest.raises(PyfkError) as execinfo:
+            _ = SourceModel(sdep=12, srcType="sf",
+                            source_mechanism=[[1, 2], [3, 4]])
+        assert str(
+            execinfo.value) == "source_mechanism should be a 1D array"
+        with pytest.raises(PyfkError) as execinfo:
+            _ = SourceModel(sdep=12, srcType="sf",
+                            source_mechanism=(1, 2, 3, 4))
+        assert str(
+            execinfo.value) == "source_mechanism must be None, a list or numpy.ndarray"
+        with pytest.raises(PyfkError) as execinfo:
+            test_source = SourceModel(sdep=12, srcType="sf")
+            test_source.update_source_mechanism(None)
+        assert str(
+            execinfo.value) == "source mechanism couldn't be None"
+        # * test the case of 1, 3, 4
+        test_source = SourceModel(sdep=12, srcType="ep", source_mechanism=[1])
+        test_source.calculate_radiation_pattern(30.)
+        test_source = SourceModel(
+            sdep=12,
+            srcType="sf",
+            source_mechanism=[
+                1,
+                1,
+                1])
+        test_source.calculate_radiation_pattern(30.)
+        test_source = SourceModel(
+            sdep=12, srcType="dc", source_mechanism=[
+                1, 1, 1, 1])
+        test_source.calculate_radiation_pattern(30.)
+        test_source = SourceModel(
+            sdep=12, srcType="dc", source_mechanism=[
+                1, 1, 1, 1, 1, 1, 1])

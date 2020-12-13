@@ -20,7 +20,7 @@ jobs:
           pipenv install -d
       - name: Generate coverage report
         run: |
-          pipenv run python setup.py develop --CYTHON_TRACE
+          pipenv run python setup.py develop
           pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
           pipenv run coverage xml
       - name: Upload coverage to Codecov

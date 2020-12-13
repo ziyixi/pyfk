@@ -180,6 +180,7 @@ class SourceModel(object):
             mt[2, 2] = self._source_mechanism[6]
             self._rad = mt_radiat(az, mt)
         else:
+            # actually will never satisfied in real case
             raise PyfkError("length of source_mechanism must be 1, 3, 4, 7")
 
     def _update_source_mechanism(
@@ -198,7 +199,7 @@ class SourceModel(object):
                 "ep": [1]
             }
             if len(source_mechanism) not in typemapper[self._srcType]:
-                raise Exception("length of source_mechanism is not correct")
+                raise PyfkError("length of source_mechanism is not correct")
             self._source_mechanism = np.array(source_mechanism)
         elif isinstance(source_mechanism, Event):
             tensor: Tensor = source_mechanism.focal_mechanisms[0].moment_tensor.tensor
@@ -272,10 +273,16 @@ class Config(object):
         if npt <= 0:
             raise PyfkError("npt should be positive.")
         self.npt = npt
+        if self.npt == 1:
+            # we don't use st_fk
+            self.npt = 2
         # dt
         if dt <= 0:
             raise PyfkError("dt should be positive.")
-        self.dt = dt
+        if self.npt == 2 and dt < 1000:
+            self.dt = 1000
+        else:
+            self.dt = dt
         # dk
         if dk <= 0 or dk >= 0.5:
             raise PyfkError("dk should be within (0,0.5)")

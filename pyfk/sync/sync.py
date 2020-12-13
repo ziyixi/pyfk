@@ -1,7 +1,9 @@
-from pyfk.config.config import SourceModel, Config
 from typing import Union, Optional, List
-from obspy import Trace, Stream
+
 import numpy as np
+from obspy import Trace, Stream
+
+from pyfk.config.config import SourceModel, Config
 from pyfk.utils.error_message import PyfkError
 
 
@@ -20,12 +22,12 @@ def calculate_sync(gf: Union[List[Stream], Stream],
         gf = [gf]
     if source_time_function is None:
         raise PyfkError("must provide a source time function")
+    if (not isinstance(gf, list)) or (len(gf) == 0) or (
+            not isinstance(gf[0], Stream)):
+        raise PyfkError("check input Green's function")
     for irec in range(len(gf)):
         for each_trace in gf[irec]:
             if each_trace.stats["delta"] != source_time_function.stats["delta"]:
-                print(
-                    each_trace.stats["delta"],
-                    source_time_function.stats["delta"])
                 raise PyfkError(
                     "delta for the source time function and the Green's function should be the same")
 
@@ -49,6 +51,7 @@ def calculate_sync(gf: Union[List[Stream], Stream],
                     sync_gf[irec][icom].data)]
             header = {**sync_gf[irec][icom].stats}
             if "sac" not in header:
+                # if called after gf, should never happen
                 header["sac"] = {}
             header["sac"]["az"] = az
             header["sac"]["cmpinc"] = cmpinc_list[icom]
