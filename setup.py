@@ -51,6 +51,11 @@ def get_package_data():
         os.path.join(root_dir, "tests", "data"),
         os.path.join(root_dir, "tests", "data", "hk_gf"),
         os.path.join(root_dir, "tests", "data", "sync_prem_gcmt"),
+        os.path.join(root_dir, "tests", "data", "sync_filter"),
+        os.path.join(root_dir, "tests", "data", "sync_prem_ep"),
+        os.path.join(root_dir, "tests", "data", "sync_prem_sf"),
+        os.path.join(root_dir, "tests", "data", "sync_receiver_deeper"),
+        os.path.join(root_dir, "tests", "data", "sync_smth")
     ]
     for folder in folders:
         for directory, _, files in os.walk(folder):
