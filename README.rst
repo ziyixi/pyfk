@@ -1,4 +1,4 @@
-Seisflow
+pyfk
 ==========
 .. raw:: html
 
