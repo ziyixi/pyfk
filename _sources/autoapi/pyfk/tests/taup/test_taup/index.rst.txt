@@ -1,0 +1,30 @@
+:mod:`pyfk.tests.taup.test_taup`
+================================
+
+.. py:module:: pyfk.tests.taup.test_taup
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pyfk.tests.taup.test_taup.TestFunctionTaup
+
+
+
+.. py:class:: TestFunctionTaup
+
+   Bases: :class:`object`
+
+   .. method:: gen_test_model(model_name)
+      :staticmethod:
+
+
+   .. method:: test_earth_models(self)
+
+
+

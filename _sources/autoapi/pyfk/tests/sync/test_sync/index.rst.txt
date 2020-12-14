@@ -1,0 +1,29 @@
+:mod:`pyfk.tests.sync.test_sync`
+================================
+
+.. py:module:: pyfk.tests.sync.test_sync
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pyfk.tests.sync.test_sync.TestFunctionCalculateSync
+
+
+
+.. py:class:: TestFunctionCalculateSync
+
+   Bases: :class:`object`
+
+   .. method:: test_prem(self)
+
+
+   .. method:: test_exceptions(self)
+
+
+

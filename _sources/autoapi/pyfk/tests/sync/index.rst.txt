@@ -1,0 +1,15 @@
+:mod:`pyfk.tests.sync`
+======================
+
+.. py:module:: pyfk.tests.sync
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   test_sync/index.rst
+
+

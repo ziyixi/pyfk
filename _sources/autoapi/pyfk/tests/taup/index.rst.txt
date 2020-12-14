@@ -1,0 +1,15 @@
+:mod:`pyfk.tests.taup`
+======================
+
+.. py:module:: pyfk.tests.taup
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   test_taup/index.rst
+
+

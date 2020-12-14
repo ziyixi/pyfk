@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.tests.gf.test_gf &#8212; pyfk 0.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../autoapi/index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pyfk.tests.gf.test_gf</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">join</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">obspy</span>
+
+<span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">SeisModel</span><span class="p">,</span> <span class="n">SourceModel</span>
+<span class="kn">from</span> <span class="nn">pyfk.gf.gf</span> <span class="kn">import</span> <span class="n">calculate_gf</span>
+<span class="kn">from</span> <span class="nn">pyfk.tests.taup.test_taup</span> <span class="kn">import</span> <span class="n">TestFunctionTaup</span>
+
+
+<div class="viewcode-block" id="TestFunctioncalculateGf"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf">[docs]</a><span class="k">class</span> <span class="nc">TestFunctioncalculateGf</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_hk"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk">[docs]</a>    <span class="k">def</span> <span class="nf">test_hk</span><span class="p">():</span>
+        <span class="c1"># * perl fk.pl -Mhk/15/k -N512/0.1 10 20 30</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;../data/hk&quot;</span><span class="p">)</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+        <span class="n">model_hk</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">,</span> <span class="n">use_kappa</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">source_hk</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+        <span class="n">config_hk</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_hk</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_hk</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="p">[</span>
+                <span class="mi">10</span><span class="p">,</span>
+                <span class="mi">20</span><span class="p">,</span>
+                <span class="mi">30</span><span class="p">])</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_hk</span><span class="p">)</span>
+        <span class="c1"># * for all the gf in data/hk_gf, test if the results are close (in FK, it uses float but we are using double)</span>
+        <span class="k">for</span> <span class="n">irec</span><span class="p">,</span> <span class="n">each_rec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">icomn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+                <span class="n">hk_gf_data</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                    <span class="n">join</span><span class="p">(</span>
+                        <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                        <span class="sa">f</span><span class="s2">&quot;../data/hk_gf/</span><span class="si">{</span><span class="n">each_rec</span><span class="si">}</span><span class="s2">.grn.</span><span class="si">{</span><span class="n">icomn</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+                    <span class="n">hk_gf_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">irec</span><span class="p">][</span><span class="n">icomn</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+                    <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
+
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_big_array"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array">[docs]</a>    <span class="k">def</span> <span class="nf">test_big_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># model_data = TestFunctionTaup.gen_test_model(&quot;prem&quot;)</span>
+        <span class="c1"># there is a possibility that we write x=f(x) where x is a memoryview in the code</span>
+        <span class="c1"># this might cause segmentation fault</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;../data/hk&quot;</span><span class="p">))</span>
+        <span class="n">model_hk</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
+        <span class="n">source_hk</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">)</span>
+        <span class="n">config_hk</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_hk</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_hk</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_hk</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_prem_ep"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_prem_ep">[docs]</a>    <span class="k">def</span> <span class="nf">test_prem_ep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
+        <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
+        <span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">srcType</span><span class="o">=</span><span class="s2">&quot;ep&quot;</span><span class="p">)</span>
+        <span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">])</span>
+        <span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">comnname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]):</span>
+            <span class="n">gf_data</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                <span class="n">join</span><span class="p">(</span>
+                    <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;../data/sync_prem_ep/50.grn.</span><span class="si">{</span><span class="n">comnname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+                <span class="n">gf_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+                <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
+
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_prem_sf"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_prem_sf">[docs]</a>    <span class="k">def</span> <span class="nf">test_prem_sf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
+        <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
+        <span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">srcType</span><span class="o">=</span><span class="s2">&quot;sf&quot;</span><span class="p">)</span>
+        <span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">])</span>
+        <span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">comnname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)):</span>
+            <span class="n">gf_data</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                <span class="n">join</span><span class="p">(</span>
+                    <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;../data/sync_prem_sf/50.grn.</span><span class="si">{</span><span class="n">comnname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+                <span class="n">gf_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+                <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
+
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_receiver_deeper"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_receiver_deeper">[docs]</a>    <span class="k">def</span> <span class="nf">test_receiver_deeper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
+        <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
+        <span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">srcType</span><span class="o">=</span><span class="s2">&quot;dc&quot;</span><span class="p">)</span>
+        <span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span>
+            <span class="n">rdep</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">comnname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)):</span>
+            <span class="n">gf_data</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                <span class="n">join</span><span class="p">(</span>
+                    <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;../data/sync_receiver_deeper/50_20.grn.</span><span class="si">{</span><span class="n">comnname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+                <span class="n">gf_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+                <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
+
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_static_source"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source">[docs]</a>    <span class="k">def</span> <span class="nf">test_static_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
+        <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
+        <span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">srcType</span><span class="o">=</span><span class="s2">&quot;dc&quot;</span><span class="p">)</span>
+        <span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">])</span>
+        <span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+        <span class="n">ref_gf</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.242E-06</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.103E-05</span><span class="p">,</span> <span class="mf">0.000E+00</span><span class="p">,</span> <span class="mf">0.236E-06</span><span class="p">,</span>
+                  <span class="mf">0.118E-05</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.548E-07</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.942E-07</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.156E-05</span><span class="p">,</span> <span class="mf">0.285E-06</span><span class="p">]</span>
+        <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+            <span class="n">gf</span><span class="p">,</span>
+            <span class="n">ref_gf</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99999</span></div>
+
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_smth"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_smth">[docs]</a>    <span class="k">def</span> <span class="nf">test_smth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
+        <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
+        <span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">srcType</span><span class="o">=</span><span class="s2">&quot;dc&quot;</span><span class="p">)</span>
+        <span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">smth</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">])</span>
+        <span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">comnname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)):</span>
+            <span class="n">gf_data</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                <span class="n">join</span><span class="p">(</span>
+                    <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;../data/sync_smth/50.grn.</span><span class="si">{</span><span class="n">comnname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+                <span class="n">gf_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+                <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
+
+<div class="viewcode-block" id="TestFunctioncalculateGf.test_filter"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter">[docs]</a>    <span class="k">def</span> <span class="nf">test_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
+        <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
+        <span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">srcType</span><span class="o">=</span><span class="s2">&quot;dc&quot;</span><span class="p">)</span>
+        <span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+            <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">smth</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="nb">filter</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">])</span>
+        <span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">comnname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)):</span>
+            <span class="n">gf_data</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                <span class="n">join</span><span class="p">(</span>
+                    <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;../data/sync_filter/50.grn.</span><span class="si">{</span><span class="n">comnname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+                <span class="n">gf_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+                <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

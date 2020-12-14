@@ -1,0 +1,15 @@
+:mod:`pyfk.utils`
+=================
+
+.. py:module:: pyfk.utils
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   error_message/index.rst
+
+

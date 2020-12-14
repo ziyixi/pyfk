@@ -1,0 +1,15 @@
+:mod:`pyfk.tests.config`
+========================
+
+.. py:module:: pyfk.tests.config
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   test_config/index.rst
+
+

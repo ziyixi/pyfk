@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.config.radiats &#8212; pyfk 0.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../autoapi/index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pyfk.config.radiats</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
+
+<span class="c1"># /****************************************************************</span>
+<span class="c1">#    compute horizontal radiation pattens for</span>
+<span class="c1">#         double-couple   specified by az-strike,dip,rake</span>
+<span class="c1">#         single force    specified by az-strike and dip</span>
+<span class="c1">#         moment tnesor   specified by the moment tensor and az</span>
+
+<span class="c1"># *****************************************************************/</span>
+
+<span class="c1"># /*******************************************************************</span>
+<span class="c1"># horizontal radiation coefficients of a double-couple, Haskell&#39;64</span>
+<span class="c1"># with tangential corrected</span>
+
+<span class="c1"># INPUT:  az of the station measured from the strike of the fault clockwise,</span>
+<span class="c1">#         dip, and rake of the fault-plane solution</span>
+<span class="c1"># OUTPUT: rad[i][j] -&gt; summation coef. for i-th azimuthal order and j-th component</span>
+<span class="c1">#                         (0-&gt; vertical, 1-&gt; radial, 2-&gt;transverse)</span>
+
+<span class="c1"># Algorithm:</span>
+<span class="c1">#  V/R = f3n3*Z0</span>
+<span class="c1">#      +((f1n3+f3n1)*cos(theta)+(f2n3+f3n2)*sin(theta))*Z1</span>
+<span class="c1">#      +((f2n2-f1n1)*cos(2theta)+(-f1n2-f2n1)*sin(2theta))*Z2</span>
+<span class="c1">#   T =-((f1n3+f3n1)*sin(theta)-(f2n3+f3n2)*cos(theta))*T1</span>
+<span class="c1">#      -((f2n2-f1n1)*sin(2theta)-(-f1n2-f2n1)*cos(2theta))*T2</span>
+
+<span class="c1"># where theta=pi/2-az.</span>
+<span class="c1">#   n = (sin(delta),0,cos(delta))</span>
+<span class="c1">#   F = (-sin(lamda)*cos(delta), cos(lamda), sin(lamda)*sin(delta))</span>
+<span class="c1"># where delta is dip from the horizontal, lambda is the rake from the</span>
+<span class="c1"># strike CCW.</span>
+
+<span class="c1"># ********************************************************************/</span>
+
+
+<div class="viewcode-block" id="dc_radiat"><a class="viewcode-back" href="../../../autoapi/pyfk/config/radiats/index.html#pyfk.config.radiats.dc_radiat">[docs]</a><span class="k">def</span> <span class="nf">dc_radiat</span><span class="p">(</span><span class="n">stk</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dip</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rak</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculate the radiation pattern for double couple source.</span>
+
+<span class="sd">    :param stk: strike</span>
+<span class="sd">    :type stk: float</span>
+<span class="sd">    :param dip: dip</span>
+<span class="sd">    :type dip: float</span>
+<span class="sd">    :param rak: rake</span>
+<span class="sd">    :type rak: float</span>
+<span class="sd">    :return: the radiation pattern matrix</span>
+<span class="sd">    :rtype: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">stk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">stk</span><span class="p">)</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="n">rak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">rak</span><span class="p">)</span>
+
+    <span class="n">sstk</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">stk</span><span class="p">)</span>
+    <span class="n">cstk</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">stk</span><span class="p">)</span>
+    <span class="n">sdip</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="n">cdip</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="n">srak</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">rak</span><span class="p">)</span>
+    <span class="n">crak</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">rak</span><span class="p">)</span>
+    <span class="n">sstk2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sstk</span> <span class="o">*</span> <span class="n">cstk</span>
+    <span class="n">cstk2</span> <span class="o">=</span> <span class="n">cstk</span> <span class="o">*</span> <span class="n">cstk</span> <span class="o">-</span> <span class="n">sstk</span> <span class="o">*</span> <span class="n">sstk</span>
+    <span class="n">sdip2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sdip</span> <span class="o">*</span> <span class="n">cdip</span>
+    <span class="n">cdip2</span> <span class="o">=</span> <span class="n">cdip</span> <span class="o">*</span> <span class="n">cdip</span> <span class="o">-</span> <span class="n">sdip</span> <span class="o">*</span> <span class="n">sdip</span>
+
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">srak</span> <span class="o">*</span> <span class="n">sdip2</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">sstk</span> <span class="o">*</span> <span class="n">srak</span> <span class="o">*</span> <span class="n">cdip2</span> <span class="o">+</span> <span class="n">cstk</span> <span class="o">*</span> <span class="n">crak</span> <span class="o">*</span> <span class="n">cdip</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cstk</span> <span class="o">*</span> <span class="n">srak</span> <span class="o">*</span> <span class="n">cdip2</span> <span class="o">+</span> <span class="n">sstk</span> <span class="o">*</span> <span class="n">crak</span> <span class="o">*</span> <span class="n">cdip</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">sstk2</span> <span class="o">*</span> <span class="n">crak</span> <span class="o">*</span> <span class="n">sdip</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cstk2</span> <span class="o">*</span> <span class="n">srak</span> <span class="o">*</span> <span class="n">sdip2</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cstk2</span> <span class="o">*</span> <span class="n">crak</span> <span class="o">*</span> <span class="n">sdip</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">sstk2</span> <span class="o">*</span> <span class="n">srak</span> <span class="o">*</span> <span class="n">sdip2</span>
+    <span class="k">return</span> <span class="n">rad</span></div>
+
+
+<span class="c1"># /******************************************************</span>
+<span class="c1"># horizontal radiation coefficients of a single-force</span>
+<span class="c1">#    In:</span>
+<span class="c1">#         stk: az_of_obs w.r.t to strike of the force</span>
+<span class="c1">#                  measured clockwise</span>
+<span class="c1">#         dip: dip of the force, from horizontal down</span>
+
+<span class="c1">#    algorithm:</span>
+<span class="c1">#         vertical (UP) = f3*Z0 + (f1*cos(theta)+f2*sin(theta))*Z1</span>
+<span class="c1">#         radial  (OUT) = f3*R0 + (f1*cos(theta)+f2*sin(theta))*R1</span>
+<span class="c1">#         tangen   (CW) =       - (f1*sin(theta)-f2*cos(theta))*T1</span>
+<span class="c1">#     where F = (0,cos(dip),-sin(dip))</span>
+<span class="c1"># ******************************************************/</span>
+
+<div class="viewcode-block" id="sf_radiat"><a class="viewcode-back" href="../../../autoapi/pyfk/config/radiats/index.html#pyfk.config.radiats.sf_radiat">[docs]</a><span class="k">def</span> <span class="nf">sf_radiat</span><span class="p">(</span><span class="n">stk</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dip</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculate the radiation pattern for single force source.</span>
+
+<span class="sd">    :param stk: strike</span>
+<span class="sd">    :type stk: float</span>
+<span class="sd">    :param dip: dip</span>
+<span class="sd">    :type dip: float</span>
+<span class="sd">    :return: the radiation pattern matrix</span>
+<span class="sd">    :rtype: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">stk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">stk</span><span class="p">)</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="n">sstk</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">stk</span><span class="p">)</span>
+    <span class="n">cstk</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">stk</span><span class="p">)</span>
+    <span class="n">sdip</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="n">cdip</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">sdip</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cdip</span> <span class="o">*</span> <span class="n">cstk</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cdip</span> <span class="o">*</span> <span class="n">sstk</span>
+    <span class="k">return</span> <span class="n">rad</span></div>
+
+
+<span class="c1"># /*****************************************************************</span>
+<span class="c1">#  horizontal radiation coefficients from a moment-tensor m</span>
+<span class="c1">#    see Jost and Herrmann, 1989 (note an error in Eq A5.4-A5.6)</span>
+<span class="c1"># *****************************************************************/</span>
+
+<div class="viewcode-block" id="mt_radiat"><a class="viewcode-back" href="../../../autoapi/pyfk/config/radiats/index.html#pyfk.config.radiats.mt_radiat">[docs]</a><span class="k">def</span> <span class="nf">mt_radiat</span><span class="p">(</span><span class="n">az</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculate the radiation pattern providing a moment tensor in the order of x, y, z (NED coordinate, already converted from RTP coordinate)</span>
+<span class="sd">    :param az: azimuthal angle</span>
+<span class="sd">    :type az: float</span>
+<span class="sd">    :param m: moment tensor matrix (0 means symmetric)</span>
+<span class="sd">    :type m: np.ndarray</span>
+<span class="sd">    :return: the radiation pattern matrix</span>
+<span class="sd">    :rtype: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">saz</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">caz</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">saz2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">saz</span> <span class="o">*</span> <span class="n">caz</span>
+    <span class="n">caz2</span> <span class="o">=</span> <span class="n">caz</span> <span class="o">*</span> <span class="n">caz</span> <span class="o">-</span> <span class="n">saz</span> <span class="o">*</span> <span class="n">saz</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">caz2</span> <span class="o">-</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">saz2</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">caz</span> <span class="o">-</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">saz</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">6.</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">saz2</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">caz2</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">saz</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">caz</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="c1"># /* contribution from explosion: */</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mf">3.</span>
+    <span class="n">rad</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">rad</span></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

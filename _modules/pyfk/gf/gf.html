@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.gf.gf &#8212; pyfk 0.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../autoapi/index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pyfk.gf.gf</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.fft</span> <span class="kn">import</span> <span class="n">irfft</span>
+<span class="kn">from</span> <span class="nn">obspy.core.stream</span> <span class="kn">import</span> <span class="n">Stream</span>
+<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Trace</span>
+<span class="kn">from</span> <span class="nn">pyfk.gf.waveform_integration</span> <span class="kn">import</span> <span class="n">_waveform_integration</span>
+<span class="kn">from</span> <span class="nn">pyfk.taup.taup</span> <span class="kn">import</span> <span class="n">taup</span>
+
+<span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">SeisModel</span>
+<span class="kn">from</span> <span class="nn">pyfk.setting</span> <span class="kn">import</span> <span class="n">EPSILON</span><span class="p">,</span> <span class="n">SIGMA</span>
+
+
+<div class="viewcode-block" id="calculate_gf"><a class="viewcode-back" href="../../../autoapi/pyfk/index.html#pyfk.gf.gf.calculate_gf">[docs]</a><span class="k">def</span> <span class="nf">calculate_gf</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Config</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</span>
+
+<span class="sd">    :param config: the configuration of calculating the Green&#39;s function, defaults to None</span>
+<span class="sd">    :type config: Optional[Config], optional</span>
+<span class="sd">    :return: if npt==2 or 1, return a 2D list, and each row represents the static displacements; otherwise, return a list of Stream, each stream keeps the order of GF as in FK, and the order of streams is the same as the receiver_distance.</span>
+<span class="sd">    :rtype: Union[List[Stream], List[Stream]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># * firstly, we calculate the travel time and ray parameter for vp and vs</span>
+    <span class="n">t0_vp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">td_vp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">p0_vp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">pd_vp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">t0_vs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">td_vs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">p0_vs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">pd_vs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">t0_vp</span><span class="p">,</span> <span class="n">td_vp</span><span class="p">,</span> <span class="n">p0_vp</span><span class="p">,</span> <span class="n">pd_vp</span> <span class="o">=</span> <span class="n">taup</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">src_layer</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">rcv_layer</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+    <span class="n">t0_vs</span><span class="p">,</span> <span class="n">td_vs</span><span class="p">,</span> <span class="n">p0_vs</span><span class="p">,</span> <span class="n">pd_vs</span> <span class="o">=</span> <span class="n">taup</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">src_layer</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">rcv_layer</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vs</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+    <span class="c1"># * extract information from taup</span>
+    <span class="c1"># first arrival array</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">t0_vp</span>
+    <span class="c1"># calculate the ray angle at the source</span>
+    <span class="n">dn</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">sa</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">),</span>
+                           <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="c1"># for each receiver, see calculate pa and sa</span>
+    <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">t0_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">td_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p0_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1.</span> <span class="o">/</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="n">pa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">*</span> <span class="n">p0_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span>
+            <span class="n">dn</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">*</span> <span class="n">pd_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span>
+            <span class="n">dn</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">pa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
+            <span class="n">pa</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span> <span class="n">dn</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))))</span>
+
+        <span class="k">if</span> <span class="n">t0_vs</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">td_vs</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p0_vs</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1.</span> <span class="o">/</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">sa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">*</span> <span class="n">p0_vs</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span>
+            <span class="n">dn</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">*</span> <span class="n">pd_vs</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span>
+            <span class="n">dn</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">sa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
+            <span class="n">sa</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span> <span class="n">dn</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sa</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))))</span>
+
+    <span class="c1"># * if we should flip the model</span>
+    <span class="c1"># get a copy of the earth model</span>
+    <span class="c1"># ! note, we directly use model, src_layer, rcv_layer, as they might be fliped and we don&#39;t want to</span>
+    <span class="c1"># ! change the config</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">src_layer</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">src_layer</span>
+    <span class="n">rcv_layer</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">rcv_layer</span>
+    <span class="n">flip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">rcv_layer</span> <span class="o">&gt;</span> <span class="n">src_layer</span><span class="p">:</span>
+        <span class="n">flip</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">src_layer</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">)</span> <span class="o">-</span> <span class="n">src_layer</span>
+        <span class="n">rcv_layer</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">)</span> <span class="o">-</span> <span class="n">rcv_layer</span>
+        <span class="c1"># reverse the velocity model</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">model_values</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model_values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="c1"># for vs, it might be 0 in the sea, we assign a small value here</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="n">model</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">EPSILON</span><span class="p">]</span> <span class="o">=</span> <span class="n">EPSILON</span>
+    <span class="c1"># get the source and receiver depth difference, the vs at source</span>
+    <span class="n">hs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">rcv_layer</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">src_layer</span><span class="p">:</span>
+            <span class="n">hs</span> <span class="o">+=</span> <span class="n">value</span>
+    <span class="n">vs_source</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span>
+
+    <span class="c1"># * calculate the si matrix representing source</span>
+    <span class="n">si</span> <span class="o">=</span> <span class="n">calculate_gf_source</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">srcType</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">flip</span><span class="p">,</span> <span class="n">src_layer</span><span class="p">)</span>
+
+    <span class="c1"># * initialize some parameters for waveform intergration</span>
+    <span class="n">dynamic</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">nfft2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">npt</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">wc1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">filter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">npt</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">wc2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">filter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">npt</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">npt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># it will never happen!</span>
+        <span class="n">dynamic</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">nfft2</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">wc1</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">npt</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">SIGMA</span> <span class="o">*</span> <span class="n">dw</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">wc</span> <span class="o">=</span> <span class="n">nfft2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">config</span><span class="o">.</span><span class="n">taper</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">wc</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">wc</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">wc</span><span class="p">)</span>
+    <span class="c1"># ! note, we will use taper, pmin, pmax, dk, sigma later</span>
+    <span class="n">taper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">nfft2</span> <span class="o">-</span> <span class="n">wc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">wc2</span> <span class="o">&gt;</span> <span class="n">wc</span><span class="p">:</span>
+        <span class="n">wc2</span> <span class="o">=</span> <span class="n">wc</span>
+    <span class="k">if</span> <span class="n">wc1</span> <span class="o">&gt;</span> <span class="n">wc2</span><span class="p">:</span>
+        <span class="n">wc1</span> <span class="o">=</span> <span class="n">wc2</span>
+    <span class="n">kc</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">kmax</span> <span class="o">/</span> <span class="n">hs</span>
+    <span class="n">pmin</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pmin</span> <span class="o">/</span> <span class="n">vs_source</span>
+    <span class="n">pmax</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pmax</span> <span class="o">/</span> <span class="n">vs_source</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">hs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">)])</span>
+    <span class="c1"># update t0 based on number of samples before first arrival</span>
+    <span class="n">t0</span> <span class="o">-=</span> <span class="n">config</span><span class="o">.</span><span class="n">samples_before_first_arrival</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">dt</span>
+    <span class="n">dk</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">dk</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">xmax</span>
+    <span class="n">filter_const</span> <span class="o">=</span> <span class="n">dk</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># * main loop, calculate the green&#39;s function</span>
+    <span class="c1"># * call the function from the cython module</span>
+    <span class="n">sum_waveform</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">waveform_integration</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">,</span>
+        <span class="n">src_layer</span><span class="p">,</span>
+        <span class="n">rcv_layer</span><span class="p">,</span>
+        <span class="n">taper</span><span class="p">,</span>
+        <span class="n">pmin</span><span class="p">,</span>
+        <span class="n">pmax</span><span class="p">,</span>
+        <span class="n">dk</span><span class="p">,</span>
+        <span class="n">nfft2</span><span class="p">,</span>
+        <span class="n">dw</span><span class="p">,</span>
+        <span class="n">kc</span><span class="p">,</span>
+        <span class="n">flip</span><span class="p">,</span>
+        <span class="n">filter_const</span><span class="p">,</span>
+        <span class="n">dynamic</span><span class="p">,</span>
+        <span class="n">wc1</span><span class="p">,</span>
+        <span class="n">wc2</span><span class="p">,</span>
+        <span class="n">t0</span><span class="p">,</span>
+        <span class="n">wc</span><span class="p">,</span>
+        <span class="n">si</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="p">)</span>
+    <span class="c1"># * with sum_waveform, we can apply the inverse fft acting as the frequency integration</span>
+    <span class="n">dt_smth</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">dt</span> <span class="o">/</span> <span class="n">config</span><span class="o">.</span><span class="n">smth</span>
+    <span class="n">nfft_smth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">npt</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">smth</span><span class="p">)</span>
+    <span class="n">dfac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">dt_smth</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nfft2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">static_return_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">)):</span>
+            <span class="n">static_return_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">static_return_list</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dfac</span><span class="o">**</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfft_smth</span><span class="p">)])</span>
+    <span class="n">nCom_mapper</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;dc&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;sf&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;ep&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+    <span class="n">nCom</span> <span class="o">=</span> <span class="n">nCom_mapper</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">srcType</span><span class="p">]</span>
+
+    <span class="c1"># * do the ifftr</span>
+    <span class="n">gf_streamall</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># get correct t0 value</span>
+    <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">)):</span>
+        <span class="n">stream_irec</span> <span class="o">=</span> <span class="n">Stream</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">icom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nCom</span><span class="p">):</span>
+            <span class="n">waveform_freqdomain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="n">icom</span><span class="p">,</span> <span class="p">:],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">nfft_smth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">nfft2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)])</span>
+            <span class="n">gf_data</span> <span class="o">=</span> <span class="n">irfft</span><span class="p">(</span><span class="n">waveform_freqdomain</span><span class="p">,</span> <span class="n">nfft_smth</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt_smth</span>
+            <span class="c1"># now we apply the frequency correction</span>
+            <span class="n">fac_icom</span> <span class="o">=</span> <span class="n">fac</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">t0</span><span class="p">[</span><span class="n">irec</span><span class="p">])</span>
+            <span class="n">gf_data</span> <span class="o">=</span> <span class="n">gf_data</span> <span class="o">*</span> <span class="n">fac_icom</span>
+            <span class="n">stats_sac</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="n">dt_smth</span><span class="p">,</span>
+                <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">t0_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span>
+                <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">nfft_smth</span> <span class="o">*</span>
+                <span class="n">dt_smth</span> <span class="o">+</span>
+                <span class="n">t0_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span>
+                <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;dist&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span>
+                <span class="s2">&quot;t1&quot;</span><span class="p">:</span> <span class="n">t0_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span> <span class="o">+</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">samples_before_first_arrival</span> <span class="o">*</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span>
+                <span class="s2">&quot;t2&quot;</span><span class="p">:</span> <span class="n">t0_vs</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span>
+                <span class="s2">&quot;user1&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span>
+                <span class="s2">&quot;user2&quot;</span><span class="p">:</span> <span class="n">sa</span><span class="p">[</span><span class="n">irec</span><span class="p">],</span>
+                <span class="s2">&quot;npts&quot;</span><span class="p">:</span> <span class="n">nfft_smth</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">trace_irec_icom</span> <span class="o">=</span> <span class="n">Trace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">gf_data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;sac&quot;</span><span class="p">:</span> <span class="n">stats_sac</span>
+            <span class="p">})</span>
+            <span class="n">trace_irec_icom</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">+=</span> <span class="n">t0_vp</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span>
+            <span class="n">trace_irec_icom</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">dt_smth</span>
+            <span class="n">stream_irec</span> <span class="o">+=</span> <span class="n">trace_irec_icom</span>
+        <span class="n">gf_streamall</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream_irec</span><span class="p">)</span>
+
+    <span class="c1"># * here the green&#39;s function is gf_streamall</span>
+    <span class="k">return</span> <span class="n">gf_streamall</span></div>
+
+
+<div class="viewcode-block" id="calculate_gf_source"><a class="viewcode-back" href="../../../autoapi/pyfk/gf/gf/index.html#pyfk.gf.gf.calculate_gf_source">[docs]</a><span class="k">def</span> <span class="nf">calculate_gf_source</span><span class="p">(</span>
+        <span class="n">src_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">SeisModel</span><span class="p">,</span>
+        <span class="n">flip</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">src_layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculate the source matrix used in propogational matrix operations</span>
+
+<span class="sd">    :param src_type: the type of the source</span>
+<span class="sd">    :type src_type: str</span>
+<span class="sd">    :param model: the Earth model</span>
+<span class="sd">    :type model: SeisModel</span>
+<span class="sd">    :param flip: if the source and the receiver should be fliped</span>
+<span class="sd">    :type flip: bool</span>
+<span class="sd">    :param src_layer: the layer where the source is located</span>
+<span class="sd">    :type src_layer: int</span>
+<span class="sd">    :return: the source matrix</span>
+<span class="sd">    :rtype: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">rh</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">vs</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">vp</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">flip</span><span class="p">:</span>
+        <span class="n">flip_val</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flip_val</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">src_type</span> <span class="o">==</span> <span class="s2">&quot;dc&quot;</span><span class="p">:</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">xi</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">/</span> <span class="n">mu</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.</span> <span class="o">*</span> <span class="n">xi</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">-</span> <span class="mf">3.</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">flip_val</span> <span class="o">/</span> <span class="n">mu</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span>
+    <span class="k">elif</span> <span class="n">src_type</span> <span class="o">==</span> <span class="s2">&quot;ep&quot;</span><span class="p">:</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">xi</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">/</span> <span class="n">mu</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">xi</span><span class="p">[</span><span class="n">src_layer</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">src_type</span> <span class="o">==</span> <span class="s2">&quot;sf&quot;</span><span class="p">:</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">flip_val</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="k">return</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="waveform_integration"><a class="viewcode-back" href="../../../autoapi/pyfk/gf/gf/index.html#pyfk.gf.gf.waveform_integration">[docs]</a><span class="k">def</span> <span class="nf">waveform_integration</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">SeisModel</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>
+        <span class="n">src_layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">rcv_layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">taper</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">pmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">pmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dk</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">nfft2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">dw</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">flip</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">filter_const</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">wc1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">wc2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">t0</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">wc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">si</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the main function wrapping the cython module, do the wave number integration.</span>
+
+<span class="sd">    :param model: the Earth model</span>
+<span class="sd">    :type model: SeisModel</span>
+<span class="sd">    :param config: the configuration of calculating GF</span>
+<span class="sd">    :type config: Config</span>
+<span class="sd">    :param src_layer: the layer where the source is located (source at the bottom)</span>
+<span class="sd">    :type src_layer: int</span>
+<span class="sd">    :param rcv_layer: the layer where the receiver is located (receiver at the top)</span>
+<span class="sd">    :type rcv_layer: int</span>
+<span class="sd">    :param taper: the taper value</span>
+<span class="sd">    :type taper: float</span>
+<span class="sd">    :param pmin: the min slowness</span>
+<span class="sd">    :type pmin: float</span>
+<span class="sd">    :param pmax: the max slowness</span>
+<span class="sd">    :type pmax: float</span>
+<span class="sd">    :param dk: sampling interval of wavenumber</span>
+<span class="sd">    :type dk: float</span>
+<span class="sd">    :param nfft2: the half of simulation points</span>
+<span class="sd">    :type nfft2: int</span>
+<span class="sd">    :param dw: sampling interval of frequency</span>
+<span class="sd">    :type dw: float</span>
+<span class="sd">    :param kc: the max wave number</span>
+<span class="sd">    :type kc: float</span>
+<span class="sd">    :param flip: if the source and the receiver has been fliped</span>
+<span class="sd">    :type flip: bool</span>
+<span class="sd">    :param filter_const: the const value used in filtering</span>
+<span class="sd">    :type filter_const: float</span>
+<span class="sd">    :param dynamic: if performing the dynamic simulation</span>
+<span class="sd">    :type dynamic: bool</span>
+<span class="sd">    :param wc1: the starting point of wave number integration</span>
+<span class="sd">    :type wc1: int</span>
+<span class="sd">    :param wc2: the end point beyond which the filtering will take effect</span>
+<span class="sd">    :type wc2: int</span>
+<span class="sd">    :param t0: the first arrival time</span>
+<span class="sd">    :type t0: np.ndarray</span>
+<span class="sd">    :param wc: the end point beyond which the taper will take effect</span>
+<span class="sd">    :type wc: int</span>
+<span class="sd">    :param si: the source matrix</span>
+<span class="sd">    :type si: np.ndarray</span>
+<span class="sd">    :param sigma: the value to supress the numerical noise</span>
+<span class="sd">    :type sigma: float</span>
+<span class="sd">    :return: the result of doing wavenumber integration</span>
+<span class="sd">    :rtype: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># * note, here we use parameters within config as their value is different from config</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">rh</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span>
+    <span class="n">sum_waveform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">nfft2</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">_waveform_integration</span><span class="p">(</span>
+        <span class="n">nfft2</span><span class="p">,</span>
+        <span class="n">dw</span><span class="p">,</span>
+        <span class="n">pmin</span><span class="p">,</span>
+        <span class="n">dk</span><span class="p">,</span>
+        <span class="n">kc</span><span class="p">,</span>
+        <span class="n">pmax</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">,</span>
+        <span class="n">wc1</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">vs</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">vp</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">qs</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">qp</span><span class="p">,</span>
+        <span class="n">flip</span><span class="p">,</span>
+        <span class="n">filter_const</span><span class="p">,</span>
+        <span class="n">dynamic</span><span class="p">,</span>
+        <span class="n">wc2</span><span class="p">,</span>
+        <span class="n">t0</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">srcType</span><span class="p">,</span>
+        <span class="n">taper</span><span class="p">,</span>
+        <span class="n">wc</span><span class="p">,</span>
+        <span class="n">mu</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">,</span>
+        <span class="n">si</span><span class="p">,</span>
+        <span class="n">src_layer</span><span class="p">,</span>
+        <span class="n">rcv_layer</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">updn</span><span class="p">,</span>
+        <span class="n">EPSILON</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="p">,</span>
+        <span class="n">sum_waveform</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sum_waveform</span></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

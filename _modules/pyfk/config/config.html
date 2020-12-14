@@ -1,0 +1,731 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.config.config &#8212; pyfk 0.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../autoapi/index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pyfk.config.config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">obspy.core.event.event</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">obspy.core.event.source</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span> <span class="nn">obspy.geodetics.base</span> <span class="kn">import</span> <span class="n">degrees2kilometers</span>
+
+<span class="kn">from</span> <span class="nn">pyfk.config.radiats</span> <span class="kn">import</span> <span class="n">dc_radiat</span><span class="p">,</span> <span class="n">sf_radiat</span><span class="p">,</span> <span class="n">mt_radiat</span>
+<span class="kn">from</span> <span class="nn">pyfk.setting</span> <span class="kn">import</span> <span class="n">R_EARTH</span>
+<span class="kn">from</span> <span class="nn">pyfk.utils.error_message</span> <span class="kn">import</span> <span class="n">PyfkError</span><span class="p">,</span> <span class="n">PyfkWarning</span>
+
+
+<div class="viewcode-block" id="SeisModel"><a class="viewcode-back" href="../../../autoapi/pyfk/index.html#pyfk.config.config.SeisModel">[docs]</a><span class="k">class</span> <span class="nc">SeisModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">model</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">flattening</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">use_kappa</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SeisModel stores the Earth model</span>
+
+<span class="sd">        :param model: numpy.ndarray model: a 2D numpy array storing the information of the 1D earth model, with the same format as FK.</span>
+<span class="sd">               model has the following format (in units of km, km/s, g/cm3, each column):</span>
+<span class="sd">               thickness vs vp_or_vp/vs [rho Qs Qp]</span>
+<span class="sd">               rho=0.77 + 0.32*vp if not provided or the 4th column is larger than 20 (treated as Qs).</span>
+<span class="sd">               Qs=500, Qp=2*Qs, if they are not specified.</span>
+<span class="sd">               If the first layer thickness is zero, it represents the top elastic half-space.</span>
+<span class="sd">               Otherwise, the top half-space is assumed to be vacuum and does not need to be specified.</span>
+<span class="sd">               The last layer (i.e. the bottom half space) thickness should be always be zero. (if not, will use 0 anyway), defaults to None</span>
+<span class="sd">        :type model: np.ndarray</span>
+<span class="sd">        :param flattening: if the model and the source should be flatten, defaults to False</span>
+<span class="sd">        :type flattening: bool, optional</span>
+<span class="sd">        :param use_kappa: if the third column of the model file is vp/vs ratio, defaults to False</span>
+<span class="sd">        :type use_kappa: bool, optional</span>
+<span class="sd">        :raises PyfkError: Earth Model must be a 2D numpy array</span>
+<span class="sd">        :raises PyfkError: Must provide at least three columns for the model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;Earth Model must be a 2D numpy array.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">model</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;Earth Model must be a 2D numpy array.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flattening</span> <span class="o">=</span> <span class="n">flattening</span>
+
+        <span class="n">row</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="n">column</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span>
+                <span class="s2">&quot;Must provide at least three columns for the model&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="c1"># * read model values and apply flattening</span>
+        <span class="n">fl</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flattening</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">R_EARTH</span>
+            <span class="k">for</span> <span class="n">irow</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">model</span><span class="p">[</span><span class="n">irow</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">fl</span><span class="p">[</span><span class="n">irow</span><span class="p">]</span> <span class="o">=</span> <span class="n">R_EARTH</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">model</span><span class="p">[</span><span class="n">irow</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">fl</span>
+        <span class="c1"># set the thickness for the last row as 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">fl</span>
+        <span class="k">if</span> <span class="n">use_kappa</span><span class="p">:</span>
+            <span class="c1"># already have fl in self.model_values[:, 1]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">fl</span>
+        <span class="c1"># * handle other columns</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.77</span> <span class="o">+</span> <span class="mf">0.32</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mf">500.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">model</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">20.</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.77</span> <span class="o">+</span> <span class="mf">0.32</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mf">500.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]</span> <span class="o">=</span> <span class="n">model</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SeisModel.th"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.th">[docs]</a>    <span class="k">def</span> <span class="nf">th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the thickness array</span>
+
+<span class="sd">        :return: the thickness array</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SeisModel.vs"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.vs">[docs]</a>    <span class="k">def</span> <span class="nf">vs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the vs array</span>
+
+<span class="sd">        :return: the vs array</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SeisModel.vp"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.vp">[docs]</a>    <span class="k">def</span> <span class="nf">vp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the vp array</span>
+
+<span class="sd">        :return: the vp array</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SeisModel.rh"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.rh">[docs]</a>    <span class="k">def</span> <span class="nf">rh</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the density array</span>
+
+<span class="sd">        :return: the density array</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SeisModel.qs"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.qs">[docs]</a>    <span class="k">def</span> <span class="nf">qs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the attenuation qs array</span>
+
+<span class="sd">        :return: the attenuation qs array</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SeisModel.qp"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.qp">[docs]</a>    <span class="k">def</span> <span class="nf">qp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the attenuation qp array</span>
+
+<span class="sd">        :return: the attenuation qp array</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SeisModel.flattening"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.flattening">[docs]</a>    <span class="k">def</span> <span class="nf">flattening</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the flatten status of the model</span>
+
+<span class="sd">        :return: the flatten status of the model</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flattening</span></div>
+
+    <span class="nd">@flattening</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flattening</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set the flatten status of the model</span>
+
+<span class="sd">        :param value: the desired flatten value</span>
+<span class="sd">        :type value: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flattening</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="SeisModel.add_layer"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.add_layer">[docs]</a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dd</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">idep</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        insert a layer so that the source/receiver will be located at the interface of the layers</span>
+
+<span class="sd">        :param dd: the distance(km) to the bottom of the later where the source/receiver is located</span>
+<span class="sd">        :type dd: float</span>
+<span class="sd">        :param idep: the layer (top most layer as index 0) where the source/receiver is located</span>
+<span class="sd">        :type idep: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[</span><span class="n">idep</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[</span><span class="n">idep</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[</span><span class="n">idep</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">dd</span>
+        <span class="c1"># dd&gt;0 or dd==0</span>
+        <span class="k">if</span> <span class="n">dd</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[</span><span class="n">idep</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dd</span></div>
+
+<div class="viewcode-block" id="SeisModel.remove_topo"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.remove_topo">[docs]</a>    <span class="k">def</span> <span class="nf">remove_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        make the thickness for the first later to be 0 when the thickness is smaller than 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span></div>
+
+<div class="viewcode-block" id="SeisModel.__copy__"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.__copy__">[docs]</a>    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        make a copy of the current model, and the model numpy file will not be influenced</span>
+
+<span class="sd">        :return: the copied SeisModel</span>
+<span class="sd">        :rtype: SeisModel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_instance</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">new_instance</span><span class="o">.</span><span class="n">flattening</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flattening</span>
+        <span class="k">return</span> <span class="n">new_instance</span></div></div>
+
+
+<div class="viewcode-block" id="SourceModel"><a class="viewcode-back" href="../../../autoapi/pyfk/index.html#pyfk.config.config.SourceModel">[docs]</a><span class="k">class</span> <span class="nc">SourceModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sdep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">srcType</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dc&quot;</span><span class="p">,</span>
+                 <span class="n">source_mechanism</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        the information about the the source used in the FK</span>
+
+<span class="sd">        :param sdep: the depth of the source (km), and it should not be located between the interfaces of the Earth model, defaults to 0</span>
+<span class="sd">        :type sdep: float</span>
+<span class="sd">        :param srcType: the source type, can be ep (explosion), sf (single force) or dc (double couple), defaults to &quot;dc&quot;</span>
+<span class="sd">        :type srcType: str, optional</span>
+<span class="sd">        :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events), defaults to None</span>
+<span class="sd">        :type source_mechanism: Optional[Union[list, np.ndarray]], optional</span>
+<span class="sd">        :raises PyfkError: [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sdep</span> <span class="o">=</span> <span class="n">sdep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srcType</span> <span class="o">=</span> <span class="n">srcType</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srcType</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dc&quot;</span><span class="p">,</span> <span class="s2">&quot;sf&quot;</span><span class="p">,</span> <span class="s2">&quot;ep&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span>
+                <span class="s2">&quot;Source type should be one of &#39;dc&#39;, &#39;sf&#39;, or &#39;ep&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_source_mechanism</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SourceModel.sdep"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.sdep">[docs]</a>    <span class="k">def</span> <span class="nf">sdep</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the source depth in km</span>
+
+<span class="sd">        :return: the source depth in km</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sdep</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SourceModel.srcType"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.srcType">[docs]</a>    <span class="k">def</span> <span class="nf">srcType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the source type (ep, sf or dc)</span>
+
+<span class="sd">        :return: the source type (ep, sf or dc)</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srcType</span></div>
+
+    <span class="nd">@sdep</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sdep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set the depth for the source model</span>
+
+<span class="sd">        :param value: the depth for the source model</span>
+<span class="sd">        :type value: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sdep</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SourceModel.nn"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.nn">[docs]</a>    <span class="k">def</span> <span class="nf">nn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the value associated with the source type</span>
+
+<span class="sd">        :return: the value associated with the source type</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nn</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SourceModel.m0"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.m0">[docs]</a>    <span class="k">def</span> <span class="nf">m0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the value associated with the magnitude in FK</span>
+
+<span class="sd">        :return: the value associated with the magnitude in FK</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_m0</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SourceModel.rad"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.rad">[docs]</a>    <span class="k">def</span> <span class="nf">rad</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the radiation pattern</span>
+
+<span class="sd">        :return: the radiation pattern</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span></div>
+
+<div class="viewcode-block" id="SourceModel.calculate_radiation_pattern"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.calculate_radiation_pattern">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_radiation_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">az</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculate the radiation pattern 3*3 array</span>
+
+<span class="sd">        :param az: station azimuth in degree measured from the North (clockwise)</span>
+<span class="sd">        :type az: float</span>
+<span class="sd">        :raises PyfkError: length of source_mechanism must be 1, 3, 4, 7</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_m0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e-20</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nn</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_m0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e-15</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nn</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">=</span> <span class="n">sf_radiat</span><span class="p">(</span><span class="n">az</span> <span class="o">-</span> <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_m0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span>
+                <span class="mf">10.</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">16.1</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nn</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">=</span> <span class="n">dc_radiat</span><span class="p">(</span><span class="n">az</span> <span class="o">-</span> <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_m0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e-20</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nn</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">mt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">mt</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+            <span class="n">mt</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">=</span> <span class="n">mt_radiat</span><span class="p">(</span><span class="n">az</span><span class="p">,</span> <span class="n">mt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># actually will never satisfied in real case</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;length of source_mechanism must be 1, 3, 4, 7&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SourceModel._update_source_mechanism"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel._update_source_mechanism">[docs]</a>    <span class="k">def</span> <span class="nf">_update_source_mechanism</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">source_mechanism</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        the internal function to update the source mechanism information</span>
+
+<span class="sd">        :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)</span>
+<span class="sd">        :type source_mechanism: Optional[Union[list, np.ndarray]]</span>
+<span class="sd">        :raises PyfkError: source_mechanism should be a 1D array</span>
+<span class="sd">        :raises PyfkError: length of source_mechanism is not correct</span>
+<span class="sd">        :raises PyfkError: source_mechanism must be None, a list or numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">source_mechanism</span><span class="p">,</span>
+                <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">source_mechanism</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;source_mechanism should be a 1D array&quot;</span><span class="p">)</span>
+            <span class="n">typemapper</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;dc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+                <span class="s2">&quot;sf&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                <span class="s2">&quot;ep&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">typemapper</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_srcType</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;length of source_mechanism is not correct&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">,</span> <span class="n">Event</span><span class="p">):</span>
+            <span class="n">tensor</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">source_mechanism</span><span class="o">.</span><span class="n">focal_mechanisms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">moment_tensor</span><span class="o">.</span><span class="n">tensor</span>
+            <span class="c1"># convert the tensor in RTP(USE) to NED, refer to</span>
+            <span class="c1"># https://gfzpublic.gfz-potsdam.de/rest/items/item_272892/component/file_541895/content</span>
+            <span class="c1"># page4</span>
+            <span class="c1"># * the reason why we mul 1e-19 here is to keep the value the same as global cmt website standard format</span>
+            <span class="n">m_zz</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">m_rr</span> <span class="o">*</span> <span class="mf">1e-19</span>
+            <span class="n">m_xx</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">m_tt</span> <span class="o">*</span> <span class="mf">1e-19</span>
+            <span class="n">m_yy</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">m_pp</span> <span class="o">*</span> <span class="mf">1e-19</span>
+            <span class="n">m_xz</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">m_rt</span> <span class="o">*</span> <span class="mf">1e-19</span>
+            <span class="n">m_yz</span> <span class="o">=</span> <span class="o">-</span><span class="n">tensor</span><span class="o">.</span><span class="n">m_rp</span> <span class="o">*</span> <span class="mf">1e-19</span>
+            <span class="n">m_xy</span> <span class="o">=</span> <span class="o">-</span><span class="n">tensor</span><span class="o">.</span><span class="n">m_tp</span> <span class="o">*</span> <span class="mf">1e-19</span>
+            <span class="n">m0</span> <span class="o">=</span> <span class="n">source_mechanism</span><span class="o">.</span><span class="n">focal_mechanisms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">moment_tensor</span><span class="o">.</span><span class="n">scalar_moment</span> <span class="o">*</span> <span class="mf">1e7</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">m0</span><span class="p">,</span> <span class="n">m_xx</span><span class="p">,</span> <span class="n">m_xy</span><span class="p">,</span> <span class="n">m_xz</span><span class="p">,</span> <span class="n">m_yy</span><span class="p">,</span> <span class="n">m_yz</span><span class="p">,</span> <span class="n">m_zz</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">source_mechanism</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span>
+                <span class="s2">&quot;source_mechanism must be None, a list or numpy.ndarray&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SourceModel.update_source_mechanism"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.update_source_mechanism">[docs]</a>    <span class="k">def</span> <span class="nf">update_source_mechanism</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">source_mechanism</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Event</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        update the source mechanism information after creation of the SourceModel</span>
+
+<span class="sd">        :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)</span>
+<span class="sd">        :type source_mechanism: Union[list, np.ndarray, Event]</span>
+<span class="sd">        :raises PyfkError: source mechanism couldn&#39;t be None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source_mechanism</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;source mechanism couldn&#39;t be None&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_source_mechanism</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../../autoapi/pyfk/index.html#pyfk.config.config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SeisModel</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SourceModel</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">receiver_distance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span>
+                                                   <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">degrees</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">taper</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+                 <span class="nb">filter</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span>
+                               <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="mi">0</span><span class="p">),</span>
+                 <span class="n">npt</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                 <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
+                 <span class="n">dk</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+                 <span class="n">smth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
+                 <span class="n">pmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+                 <span class="n">pmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
+                 <span class="n">kmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">15.</span><span class="p">,</span>
+                 <span class="n">rdep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+                 <span class="n">updn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+                 <span class="n">samples_before_first_arrival</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The configuration class used in generating Green&#39;s function and the synthetic waveform.</span>
+
+<span class="sd">        :param model: the Earth model used in calculation, defaults to None</span>
+<span class="sd">        :type model: Optional[SeisModel]</span>
+<span class="sd">        :param source: the source model used in calculation, defaults to None</span>
+<span class="sd">        :type source: Optional[SourceModel]</span>
+<span class="sd">        :param receiver_distance: a list of receiver distance in km, defaults to None</span>
+<span class="sd">        :type receiver_distance: Optional[Union[list, np.ndarray]]</span>
+<span class="sd">        :param degrees: use degrees instead of km, defaults to False</span>
+<span class="sd">        :type degrees: bool, optional</span>
+<span class="sd">        :param taper: taper applies a low-pass cosine filter at fc=(1-taper)*f_Niquest, defaults to 0.3</span>
+<span class="sd">        :type taper: float, optional</span>
+<span class="sd">        :param filter: apply a high-pass filter with a cosine transition zone between freq. f1 and f2 in Hz, defaults to (0, 0)</span>
+<span class="sd">        :type filter: Tuple[float, float], optional</span>
+<span class="sd">        :param npt: the number of points, defaults to 256</span>
+<span class="sd">        :type npt: int, optional</span>
+<span class="sd">        :param dt: the sampling interval in seconds, defaults to 1.</span>
+<span class="sd">        :type dt: float, optional</span>
+<span class="sd">        :param dk: the non-dimensional sampling interval of wavenumber, defaults to 0.3</span>
+<span class="sd">        :type dk: float, optional</span>
+<span class="sd">        :param smth: makes the final sampling interval to be dt/smth, defaults to 1.</span>
+<span class="sd">        :type smth: float, optional</span>
+<span class="sd">        :param pmin: the min slownesses in term of 1/vs_at_the_source, defaults to 0.</span>
+<span class="sd">        :type pmin: float, optional</span>
+<span class="sd">        :param pmax: the max slownesses in term of 1/vs_at_the_source, defaults to 1.</span>
+<span class="sd">        :type pmax: float, optional</span>
+<span class="sd">        :param kmax: kmax at zero frequency in term of 1/hs, defaults to 15.</span>
+<span class="sd">        :type kmax: float, optional</span>
+<span class="sd">        :param rdep: the depth for the receivers in km, defaults to 0.</span>
+<span class="sd">        :type rdep: float, optional</span>
+<span class="sd">        :param updn: &quot;up&quot; for up-going wave only, &quot;down&quot; for down-going wave only, &quot;all&quot; for both &quot;up&quot; and &quot;down&quot;, defaults to &quot;all&quot;</span>
+<span class="sd">        :type updn: str, optional</span>
+<span class="sd">        :param samples_before_first_arrival: the number of points before the first arrival, defaults to 50</span>
+<span class="sd">        :type samples_before_first_arrival: int, optional</span>
+<span class="sd">        :raises PyfkError: Must provide a list of receiver distance</span>
+<span class="sd">        :raises PyfkError: Taper must be with (0,1)</span>
+<span class="sd">        :raises PyfkError: Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]</span>
+<span class="sd">        :raises PyfkError: npt should be positive.</span>
+<span class="sd">        :raises PyfkError: dt should be positive.</span>
+<span class="sd">        :raises PyfkError: dk should be within (0,0.5)</span>
+<span class="sd">        :raises PyfkError: smth should be positive.</span>
+<span class="sd">        :raises PyfkError: pmin should be within [0,1]</span>
+<span class="sd">        :raises PyfkError: pmax should be within [0,1]</span>
+<span class="sd">        :raises PyfkError: pmin should be smaller than pmax</span>
+<span class="sd">        :raises PyfkError: kmax should be larger or equal to 10</span>
+<span class="sd">        :raises PyfkError: the selection of phases should be either &#39;up&#39;, &#39;down&#39; or &#39;all&#39;</span>
+<span class="sd">        :raises PyfkError: samples_before_first_arrival should be positive</span>
+<span class="sd">        :raises PyfkError: Must provide a source</span>
+<span class="sd">        :raises PyfkError: Must provide a seisModel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># * read in and validate parameters</span>
+        <span class="c1"># receiver_distance</span>
+        <span class="k">if</span> <span class="n">receiver_distance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;Must provide a list of receiver distance&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">receiver_distance</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="c1"># degrees</span>
+        <span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">receiver_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">degrees2kilometers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">)))</span>
+        <span class="c1"># taper</span>
+        <span class="k">if</span> <span class="n">taper</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">taper</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;Taper must be with (0,1)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">taper</span> <span class="o">=</span> <span class="n">taper</span>
+        <span class="c1"># filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="nb">filter</span>
+        <span class="c1"># npt</span>
+        <span class="k">if</span> <span class="n">npt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;npt should be positive.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npt</span> <span class="o">=</span> <span class="n">npt</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">npt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># we don&#39;t use st_fk</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">npt</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="c1"># dt</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;dt should be positive.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">npt</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">dt</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="c1"># dk</span>
+        <span class="k">if</span> <span class="n">dk</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">dk</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;dk should be within (0,0.5)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dk</span> <span class="o">&lt;=</span> <span class="mf">0.1</span> <span class="ow">or</span> <span class="n">dk</span> <span class="o">&gt;=</span> <span class="mf">0.4</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">PyfkWarning</span><span class="p">(</span>
+                <span class="s2">&quot;dk is recommended to be within (0.1,0.4)&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dk</span> <span class="o">=</span> <span class="n">dk</span>
+        <span class="c1"># smth</span>
+        <span class="k">if</span> <span class="n">smth</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;smth should be positive.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smth</span> <span class="o">=</span> <span class="n">smth</span>
+        <span class="c1"># pmin</span>
+        <span class="k">if</span> <span class="n">pmin</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">pmin</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;pmin should be within [0,1]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pmin</span> <span class="o">=</span> <span class="n">pmin</span>
+        <span class="c1"># pmax</span>
+        <span class="k">if</span> <span class="n">pmax</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">pmax</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;pmax should be within [0,1]&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pmin</span> <span class="o">&gt;=</span> <span class="n">pmax</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;pmin should be smaller than pmax&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pmax</span> <span class="o">=</span> <span class="n">pmax</span>
+        <span class="c1"># kmax</span>
+        <span class="k">if</span> <span class="n">kmax</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;kmax should be larger or equal to 10&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kmax</span> <span class="o">=</span> <span class="n">kmax</span>
+        <span class="c1"># rdep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdep</span> <span class="o">=</span> <span class="n">rdep</span>
+        <span class="c1"># updn</span>
+        <span class="k">if</span> <span class="n">updn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="s2">&quot;down&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span>
+                <span class="s2">&quot;the selection of phases should be either &#39;up&#39;, &#39;down&#39; or &#39;all&#39;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updn</span> <span class="o">=</span> <span class="n">updn</span>
+        <span class="c1"># samples_before_first_arrival</span>
+        <span class="k">if</span> <span class="n">samples_before_first_arrival</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;samples_before_first_arrival should be positive&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples_before_first_arrival</span> <span class="o">=</span> <span class="n">samples_before_first_arrival</span>
+        <span class="c1"># source and model</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">SourceModel</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;Must provide a source&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">SeisModel</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;Must provide a seisModel&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="c1"># use copy since the model will be modified</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_couple_model_and_source</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Config._couple_model_and_source"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.Config._couple_model_and_source">[docs]</a>    <span class="k">def</span> <span class="nf">_couple_model_and_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># * dealing with the coupling with the source and the seismodel</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">flattening</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flattening_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rdep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flattening_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rdep</span><span class="p">)</span>
+
+        <span class="c1"># * get src_layer and rcv_layer</span>
+        <span class="n">free_surface</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">free_surface</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">free_surface</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdep</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;The source or receivers are located in the air.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdep</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">src_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_insert_intf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rcv_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_insert_intf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rdep</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rcv_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_insert_intf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rdep</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">src_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_insert_intf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span><span class="p">)</span>
+        <span class="c1"># two src layers should have same vp</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">src_layer</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">src_layer</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">src_layer</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;The source is located at a real interface.&quot;</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Config._flattening_func"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.Config._flattening_func">[docs]</a>    <span class="k">def</span> <span class="nf">_flattening_func</span><span class="p">(</span><span class="n">depth</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">R_EARTH</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">R_EARTH</span> <span class="o">/</span> <span class="p">(</span><span class="n">R_EARTH</span> <span class="o">-</span> <span class="n">depth</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Config._insert_intf"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.Config._insert_intf">[docs]</a>    <span class="k">def</span> <span class="nf">_insert_intf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">ndep</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">)</span>
+        <span class="n">searching_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">idep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">idep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndep</span><span class="p">):</span>
+            <span class="n">searching_depth</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="n">idep</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">searching_depth</span> <span class="o">&gt;</span> <span class="n">depth</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">idep</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">depth</span> <span class="o">==</span> <span class="n">searching_depth</span> <span class="o">-</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="n">idep</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">idep</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">idep</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="n">searching_depth</span> <span class="o">-</span> <span class="n">depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">idep</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rdep</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">remove_topo</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">idep</span> <span class="o">+</span> <span class="mi">1</span></div></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

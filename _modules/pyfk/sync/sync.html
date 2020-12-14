@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.sync.sync &#8212; pyfk 0.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../autoapi/index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pyfk.sync.sync</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">Trace</span><span class="p">,</span> <span class="n">Stream</span>
+
+<span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">SourceModel</span><span class="p">,</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">pyfk.utils.error_message</span> <span class="kn">import</span> <span class="n">PyfkError</span>
+
+
+<div class="viewcode-block" id="calculate_sync"><a class="viewcode-back" href="../../../autoapi/pyfk/sync/sync/index.html#pyfk.calculate_sync">[docs]</a><span class="k">def</span> <span class="nf">calculate_sync</span><span class="p">(</span><span class="n">gf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">],</span> <span class="n">Stream</span><span class="p">],</span>
+                   <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>
+                   <span class="n">az</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                   <span class="n">source_time_function</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Trace</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</span>
+
+<span class="sd">    :param gf: the Green&#39;s function list (or just an obspy Stream representing one distance) from calculate_gf; or read from the Green&#39;s function database from FK</span>
+<span class="sd">    :type gf: Union[List[Stream], Stream]</span>
+<span class="sd">    :param config: the configuration of sync calculation</span>
+<span class="sd">    :type config: Config</span>
+<span class="sd">    :param az: set station azimuth in degree measured from the North, defaults to 0</span>
+<span class="sd">    :type az: Union[float, int], optional</span>
+<span class="sd">    :param source_time_function: should be an obspy Trace with the data as the source time function, can use generate_source_time_function to generate a trapezoid shaped source time function, defaults to None</span>
+<span class="sd">    :type source_time_function: Optional[Trace], optional</span>
+<span class="sd">    :raises PyfkError: az must be a number</span>
+<span class="sd">    :raises PyfkError: must provide a source time function</span>
+<span class="sd">    :raises PyfkError: check input Green&#39;s function</span>
+<span class="sd">    :raises PyfkError: delta for the source time function and the Green&#39;s function should be the same</span>
+<span class="sd">    :return: a list of three components stream (ordered as z, r, t)</span>
+<span class="sd">    :rtype: List[Stream]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># * handle input parameters</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">az</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">az</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;az must be a number&quot;</span><span class="p">)</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">az</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="n">cmpaz_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">az</span> <span class="o">+</span> <span class="mi">90</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">cmpaz_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">360.</span><span class="p">:</span>
+        <span class="n">cmpaz_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">360.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">Stream</span><span class="p">):</span>
+        <span class="n">gf</span> <span class="o">=</span> <span class="p">[</span><span class="n">gf</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">source_time_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;must provide a source time function&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gf</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Stream</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;check input Green&#39;s function&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gf</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">each_trace</span> <span class="ow">in</span> <span class="n">gf</span><span class="p">[</span><span class="n">irec</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">each_trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">source_time_function</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span>
+                    <span class="s2">&quot;delta for the source time function and the Green&#39;s function should be the same&quot;</span><span class="p">)</span>
+
+    <span class="c1"># * calculate the radiation pattern</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">calculate_radiation_pattern</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+
+    <span class="c1"># * handle gf, project to the three component with amplitude from radiation pattern</span>
+    <span class="n">sync_gf</span> <span class="o">=</span> <span class="n">sync_calculate_gf</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+
+    <span class="c1"># * the main loop to conv the source with the gf</span>
+    <span class="n">sync_result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cmpinc_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sync_gf</span><span class="p">)):</span>
+        <span class="n">sync_result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Stream</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">icom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="c1"># do the convolution</span>
+            <span class="n">data_conv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span>
+                <span class="n">source_time_function</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">sync_gf</span><span class="p">[</span><span class="n">irec</span><span class="p">][</span><span class="n">icom</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)[</span>
+                <span class="p">:</span><span class="nb">len</span><span class="p">(</span>
+                    <span class="n">sync_gf</span><span class="p">[</span><span class="n">irec</span><span class="p">][</span><span class="n">icom</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)]</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">sync_gf</span><span class="p">[</span><span class="n">irec</span><span class="p">][</span><span class="n">icom</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">}</span>
+            <span class="k">if</span> <span class="s2">&quot;sac&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+                <span class="c1"># if called after gf, should never happen</span>
+                <span class="n">header</span><span class="p">[</span><span class="s2">&quot;sac&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">header</span><span class="p">[</span><span class="s2">&quot;sac&quot;</span><span class="p">][</span><span class="s2">&quot;az&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">az</span>
+            <span class="n">header</span><span class="p">[</span><span class="s2">&quot;sac&quot;</span><span class="p">][</span><span class="s2">&quot;cmpinc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmpinc_list</span><span class="p">[</span><span class="n">icom</span><span class="p">]</span>
+            <span class="n">header</span><span class="p">[</span><span class="s2">&quot;sac&quot;</span><span class="p">][</span><span class="s2">&quot;cmpaz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmpaz_list</span><span class="p">[</span><span class="n">icom</span><span class="p">]</span>
+            <span class="n">sync_result</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Trace</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_conv</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sync_result</span></div>
+
+
+<div class="viewcode-block" id="sync_calculate_gf"><a class="viewcode-back" href="../../../autoapi/pyfk/sync/sync/index.html#pyfk.sync_calculate_gf">[docs]</a><span class="k">def</span> <span class="nf">sync_calculate_gf</span><span class="p">(</span><span class="n">gf</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">],</span> <span class="n">source</span><span class="p">:</span> <span class="n">SourceModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    stack three the GF into three components based on the radiation pattern</span>
+
+<span class="sd">    :param gf: the calculated GF</span>
+<span class="sd">    :type gf: List[Stream]</span>
+<span class="sd">    :param source: the source model, with attached actual source</span>
+<span class="sd">    :type source: SourceModel</span>
+<span class="sd">    :return: the stacked GF</span>
+<span class="sd">    :rtype: List[Stream]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">npts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span>
+    <span class="c1"># * init the result, a list of 3 component stream</span>
+    <span class="n">nrec</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gf</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrec</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Stream</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">icom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">thetrace</span> <span class="o">=</span> <span class="n">Trace</span><span class="p">(</span>
+                <span class="n">header</span><span class="o">=</span><span class="n">gf</span><span class="p">[</span><span class="n">irec</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">npts</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">))</span>
+            <span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">thetrace</span>
+
+    <span class="c1"># * now we convert the gf to result</span>
+    <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrec</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">inn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">nn</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">icom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">coef</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">m0</span>
+                <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">nn</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">coef</span> <span class="o">*=</span> <span class="n">source</span><span class="o">.</span><span class="n">rad</span><span class="p">[</span><span class="n">inn</span><span class="p">,</span> <span class="n">icom</span><span class="p">]</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">irec</span><span class="p">][</span><span class="n">icom</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">+=</span> <span class="n">gf</span><span class="p">[</span><span class="n">irec</span><span class="p">][</span><span class="mi">3</span> <span class="o">*</span> <span class="n">inn</span> <span class="o">+</span> <span class="n">icom</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">coef</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="generate_source_time_function"><a class="viewcode-back" href="../../../autoapi/pyfk/sync/sync/index.html#pyfk.generate_source_time_function">[docs]</a><span class="k">def</span> <span class="nf">generate_source_time_function</span><span class="p">(</span>
+        <span class="n">dura</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+        <span class="n">rise</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Trace</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    [summary]</span>
+
+<span class="sd">    :param dura: [description], defaults to 0.</span>
+<span class="sd">    :type dura: float, optional</span>
+<span class="sd">    :param rise: [description], defaults to 0.5</span>
+<span class="sd">    :type rise: float, optional</span>
+<span class="sd">    :param delta: [description], defaults to 0.1</span>
+<span class="sd">    :type delta: float, optional</span>
+<span class="sd">    :return: [description]</span>
+<span class="sd">    :rtype: Trace</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dura</span> <span class="o">/</span> <span class="n">delta</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ns</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">ns</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">result_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+    <span class="n">nr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rise</span> <span class="o">*</span> <span class="n">ns</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nr</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">nr</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nr</span> <span class="o">&gt;</span> <span class="n">ns</span><span class="p">:</span>
+        <span class="n">nr</span> <span class="o">=</span> <span class="n">ns</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">amp</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">nr</span> <span class="o">*</span> <span class="p">(</span><span class="n">ns</span> <span class="o">-</span> <span class="n">nr</span><span class="p">))</span>
+    <span class="n">result_data</span><span class="p">[:</span><span class="n">nr</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nr</span><span class="p">)</span>
+    <span class="n">result_data</span><span class="p">[</span><span class="n">nr</span><span class="p">:</span><span class="n">ns</span> <span class="o">-</span> <span class="n">nr</span><span class="p">]</span> <span class="o">=</span> <span class="n">nr</span> <span class="o">*</span> <span class="n">amp</span>
+    <span class="n">result_data</span><span class="p">[</span><span class="n">ns</span> <span class="o">-</span> <span class="n">nr</span><span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ns</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ns</span> <span class="o">-</span> <span class="n">nr</span><span class="p">,</span> <span class="n">ns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">amp</span>
+    <span class="n">result_trace</span> <span class="o">=</span> <span class="n">Trace</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="p">{},</span> <span class="n">data</span><span class="o">=</span><span class="n">result_data</span><span class="p">)</span>
+    <span class="n">result_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
+    <span class="k">return</span> <span class="n">result_trace</span></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

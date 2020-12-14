@@ -1,0 +1,48 @@
+:mod:`pyfk.tests.gf.test_gf`
+============================
+
+.. py:module:: pyfk.tests.gf.test_gf
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pyfk.tests.gf.test_gf.TestFunctioncalculateGf
+
+
+
+.. py:class:: TestFunctioncalculateGf
+
+   Bases: :class:`object`
+
+   .. method:: test_hk()
+      :staticmethod:
+
+
+   .. method:: test_big_array(self)
+
+
+   .. method:: test_prem_ep(self)
+
+
+   .. method:: test_prem_sf(self)
+
+
+   .. method:: test_receiver_deeper(self)
+
+
+   .. method:: test_static_source(self)
+
+
+   .. method:: test_smth(self)
+
+
+   .. method:: test_filter(self)
+
+
+

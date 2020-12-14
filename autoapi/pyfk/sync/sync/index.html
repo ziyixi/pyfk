@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.sync.sync &#8212; pyfk 0.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="pyfk.taup" href="../../taup/index.html" />
+    <link rel="prev" title="pyfk.sync" href="../index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../../../index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+          
+            
+                <li class="active">
+                    <a href="../../index.html">pyfk</a>
+                </li>
+            
+          
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#module-contents" class="nav-link">Module Contents</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#functions" class="nav-link">Functions</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.sync.sync.calculate_sync" class="nav-link">calculate_sync</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.sync.sync.sync_calculate_gf" class="nav-link">sync_calculate_gf</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.sync.sync.generate_source_time_function" class="nav-link">generate_source_time_function</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="module-pyfk.sync.sync">
+<span id="pyfk-sync-sync"></span><h1><a class="reference internal" href="#module-pyfk.sync.sync" title="pyfk.sync.sync"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.sync.sync</span></code></a><a class="headerlink" href="#module-pyfk.sync.sync" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.sync.sync.calculate_sync" title="pyfk.sync.sync.calculate_sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_sync</span></code></a>(gf: Union[List[Stream], Stream], config: Config, az: Union[float, int] = 0, source_time_function: Optional[Trace] = None) → List[Stream]</p></td>
+<td><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.sync.sync.sync_calculate_gf" title="pyfk.sync.sync.sync_calculate_gf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sync_calculate_gf</span></code></a>(gf: List[Stream], source: SourceModel) → List[Stream]</p></td>
+<td><p>stack three the GF into three components based on the radiation pattern</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.sync.sync.generate_source_time_function" title="pyfk.sync.sync.generate_source_time_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_source_time_function</span></code></a>(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) → Trace</p></td>
+<td><p>[summary]</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="pyfk.sync.sync.calculate_sync">
+<code class="sig-prename descclassname">pyfk.sync.sync.</code><code class="sig-name descname">calculate_sync</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gf</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>Stream<span class="p">]</span><span class="p">, </span>Stream<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Config</span></em>, <em class="sig-param"><span class="n">az</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">source_time_function</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Trace<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Stream<span class="p">]</span><a class="reference internal" href="../../../../_modules/pyfk/sync/sync.html#calculate_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.sync.sync.calculate_sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gf</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>Stream</em><em>]</em><em>, </em><em>Stream</em><em>]</em>) – the Green’s function list (or just an obspy Stream representing one distance) from calculate_gf; or read from the Green’s function database from FK</p></li>
+<li><p><strong>config</strong> (<a class="reference internal" href="../../config/config/index.html#pyfk.config.config.Config" title="pyfk.config.config.Config"><em>Config</em></a>) – the configuration of sync calculation</p></li>
+<li><p><strong>az</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – set station azimuth in degree measured from the North, defaults to 0</p></li>
+<li><p><strong>source_time_function</strong> (<em>Optional</em><em>[</em><em>Trace</em><em>]</em><em>, </em><em>optional</em>) – should be an obspy Trace with the data as the source time function, can use generate_source_time_function to generate a trapezoid shaped source time function, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – az must be a number</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – must provide a source time function</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – check input Green’s function</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – delta for the source time function and the Green’s function should be the same</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of three components stream (ordered as z, r, t)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[Stream]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.sync.sync.sync_calculate_gf">
+<code class="sig-prename descclassname">pyfk.sync.sync.</code><code class="sig-name descname">sync_calculate_gf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gf</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Stream<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">SourceModel</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Stream<span class="p">]</span><a class="reference internal" href="../../../../_modules/pyfk/sync/sync.html#sync_calculate_gf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.sync.sync.sync_calculate_gf" title="Permalink to this definition">¶</a></dt>
+<dd><p>stack three the GF into three components based on the radiation pattern</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gf</strong> (<em>List</em><em>[</em><em>Stream</em><em>]</em>) – the calculated GF</p></li>
+<li><p><strong>source</strong> (<a class="reference internal" href="../../config/config/index.html#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel"><em>SourceModel</em></a>) – the source model, with attached actual source</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the stacked GF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Stream]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.sync.sync.generate_source_time_function">
+<code class="sig-prename descclassname">pyfk.sync.sync.</code><code class="sig-name descname">generate_source_time_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dura</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">rise</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">delta</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.1</span></em><span class="sig-paren">)</span> &#x2192; Trace<a class="reference internal" href="../../../../_modules/pyfk/sync/sync.html#generate_source_time_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.sync.sync.generate_source_time_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dura</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.</p></li>
+<li><p><strong>rise</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.5</p></li>
+<li><p><strong>delta</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Trace</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="../index.html" title="previous page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.sync</span></code></a>
+    <a class='right-next' id="next-link" href="../../taup/index.html" title="next page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.taup</span></code></a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

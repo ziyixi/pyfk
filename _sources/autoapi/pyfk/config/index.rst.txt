@@ -1,0 +1,16 @@
+:mod:`pyfk.config`
+==================
+
+.. py:module:: pyfk.config
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   config/index.rst
+   radiats/index.rst
+
+

@@ -1,0 +1,18 @@
+:mod:`pyfk.tests`
+=================
+
+.. py:module:: pyfk.tests
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   config/index.rst
+   gf/index.rst
+   sync/index.rst
+   taup/index.rst
+
+
