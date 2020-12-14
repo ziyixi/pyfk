@@ -1,5 +1,7 @@
 name: pyfk
 on: [push]
+  branches:
+    - master
 jobs:
   run:
     runs-on: ${{ matrix.os }}
