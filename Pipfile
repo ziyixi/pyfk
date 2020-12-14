@@ -15,6 +15,11 @@ autopep8 = "*"
 pipenv-setup = "*"
 coverage = "*"
 pytest = "*"
+sphinx = "*"
+docutils = "*"
+rstcheck = "*"
+pydata-sphinx-theme = "*"
+sphinx-autoapi = "*"
 
 [requires]
 python_version = "3"

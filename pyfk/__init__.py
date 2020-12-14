@@ -3,11 +3,11 @@ from pyfk.gf.gf import calculate_gf
 from pyfk.sync.sync import calculate_sync, generate_source_time_function
 
 __all__ = [
-    SourceModel,
-    SeisModel,
-    Config,
-    calculate_gf,
-    calculate_sync,
-    generate_source_time_function]
+    "SourceModel",
+    "SeisModel",
+    "Config",
+    "calculate_gf",
+    "calculate_sync",
+    "generate_source_time_function"]
 
 __version__ = "0.0.1"

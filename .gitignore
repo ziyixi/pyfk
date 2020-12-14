@@ -18,3 +18,8 @@ test_fk/*
 profile/*
 profile_pyfk/*
 !pyfk/tests/data/*
+
+# docs
+docs/_build/*
+docs/_static/*
+docs/_template/*
