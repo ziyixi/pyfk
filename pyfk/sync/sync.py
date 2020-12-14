@@ -10,7 +10,25 @@ from pyfk.utils.error_message import PyfkError
 def calculate_sync(gf: Union[List[Stream], Stream],
                    config: Config,
                    az: Union[float, int] = 0,
-                   source_time_function: Optional[Trace] = None):
+                   source_time_function: Optional[Trace] = None) -> List[Stream]:
+    """
+    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources
+
+    :param gf: the Green's function list (or just an obspy Stream representing one distance) from calculate_gf; or read from the Green's function database from FK
+    :type gf: Union[List[Stream], Stream]
+    :param config: the configuration of sync calculation
+    :type config: Config
+    :param az: set station azimuth in degree measured from the North, defaults to 0
+    :type az: Union[float, int], optional
+    :param source_time_function: should be an obspy Trace with the data as the source time function, can use generate_source_time_function to generate a trapezoid shaped source time function, defaults to None
+    :type source_time_function: Optional[Trace], optional
+    :raises PyfkError: az must be a number
+    :raises PyfkError: must provide a source time function
+    :raises PyfkError: check input Green's function
+    :raises PyfkError: delta for the source time function and the Green's function should be the same
+    :return: a list of three components stream (ordered as z, r, t)
+    :rtype: List[Stream]
+    """
     # * handle input parameters
     if not (isinstance(az, float) or isinstance(az, int)):
         raise PyfkError("az must be a number")
@@ -60,7 +78,17 @@ def calculate_sync(gf: Union[List[Stream], Stream],
     return sync_result
 
 
-def sync_calculate_gf(gf: List[Stream], source: SourceModel):
+def sync_calculate_gf(gf: List[Stream], source: SourceModel) -> List[Stream]:
+    """
+    stack three the GF into three components based on the radiation pattern
+
+    :param gf: the calculated GF
+    :type gf: List[Stream]
+    :param source: the source model, with attached actual source
+    :type source: SourceModel
+    :return: the stacked GF
+    :rtype: List[Stream]
+    """
     npts: int = gf[0][0].stats["npts"]
     # * init the result, a list of 3 component stream
     nrec = len(gf)
@@ -86,7 +114,19 @@ def sync_calculate_gf(gf: List[Stream], source: SourceModel):
 def generate_source_time_function(
         dura: float = 0.,
         rise: float = 0.5,
-        delta: float = 0.1):
+        delta: float = 0.1) -> Trace:
+    """
+    [summary]
+
+    :param dura: [description], defaults to 0.
+    :type dura: float, optional
+    :param rise: [description], defaults to 0.5
+    :type rise: float, optional
+    :param delta: [description], defaults to 0.1
+    :type delta: float, optional
+    :return: [description]
+    :rtype: Trace
+    """
     ns = int(dura / delta)
     if ns < 2:
         ns = 2

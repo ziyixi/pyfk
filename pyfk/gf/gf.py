@@ -1,5 +1,5 @@
 from copy import copy
-from typing import Optional
+from typing import Optional, Union, List
 
 import numpy as np
 from numpy.fft import irfft
@@ -12,7 +12,15 @@ from pyfk.config.config import Config, SeisModel
 from pyfk.setting import EPSILON, SIGMA
 
 
-def calculate_gf(config: Optional[Config] = None) -> list:
+def calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[Stream]]:
+    """
+    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources
+
+    :param config: the configuration of calculating the Green's function, defaults to None
+    :type config: Optional[Config], optional
+    :return: if npt==2 or 1, return a 2D list, and each row represents the static displacements; otherwise, return a list of Stream, each stream keeps the order of GF as in FK, and the order of streams is the same as the receiver_distance.
+    :rtype: Union[List[Stream], List[Stream]]
+    """
     # * firstly, we calculate the travel time and ray parameter for vp and vs
     t0_vp: np.ndarray
     td_vp: np.ndarray
@@ -198,6 +206,20 @@ def calculate_gf_source(
         model: SeisModel,
         flip: bool,
         src_layer: int) -> np.ndarray:
+    """
+    calculate the source matrix used in propogational matrix operations
+
+    :param src_type: the type of the source
+    :type src_type: str
+    :param model: the Earth model
+    :type model: SeisModel
+    :param flip: if the source and the receiver should be fliped
+    :type flip: bool
+    :param src_layer: the layer where the source is located
+    :type src_layer: int
+    :return: the source matrix
+    :rtype: np.ndarray
+    """
     s: np.ndarray = np.zeros((3, 6), dtype=np.float)
     mu = model.rh * model.vs * model.vs
     xi = (model.vs ** 2) / (model.vp ** 2)
@@ -242,7 +264,53 @@ def waveform_integration(
         t0: np.ndarray,
         wc: int,
         si: np.ndarray,
-        sigma: float):
+        sigma: float) -> np.ndarray:
+    """
+    the main function wrapping the cython module, do the wave number integration.
+
+    :param model: the Earth model
+    :type model: SeisModel
+    :param config: the configuration of calculating GF
+    :type config: Config
+    :param src_layer: the layer where the source is located (source at the bottom)
+    :type src_layer: int
+    :param rcv_layer: the layer where the receiver is located (receiver at the top)
+    :type rcv_layer: int
+    :param taper: the taper value
+    :type taper: float
+    :param pmin: the min slowness
+    :type pmin: float
+    :param pmax: the max slowness
+    :type pmax: float
+    :param dk: sampling interval of wavenumber
+    :type dk: float
+    :param nfft2: the half of simulation points
+    :type nfft2: int
+    :param dw: sampling interval of frequency
+    :type dw: float
+    :param kc: the max wave number
+    :type kc: float
+    :param flip: if the source and the receiver has been fliped
+    :type flip: bool
+    :param filter_const: the const value used in filtering
+    :type filter_const: float
+    :param dynamic: if performing the dynamic simulation
+    :type dynamic: bool
+    :param wc1: the starting point of wave number integration
+    :type wc1: int
+    :param wc2: the end point beyond which the filtering will take effect
+    :type wc2: int
+    :param t0: the first arrival time
+    :type t0: np.ndarray
+    :param wc: the end point beyond which the taper will take effect
+    :type wc: int
+    :param si: the source matrix
+    :type si: np.ndarray
+    :param sigma: the value to supress the numerical noise
+    :type sigma: float
+    :return: the result of doing wavenumber integration
+    :rtype: np.ndarray
+    """
     # * note, here we use parameters within config as their value is different from config
     mu = model.rh * model.vs * model.vs
     sum_waveform = np.zeros(

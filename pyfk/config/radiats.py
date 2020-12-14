@@ -34,7 +34,19 @@ from numpy import sin, cos
 # ********************************************************************/
 
 
-def dc_radiat(stk, dip, rak):
+def dc_radiat(stk: float, dip: float, rak: float) -> np.ndarray:
+    """
+    calculate the radiation pattern for double couple source.
+
+    :param stk: strike
+    :type stk: float
+    :param dip: dip
+    :type dip: float
+    :param rak: rake
+    :type rak: float
+    :return: the radiation pattern matrix
+    :rtype: np.ndarray
+    """
     rad = np.zeros((4, 3))
     stk = np.deg2rad(stk)
     dip = np.deg2rad(dip)
@@ -77,7 +89,17 @@ def dc_radiat(stk, dip, rak):
 #     where F = (0,cos(dip),-sin(dip))
 # ******************************************************/
 
-def sf_radiat(stk, dip):
+def sf_radiat(stk: float, dip: float) -> np.ndarray:
+    """
+    calculate the radiation pattern for single force source.
+
+    :param stk: strike
+    :type stk: float
+    :param dip: dip
+    :type dip: float
+    :return: the radiation pattern matrix
+    :rtype: np.ndarray
+    """
     rad = np.zeros((4, 3))
     stk = np.deg2rad(stk)
     dip = np.deg2rad(dip)
@@ -100,7 +122,16 @@ def sf_radiat(stk, dip):
 #    see Jost and Herrmann, 1989 (note an error in Eq A5.4-A5.6)
 # *****************************************************************/
 
-def mt_radiat(az, m):
+def mt_radiat(az: float, m: np.ndarray) -> np.ndarray:
+    """
+    calculate the radiation pattern providing a moment tensor in the order of x, y, z (NED coordinate, already converted from RTP coordinate)
+    :param az: azimuthal angle
+    :type az: float
+    :param m: moment tensor matrix (0 means symmetric)
+    :type m: np.ndarray
+    :return: the radiation pattern matrix
+    :rtype: np.ndarray
+    """
     rad = np.zeros((4, 3))
     az = np.deg2rad(az)
     saz = sin(az)

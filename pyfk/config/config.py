@@ -14,9 +14,28 @@ from pyfk.utils.error_message import PyfkError, PyfkWarning
 
 class SeisModel(object):
     def __init__(self,
-                 model: Optional[np.ndarray] = None,
+                 model: np.ndarray = None,
                  flattening: bool = False,
                  use_kappa: bool = False) -> None:
+        """
+        SeisModel stores the Earth model
+
+        :param model: numpy.ndarray model: a 2D numpy array storing the information of the 1D earth model, with the same format as FK.
+               model has the following format (in units of km, km/s, g/cm3, each column):
+               thickness vs vp_or_vp/vs [rho Qs Qp]
+               rho=0.77 + 0.32*vp if not provided or the 4th column is larger than 20 (treated as Qs).
+               Qs=500, Qp=2*Qs, if they are not specified.
+               If the first layer thickness is zero, it represents the top elastic half-space.
+               Otherwise, the top half-space is assumed to be vacuum and does not need to be specified.
+               The last layer (i.e. the bottom half space) thickness should be always be zero. (if not, will use 0 anyway), defaults to None
+        :type model: np.ndarray
+        :param flattening: if the model and the source should be flatten, defaults to False
+        :type flattening: bool, optional
+        :param use_kappa: if the third column of the model file is vp/vs ratio, defaults to False
+        :type use_kappa: bool, optional
+        :raises PyfkError: Earth Model must be a 2D numpy array
+        :raises PyfkError: Must provide at least three columns for the model
+        """
         if not isinstance(model, np.ndarray):
             raise PyfkError("Earth Model must be a 2D numpy array.")
         if len(np.shape(model)) != 2:
@@ -69,37 +88,93 @@ class SeisModel(object):
 
     @property
     def th(self) -> np.ndarray:
+        """
+        get the thickness array
+
+        :return: the thickness array
+        :rtype: np.ndarray
+        """
         return self.model_values[:, 0]
 
     @property
     def vs(self) -> np.ndarray:
+        """
+        get the vs array
+
+        :return: the vs array
+        :rtype: np.ndarray
+        """
         return self.model_values[:, 1]
 
     @property
     def vp(self) -> np.ndarray:
+        """
+        get the vp array
+
+        :return: the vp array
+        :rtype: np.ndarray
+        """
         return self.model_values[:, 2]
 
     @property
     def rh(self) -> np.ndarray:
+        """
+        get the density array
+
+        :return: the density array
+        :rtype: np.ndarray
+        """
         return self.model_values[:, 3]
 
     @property
     def qs(self) -> np.ndarray:
+        """
+        get the attenuation qs array
+
+        :return: the attenuation qs array
+        :rtype: np.ndarray
+        """
         return self.model_values[:, 4]
 
     @property
     def qp(self) -> np.ndarray:
+        """
+        get the attenuation qp array
+
+        :return: the attenuation qp array
+        :rtype: np.ndarray
+        """
         return self.model_values[:, 5]
 
     @property
     def flattening(self) -> bool:
+        """
+        get the flatten status of the model
+
+        :return: the flatten status of the model
+        :rtype: bool
+        """
         return self._flattening
 
     @flattening.setter
     def flattening(self, value: bool) -> None:
+        """
+        set the flatten status of the model
+
+        :param value: the desired flatten value
+        :type value: bool
+        """
         self._flattening = value
 
     def add_layer(self, dd: float, idep: int) -> None:
+        """
+        insert a layer so that the source/receiver will be located at the interface of the layers
+
+        :param dd: the distance(km) to the bottom of the later where the source/receiver is located
+        :type dd: float
+        :param idep: the layer (top most layer as index 0) where the source/receiver is located
+        :type idep: int
+        """
         self.model_values = np.concatenate(
             (self.model_values, np.zeros(
                 (1, self.model_values.shape[1]))), axis=0)
@@ -110,18 +185,38 @@ class SeisModel(object):
             self.model_values[idep + 1, 0] = dd
 
     def remove_topo(self) -> None:
+        """
+        make the thickness for the first later to be 0 when the thickness is smaller than 0.
+        """
         if self.model_values[0, 0] < 0.:
             self.model_values[0, 0] = 0.
 
     def __copy__(self):
+        """
+        make a copy of the current model, and the model numpy file will not be influenced
+
+        :return: the copied SeisModel
+        :rtype: SeisModel
+        """
         new_instance = SeisModel(self.model_values.copy(), False, False)
         new_instance.flattening = self.flattening
         return new_instance
 
 
 class SourceModel(object):
-    def __init__(self, sdep: float = 0, srcType: str = "dc",
+    def __init__(self, sdep: float = 0., srcType: str = "dc",
                  source_mechanism: Optional[Union[list, np.ndarray]] = None) -> None:
+        """
+        the information about the the source used in the FK
+
+        :param sdep: the depth of the source (km), and it should not be located between the interfaces of the Earth model, defaults to 0
+        :type sdep: float
+        :param srcType: the source type, can be ep (explosion), sf (single force) or dc (double couple), defaults to "dc"
+        :type srcType: str, optional
+        :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events), defaults to None
+        :type source_mechanism: Optional[Union[list, np.ndarray]], optional
+        :raises PyfkError: [description]
+        """
         self._sdep = sdep
         self._srcType = srcType
 
@@ -133,29 +228,72 @@ class SourceModel(object):
 
     @property
     def sdep(self) -> float:
+        """
+        get the source depth in km
+
+        :return: the source depth in km
+        :rtype: float
+        """
         return self._sdep
 
     @property
     def srcType(self) -> str:
+        """
+        get the source type (ep, sf or dc)
+
+        :return: the source type (ep, sf or dc)
+        :rtype: str
+        """
         return self._srcType
 
     @sdep.setter
     def sdep(self, value: float) -> None:
+        """
+        set the depth for the source model
+
+        :param value: the depth for the source model
+        :type value: float
+        """
         self._sdep = value
 
     @property
     def nn(self) -> int:
+        """
+        get the value associated with the source type
+
+        :return: the value associated with the source type
+        :rtype: int
+        """
         return self._nn
 
     @property
     def m0(self) -> float:
+        """
+        get the value associated with the magnitude in FK
+
+        :return: the value associated with the magnitude in FK
+        :rtype: float
+        """
         return self._m0
 
     @property
-    def rad(self) -> float:
+    def rad(self) -> np.ndarray:
+        """
+        get the radiation pattern
+
+        :return: the radiation pattern
+        :rtype: np.ndarray
+        """
         return self._rad
 
     def calculate_radiation_pattern(self, az: float) -> None:
+        """
+        calculate the radiation pattern 3*3 array
+
+        :param az: station azimuth in degree measured from the North (clockwise)
+        :type az: float
+        :raises PyfkError: length of source_mechanism must be 1, 3, 4, 7
+        """
         mt = np.zeros((3, 3))
         if len(self._source_mechanism) == 1:
             self._m0 = self._source_mechanism[0] * 1e-20
@@ -185,6 +323,15 @@ class SourceModel(object):
 
     def _update_source_mechanism(
             self, source_mechanism: Optional[Union[list, np.ndarray]]):
+        """
+        the internal function to update the source mechanism information
+
+        :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)
+        :type source_mechanism: Optional[Union[list, np.ndarray]]
+        :raises PyfkError: source_mechanism should be a 1D array
+        :raises PyfkError: length of source_mechanism is not correct
+        :raises PyfkError: source_mechanism must be None, a list or numpy.ndarray
+        """
         self._source_mechanism: Optional[np.ndarray]
         if isinstance(
                 source_mechanism,
@@ -224,6 +371,13 @@ class SourceModel(object):
 
     def update_source_mechanism(
             self, source_mechanism: Union[list, np.ndarray, Event]):
+        """
+        update the source mechanism information after creation of the SourceModel
+
+        :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)
+        :type source_mechanism: Union[list, np.ndarray, Event]
+        :raises PyfkError: source mechanism couldn't be None
+        """
         if source_mechanism is None:
             raise PyfkError("source mechanism couldn't be None")
         self._update_source_mechanism(source_mechanism)
@@ -250,6 +404,57 @@ class Config(object):
                  rdep: float = 0.,
                  updn: str = "all",
                  samples_before_first_arrival: int = 50) -> None:
+        """
+        The configuration class used in generating Green's function and the synthetic waveform.
+
+        :param model: the Earth model used in calculation, defaults to None
+        :type model: Optional[SeisModel]
+        :param source: the source model used in calculation, defaults to None
+        :type source: Optional[SourceModel]
+        :param receiver_distance: a list of receiver distance in km, defaults to None
+        :type receiver_distance: Optional[Union[list, np.ndarray]]
+        :param degrees: use degrees instead of km, defaults to False
+        :type degrees: bool, optional
+        :param taper: taper applies a low-pass cosine filter at fc=(1-taper)*f_Niquest, defaults to 0.3
+        :type taper: float, optional
+        :param filter: apply a high-pass filter with a cosine transition zone between freq. f1 and f2 in Hz, defaults to (0, 0)
+        :type filter: Tuple[float, float], optional
+        :param npt: the number of points, defaults to 256
+        :type npt: int, optional
+        :param dt: the sampling interval in seconds, defaults to 1.
+        :type dt: float, optional
+        :param dk: the non-dimensional sampling interval of wavenumber, defaults to 0.3
+        :type dk: float, optional
+        :param smth: makes the final sampling interval to be dt/smth, defaults to 1.
+        :type smth: float, optional
+        :param pmin: the min slownesses in term of 1/vs_at_the_source, defaults to 0.
+        :type pmin: float, optional
+        :param pmax: the max slownesses in term of 1/vs_at_the_source, defaults to 1.
+        :type pmax: float, optional
+        :param kmax: kmax at zero frequency in term of 1/hs, defaults to 15.
+        :type kmax: float, optional
+        :param rdep: the depth for the receivers in km, defaults to 0.
+        :type rdep: float, optional
+        :param updn: "up" for up-going wave only, "down" for down-going wave only, "all" for both "up" and "down", defaults to "all"
+        :type updn: str, optional
+        :param samples_before_first_arrival: the number of points before the first arrival, defaults to 50
+        :type samples_before_first_arrival: int, optional
+        :raises PyfkError: Must provide a list of receiver distance
+        :raises PyfkError: Taper must be with (0,1)
+        :raises PyfkError: Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]
+        :raises PyfkError: npt should be positive.
+        :raises PyfkError: dt should be positive.
+        :raises PyfkError: dk should be within (0,0.5)
+        :raises PyfkError: smth should be positive.
+        :raises PyfkError: pmin should be within [0,1]
+        :raises PyfkError: pmax should be within [0,1]
+        :raises PyfkError: pmin should be smaller than pmax
+        :raises PyfkError: kmax should be larger or equal to 10
+        :raises PyfkError: the selection of phases should be either 'up', 'down' or 'all'
+        :raises PyfkError: samples_before_first_arrival should be positive
+        :raises PyfkError: Must provide a source
+        :raises PyfkError: Must provide a seisModel
+        """
         # * read in and validate parameters
         # receiver_distance
         if receiver_distance is None:
@@ -265,9 +470,6 @@ class Config(object):
             raise PyfkError("Taper must be with (0,1)")
         self.taper = taper
         # filter
-        if filter[0] < 0 or filter[0] > 1 or filter[1] < 0 or filter[1] > 1:
-            raise PyfkError(
-                "Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]")
         self.filter = filter
         # npt
         if npt <= 0:
