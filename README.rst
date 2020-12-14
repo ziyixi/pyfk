@@ -20,9 +20,9 @@ About
 
 🚨 **This package is still undergoing rapid development.** 🚨
 
-pyfk is the python version of `FK <http://www.eas.slu.edu/People/LZhu/home.html>`__ used to calculate the Green's function and the synthetic waveforms for the 1D Earth model.
+Pyfk is the python version of `FK <http://www.eas.slu.edu/People/LZhu/home.html>`__ used to calculate the Green's function and the synthetic waveforms for the 1D Earth model.
 
-pyfk has mainly provided functions as:
+Pyfk has mainly provided functions as:
 
 * compute the Green's function for the explosion, single force, and double couple source using the frequency-wavenumber method.
 * compute the static displacements and corresponding Green's function.
@@ -40,7 +40,7 @@ and it has the features as:
 License
 -------
 
-pyfk is a free software: you can redistribute it and/or modify it under the terms of
+Pyfk is a free software: you can redistribute it and/or modify it under the terms of
 the **MIT License**. A copy of this license is provided in
 `LICENSE <https://github.com/ziyixi/pyfk/blob/master/LICENSE>`__.
 
