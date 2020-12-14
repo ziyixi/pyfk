@@ -11,16 +11,15 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.7"
-      - name: Install pipenv
+      - name: Install pipenv and run doc
         run: |
           pip install pipenv
           pipenv install -d
           export VENV_HOME_DIR=$(pipenv --venv)
           source $VENV_HOME_DIR/bin/activate
-      - uses: ammaraskar/sphinx-action@master
-        with:
-          docs-folder: "docs/"
-          build-command: "make html"
+          cd docs
+          make html
+          cd ..
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
