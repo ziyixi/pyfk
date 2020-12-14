@@ -8,6 +8,11 @@ Seisflow
 .. image:: https://codecov.io/gh/ziyixi/pyfk/branch/master/graph/badge.svg?token=5EL7IDTYLJ
     :target: https://codecov.io/gh/ziyixi/pyfk
 
+.. raw:: html
+
+    <a href="https://ziyixi.github.io/pyfk/">
+        <img src="https://img.shields.io/badge/docs-dev-blue.svg"/></a>
+
 .. placeholder-for-doc-index
 
 About
