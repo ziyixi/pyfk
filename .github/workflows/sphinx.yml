@@ -14,7 +14,8 @@ jobs:
       - name: Install pipenv
         run: |
           pip install pipenv
-          pipenv shell
+          export VENV_HOME_DIR=$(pipenv --venv)
+          source $VENV_HOME_DIR/bin/activate
           pipenv install -d
       - uses: ammaraskar/sphinx-action@master
         with:
