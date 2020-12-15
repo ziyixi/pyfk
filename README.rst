@@ -1,17 +1,14 @@
 pyfk
 ==========
-.. raw:: html
 
-    <a href="https://github.com/ziyixi/pyfk/actions">
-        <img src="https://github.com/ziyixi/pyfk/workflows/pyfk/badge.svg"/></a>
+.. image:: https://github.com/ziyixi/pyfk/workflows/pyfk/badge.svg
+    :target: https://github.com/ziyixi/pyfk/actions
 
 .. image:: https://codecov.io/gh/ziyixi/pyfk/branch/master/graph/badge.svg?token=5EL7IDTYLJ
     :target: https://codecov.io/gh/ziyixi/pyfk
 
-.. raw:: html
-
-    <a href="https://ziyixi.github.io/pyfk/">
-        <img src="https://img.shields.io/badge/docs-dev-blue.svg"/></a>
+.. image:: https://img.shields.io/badge/docs-dev-blue.svg
+    :target:https://ziyixi.github.io/pyfk/
 
 .. placeholder-for-doc-index
 

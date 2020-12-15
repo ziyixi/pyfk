@@ -24,7 +24,7 @@ copyright = f'2020-{year}, Ziyi Xi'
 author = 'Ziyi Xi'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '0.1.0-alpha.1'
 
 
 # -- General configuration ---------------------------------------------------
