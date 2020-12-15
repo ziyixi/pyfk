@@ -15,7 +15,7 @@ jobs:
         run: |
           pip install pipenv
           pipenv install
-          python setup.py sdist bdist_wheel
+          pipenv run python setup.py sdist bdist_wheel
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
