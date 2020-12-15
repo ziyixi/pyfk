@@ -25,3 +25,5 @@ docs/_static/*
 docs/_template/*
 Pipfile.lock
 dist/*
+
+token
