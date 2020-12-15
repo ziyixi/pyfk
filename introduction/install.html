@@ -158,21 +158,21 @@
 <div class="section" id="the-environments">
 <h2>The environments<a class="headerlink" href="#the-environments" title="Permalink to this headline">¶</a></h2>
 <p>The package pyfk runs on Unix-like systems including Mac and Linux and you will need <strong>Python 3.6 or greater</strong>. Python 3.9 is not supported yet as it’s having problems to run Cython at the moment.</p>
-<p>At the current stage, the only way to install the package is directly from the Github repo, and it’s recommended to use anaconda as your python environment:</p>
+<p>It’s recommended to use anaconda as your python environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">cython</span> <span class="n">scipy</span>
 <span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cysignals</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ziyixi</span><span class="o">/</span><span class="n">pyfk</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span>
 </pre></div>
 </div>
 <p>You can also use pipenv to install the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">OL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ziyixi</span><span class="o">/</span><span class="n">pyfk</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">Pipfile</span>
 <span class="n">pipenv</span> <span class="p">[</span><span class="o">--</span><span class="n">python</span><span class="o">=&lt;</span><span class="n">your</span> <span class="n">desired</span> <span class="n">python</span> <span class="n">interpreter</span> <span class="p">(</span><span class="k">if</span> <span class="n">omitted</span><span class="p">,</span> <span class="n">will</span> <span class="n">use</span> <span class="n">the</span> <span class="n">default</span> <span class="n">one</span><span class="p">)</span><span class="o">&gt;</span><span class="p">]</span> <span class="n">install</span>
-<span class="n">pipenv</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ziyixi</span><span class="o">/</span><span class="n">pyfk</span><span class="c1">#egg=pyfk</span>
+<span class="n">pipenv</span> <span class="n">install</span> <span class="n">pyfk</span>
 </pre></div>
 </div>
 <p>Or directly use pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">cython</span> <span class="n">scipy</span> <span class="n">cysignals</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ziyixi</span><span class="o">/</span><span class="n">pyfk</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span>
 </pre></div>
 </div>
 <p>This will allow you to use pyfk from python.</p>
