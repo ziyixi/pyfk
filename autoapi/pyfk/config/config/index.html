@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
     
   <link rel="preload" as="script" href="../../../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,6 +38,10 @@
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/language_data.js"></script>
+    <script src="../../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="pyfk.config.radiats" href="../radiats/index.html" />
@@ -60,6 +66,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item active">
             <a class="nav-link" href="../../../index.html">API Reference</a>
@@ -95,6 +109,10 @@
     <ul class="nav bd-sidenav">
         
         
+        
+        
+        
+        
           
             
                 <li class="active">
@@ -127,92 +145,12 @@
             <a href="#classes" class="nav-link">Classes</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h4">
-            <a href="#pyfk.config.config.SeisModel" class="nav-link">SeisModel</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.th" class="nav-link">th</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.vs" class="nav-link">vs</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.vp" class="nav-link">vp</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.rh" class="nav-link">rh</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.qs" class="nav-link">qs</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.qp" class="nav-link">qp</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.flattening" class="nav-link">flattening</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.add_layer" class="nav-link">add_layer</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.remove_topo" class="nav-link">remove_topo</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SeisModel.__copy__" class="nav-link">__copy__</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#pyfk.config.config.SourceModel" class="nav-link">SourceModel</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel.sdep" class="nav-link">sdep</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel.srcType" class="nav-link">srcType</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel.nn" class="nav-link">nn</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel.m0" class="nav-link">m0</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel.rad" class="nav-link">rad</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel.calculate_radiation_pattern" class="nav-link">calculate_radiation_pattern</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel._update_source_mechanism" class="nav-link">_update_source_mechanism</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.config.config.SourceModel.update_source_mechanism" class="nav-link">update_source_mechanism</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h4">
             <a href="#pyfk.config.config.Config" class="nav-link">Config</a><ul class="nav section-nav flex-column">
                 
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.Config.__repr__" class="nav-link">__repr__</a>
+        </li>
+    
         <li class="nav-item toc-entry toc-h5">
             <a href="#pyfk.config.config.Config._couple_model_and_source" class="nav-link">_couple_model_and_source</a>
         </li>
@@ -223,6 +161,98 @@
     
         <li class="nav-item toc-entry toc-h5">
             <a href="#pyfk.config.config.Config._insert_intf" class="nav-link">_insert_intf</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.config.config.SeisModel" class="nav-link">SeisModel</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.__copy__" class="nav-link">__copy__</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.__repr__" class="nav-link">__repr__</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.add_layer" class="nav-link">add_layer</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.flattening" class="nav-link">flattening</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.qp" class="nav-link">qp</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.qs" class="nav-link">qs</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.remove_topo" class="nav-link">remove_topo</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.rh" class="nav-link">rh</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.th" class="nav-link">th</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.vp" class="nav-link">vp</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SeisModel.vs" class="nav-link">vs</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.config.config.SourceModel" class="nav-link">SourceModel</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.__repr__" class="nav-link">__repr__</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel._update_source_mechanism" class="nav-link">_update_source_mechanism</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.calculate_radiation_pattern" class="nav-link">calculate_radiation_pattern</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.m0" class="nav-link">m0</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.nn" class="nav-link">nn</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.rad" class="nav-link">rad</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.sdep" class="nav-link">sdep</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.srcType" class="nav-link">srcType</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.config.config.SourceModel.update_source_mechanism" class="nav-link">update_source_mechanism</a>
         </li>
     
             </ul>
@@ -259,70 +289,168 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SeisModel</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceModel</span></code></a></p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.config.config.Config" title="pyfk.config.config.Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config</span></code></a></p></td>
-<td><p></p></td>
+<td><p>The configuration class used in generating Green’s function and the synthetic waveform.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SeisModel</span></code></a></p></td>
+<td><p>SeisModel stores the Earth model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceModel</span></code></a></p></td>
+<td><p>the information about the the source used in the FK</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt id="pyfk.config.config.Config">
+<em class="property">class </em><code class="sig-prename descclassname">pyfk.config.config.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel">SeisModel</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel">SourceModel</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">receiver_distance</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>list<span class="p">, </span>np.ndarray<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">degrees</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">taper</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">filter</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">(0, 0)</span></em>, <em class="sig-param"><span class="n">npt</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">256</span></em>, <em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">dk</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">smth</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">pmin</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">pmax</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">kmax</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">15.0</span></em>, <em class="sig-param"><span class="n">rdep</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">updn</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'all'</span></em>, <em class="sig-param"><span class="n">samples_before_first_arrival</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The configuration class used in generating Green’s function and the synthetic waveform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel"><em>SeisModel</em></a><em>]</em>) – the Earth model used in calculation, defaults to None</p></li>
+<li><p><strong>source</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel"><em>SourceModel</em></a><em>]</em>) – the source model used in calculation, defaults to None</p></li>
+<li><p><strong>receiver_distance</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – a list of receiver distance in km, defaults to None</p></li>
+<li><p><strong>degrees</strong> (<em>bool</em><em>, </em><em>optional</em>) – use degrees instead of km, defaults to False</p></li>
+<li><p><strong>taper</strong> (<em>float</em><em>, </em><em>optional</em>) – taper applies a low-pass cosine filter at fc=(1-taper)*f_Niquest, defaults to 0.3</p></li>
+<li><p><strong>filter</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – apply a high-pass filter with a cosine transition zone between freq. f1 and f2 in Hz, defaults to (0, 0)</p></li>
+<li><p><strong>npt</strong> (<em>int</em><em>, </em><em>optional</em>) – the number of points, defaults to 256</p></li>
+<li><p><strong>dt</strong> (<em>float</em><em>, </em><em>optional</em>) – the sampling interval in seconds, defaults to 1.</p></li>
+<li><p><strong>dk</strong> (<em>float</em><em>, </em><em>optional</em>) – the non-dimensional sampling interval of wavenumber, defaults to 0.3</p></li>
+<li><p><strong>smth</strong> (<em>float</em><em>, </em><em>optional</em>) – makes the final sampling interval to be dt/smth, defaults to 1.</p></li>
+<li><p><strong>pmin</strong> (<em>float</em><em>, </em><em>optional</em>) – the min slownesses in term of 1/vs_at_the_source, defaults to 0.</p></li>
+<li><p><strong>pmax</strong> (<em>float</em><em>, </em><em>optional</em>) – the max slownesses in term of 1/vs_at_the_source, defaults to 1.</p></li>
+<li><p><strong>kmax</strong> (<em>float</em><em>, </em><em>optional</em>) – kmax at zero frequency in term of 1/hs, defaults to 15.</p></li>
+<li><p><strong>rdep</strong> (<em>float</em><em>, </em><em>optional</em>) – the depth for the receivers in km, defaults to 0.</p></li>
+<li><p><strong>updn</strong> (<em>str</em><em>, </em><em>optional</em>) – “up” for up-going wave only, “down” for down-going wave only, “all” for both “up” and “down”, defaults to “all”</p></li>
+<li><p><strong>samples_before_first_arrival</strong> (<em>int</em><em>, </em><em>optional</em>) – the number of points before the first arrival, defaults to 50</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Must provide a list of receiver distance</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Taper must be with (0,1)</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – npt should be positive.</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – dt should be positive.</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – dk should be within (0,0.5)</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – smth should be positive.</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – pmin should be within [0,1]</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – pmax should be within [0,1]</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – pmin should be smaller than pmax</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – kmax should be larger or equal to 10</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – the selection of phases should be either ‘up’, ‘down’ or ‘all’</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – samples_before_first_arrival should be positive</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Must provide a source</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Must provide a seisModel</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pyfk.config.config.Config.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.Config._couple_model_and_source">
+<code class="sig-name descname">_couple_model_and_source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config._couple_model_and_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config._couple_model_and_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.Config._flattening_func">
+<em class="property">static </em><code class="sig-name descname">_flattening_func</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config._flattening_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config._flattening_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.Config._insert_intf">
+<code class="sig-name descname">_insert_intf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config._insert_intf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config._insert_intf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="pyfk.config.config.SeisModel">
 <em class="property">class </em><code class="sig-prename descclassname">pyfk.config.config.</code><code class="sig-name descname">SeisModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">np.ndarray</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flattening</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_kappa</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>SeisModel stores the Earth model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>np.ndarray</em>) – numpy.ndarray model: a 2D numpy array storing the information of the 1D earth model, with the same format as FK.
+model has the following format (in units of km, km/s, g/cm3, each column):
+thickness vs vp_or_vp/vs [rho Qs Qp]
+rho=0.77 + 0.32*vp if not provided or the 4th column is larger than 20 (treated as Qs).
+Qs=500, Qp=2*Qs, if they are not specified.
+If the first layer thickness is zero, it represents the top elastic half-space.
+Otherwise, the top half-space is assumed to be vacuum and does not need to be specified.
+The last layer (i.e. the bottom half space) thickness should be always be zero. (if not, will use 0 anyway), defaults to None</p></li>
+<li><p><strong>flattening</strong> (<em>bool</em><em>, </em><em>optional</em>) – if the model and the source should be flatten, defaults to False</p></li>
+<li><p><strong>use_kappa</strong> (<em>bool</em><em>, </em><em>optional</em>) – if the third column of the model file is vp/vs ratio, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Earth Model must be a 2D numpy array</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Must provide at least three columns for the model</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.th">
-<em class="property">property </em><code class="sig-name descname">th</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.th"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.th" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the thickness array</p>
+<dt id="pyfk.config.config.SeisModel.__copy__">
+<code class="sig-name descname">__copy__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.__copy__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.__copy__" title="Permalink to this definition">¶</a></dt>
+<dd><p>make a copy of the current model, and the model numpy file will not be influenced</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the thickness array</p>
+<dd class="field-odd"><p>the copied SeisModel</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>np.ndarray</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel">SeisModel</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.vs">
-<em class="property">property </em><code class="sig-name descname">vs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vs" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the vs array</p>
+<dt id="pyfk.config.config.SeisModel.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.SeisModel.add_layer">
+<code class="sig-name descname">add_layer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">dd</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">idep</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.add_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.add_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>insert a layer so that the source/receiver will be located at the interface of the layers</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the vs array</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>np.ndarray</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dd</strong> (<em>float</em>) – the distance(km) to the bottom of the later where the source/receiver is located</p></li>
+<li><p><strong>idep</strong> (<em>int</em>) – the layer (top most layer as index 0) where the source/receiver is located</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.vp">
-<em class="property">property </em><code class="sig-name descname">vp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vp" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the vp array</p>
+<dt id="pyfk.config.config.SeisModel.flattening">
+<em class="property">property </em><code class="sig-name descname">flattening</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.flattening"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.flattening" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the flatten status of the model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the vp array</p>
+<dd class="field-odd"><p>the flatten status of the model</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>np.ndarray</p>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.rh">
-<em class="property">property </em><code class="sig-name descname">rh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.rh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.rh" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the density array</p>
+<dt id="pyfk.config.config.SeisModel.qp">
+<em class="property">property </em><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.qp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.qp" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the attenuation qp array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the density array</p>
+<dd class="field-odd"><p>the attenuation qp array</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>np.ndarray</p>
@@ -345,12 +473,18 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.qp">
-<em class="property">property </em><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.qp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.qp" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the attenuation qp array</p>
+<dt id="pyfk.config.config.SeisModel.remove_topo">
+<code class="sig-name descname">remove_topo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.remove_topo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.remove_topo" title="Permalink to this definition">¶</a></dt>
+<dd><p>make the thickness for the first later to be 0 when the thickness is smaller than 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.SeisModel.rh">
+<em class="property">property </em><code class="sig-name descname">rh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.rh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.rh" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the density array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the attenuation qp array</p>
+<dd class="field-odd"><p>the density array</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>np.ndarray</p>
@@ -359,49 +493,43 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.flattening">
-<em class="property">property </em><code class="sig-name descname">flattening</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.flattening"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.flattening" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the flatten status of the model</p>
+<dt id="pyfk.config.config.SeisModel.th">
+<em class="property">property </em><code class="sig-name descname">th</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.th"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.th" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the thickness array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the flatten status of the model</p>
+<dd class="field-odd"><p>the thickness array</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.add_layer">
-<code class="sig-name descname">add_layer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">dd</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">idep</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.add_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.add_layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>insert a layer so that the source/receiver will be located at the interface of the layers</p>
+<dt id="pyfk.config.config.SeisModel.vp">
+<em class="property">property </em><code class="sig-name descname">vp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vp" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the vp array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dd</strong> (<em>float</em>) – the distance(km) to the bottom of the later where the source/receiver is located</p></li>
-<li><p><strong>idep</strong> (<em>int</em>) – the layer (top most layer as index 0) where the source/receiver is located</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the vp array</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SeisModel.remove_topo">
-<code class="sig-name descname">remove_topo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.remove_topo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.remove_topo" title="Permalink to this definition">¶</a></dt>
-<dd><p>make the thickness for the first later to be 0 when the thickness is smaller than 0.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.config.config.SeisModel.__copy__">
-<code class="sig-name descname">__copy__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.__copy__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.__copy__" title="Permalink to this definition">¶</a></dt>
-<dd><p>make a copy of the current model, and the model numpy file will not be influenced</p>
+<dt id="pyfk.config.config.SeisModel.vs">
+<em class="property">property </em><code class="sig-name descname">vs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vs" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the vs array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the copied SeisModel</p>
+<dd class="field-odd"><p>the vs array</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel">SeisModel</a></p>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -412,6 +540,99 @@
 <dt id="pyfk.config.config.SourceModel">
 <em class="property">class </em><code class="sig-prename descclassname">pyfk.config.config.</code><code class="sig-name descname">SourceModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sdep</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">srcType</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'dc'</span></em>, <em class="sig-param"><span class="n">source_mechanism</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>list<span class="p">, </span>np.ndarray<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>the information about the the source used in the FK</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sdep</strong> (<em>float</em>) – the depth of the source (km), and it should not be located between the interfaces of the Earth model, defaults to 0</p></li>
+<li><p><strong>srcType</strong> (<em>str</em><em>, </em><em>optional</em>) – the source type, can be ep (explosion), sf (single force) or dc (double couple), defaults to “dc”</p></li>
+<li><p><strong>source_mechanism</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events), defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – [description]</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pyfk.config.config.SourceModel.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.SourceModel._update_source_mechanism">
+<code class="sig-name descname">_update_source_mechanism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">source_mechanism</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>list<span class="p">, </span>np.ndarray<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel._update_source_mechanism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel._update_source_mechanism" title="Permalink to this definition">¶</a></dt>
+<dd><p>the internal function to update the source mechanism information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_mechanism</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – source_mechanism should be a 1D array</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – length of source_mechanism is not correct</p></li>
+<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – source_mechanism must be None, a list or numpy.ndarray</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.SourceModel.calculate_radiation_pattern">
+<code class="sig-name descname">calculate_radiation_pattern</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">az</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.calculate_radiation_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.calculate_radiation_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate the radiation pattern 3*3 array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>az</strong> (<em>float</em>) – station azimuth in degree measured from the North (clockwise)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – length of source_mechanism must be 1, 3, 4, 7</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.SourceModel.m0">
+<em class="property">property </em><code class="sig-name descname">m0</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.m0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.m0" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the value associated with the magnitude in FK</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the value associated with the magnitude in FK</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.SourceModel.nn">
+<em class="property">property </em><code class="sig-name descname">nn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.nn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.nn" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the value associated with the source type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the value associated with the source type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.config.config.SourceModel.rad">
+<em class="property">property </em><code class="sig-name descname">rad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the radiation pattern</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the radiation pattern</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="pyfk.config.config.SourceModel.sdep">
 <em class="property">property </em><code class="sig-name descname">sdep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.sdep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.sdep" title="Permalink to this definition">¶</a></dt>
@@ -441,80 +662,6 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.config.config.SourceModel.nn">
-<em class="property">property </em><code class="sig-name descname">nn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.nn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.nn" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the value associated with the source type</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the value associated with the source type</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.config.config.SourceModel.m0">
-<em class="property">property </em><code class="sig-name descname">m0</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.m0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.m0" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the value associated with the magnitude in FK</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the value associated with the magnitude in FK</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.config.config.SourceModel.rad">
-<em class="property">property </em><code class="sig-name descname">rad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.rad" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the radiation pattern</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the radiation pattern</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>np.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.config.config.SourceModel.calculate_radiation_pattern">
-<code class="sig-name descname">calculate_radiation_pattern</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">az</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.calculate_radiation_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.calculate_radiation_pattern" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate the radiation pattern 3*3 array</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>az</strong> (<em>float</em>) – station azimuth in degree measured from the North (clockwise)</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – length of source_mechanism must be 1, 3, 4, 7</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.config.config.SourceModel._update_source_mechanism">
-<code class="sig-name descname">_update_source_mechanism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">source_mechanism</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>list<span class="p">, </span>np.ndarray<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel._update_source_mechanism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel._update_source_mechanism" title="Permalink to this definition">¶</a></dt>
-<dd><p>the internal function to update the source mechanism information</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_mechanism</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – source_mechanism should be a 1D array</p></li>
-<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – length of source_mechanism is not correct</p></li>
-<li><p><a class="reference internal" href="../../utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – source_mechanism must be None, a list or numpy.ndarray</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="pyfk.config.config.SourceModel.update_source_mechanism">
 <code class="sig-name descname">update_source_mechanism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">source_mechanism</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>list<span class="p">, </span>np.ndarray<span class="p">, </span>Event<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.update_source_mechanism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.update_source_mechanism" title="Permalink to this definition">¶</a></dt>
 <dd><p>update the source mechanism information after creation of the SourceModel</p>
@@ -527,27 +674,6 @@
 </dd>
 </dl>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="pyfk.config.config.Config">
-<em class="property">class </em><code class="sig-prename descclassname">pyfk.config.config.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel">SeisModel</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel">SourceModel</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">receiver_distance</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>list<span class="p">, </span>np.ndarray<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">degrees</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">taper</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">filter</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">(0, 0)</span></em>, <em class="sig-param"><span class="n">npt</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">256</span></em>, <em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">dk</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">smth</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">pmin</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">pmax</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">kmax</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">15.0</span></em>, <em class="sig-param"><span class="n">rdep</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">updn</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'all'</span></em>, <em class="sig-param"><span class="n">samples_before_first_arrival</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt id="pyfk.config.config.Config._couple_model_and_source">
-<code class="sig-name descname">_couple_model_and_source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config._couple_model_and_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config._couple_model_and_source" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.config.config.Config._flattening_func">
-<em class="property">static </em><code class="sig-name descname">_flattening_func</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config._flattening_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config._flattening_func" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.config.config.Config._insert_intf">
-<code class="sig-name descname">_insert_intf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#Config._insert_intf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.Config._insert_intf" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 

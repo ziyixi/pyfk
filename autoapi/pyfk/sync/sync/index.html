@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
     
   <link rel="preload" as="script" href="../../../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,6 +38,10 @@
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/language_data.js"></script>
+    <script src="../../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="pyfk.taup" href="../../taup/index.html" />
@@ -60,6 +66,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item active">
             <a class="nav-link" href="../../../index.html">API Reference</a>
@@ -93,6 +107,10 @@
     
   
     <ul class="nav bd-sidenav">
+        
+        
+        
+        
         
         
           
@@ -131,11 +149,11 @@
         </li>
     
         <li class="nav-item toc-entry toc-h4">
-            <a href="#pyfk.sync.sync.sync_calculate_gf" class="nav-link">sync_calculate_gf</a>
+            <a href="#pyfk.sync.sync.generate_source_time_function" class="nav-link">generate_source_time_function</a>
         </li>
     
         <li class="nav-item toc-entry toc-h4">
-            <a href="#pyfk.sync.sync.generate_source_time_function" class="nav-link">generate_source_time_function</a>
+            <a href="#pyfk.sync.sync.sync_calculate_gf" class="nav-link">sync_calculate_gf</a>
         </li>
     
             </ul>
@@ -172,11 +190,11 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.sync.sync.calculate_sync" title="pyfk.sync.sync.calculate_sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_sync</span></code></a>(gf: Union[List[Stream], Stream], config: Config, az: Union[float, int] = 0, source_time_function: Optional[Trace] = None) → List[Stream]</p></td>
 <td><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.sync.sync.sync_calculate_gf" title="pyfk.sync.sync.sync_calculate_gf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sync_calculate_gf</span></code></a>(gf: List[Stream], source: SourceModel) → List[Stream]</p></td>
-<td><p>stack three the GF into three components based on the radiation pattern</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.sync.sync.generate_source_time_function" title="pyfk.sync.sync.generate_source_time_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_source_time_function</span></code></a>(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) → Trace</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.sync.sync.generate_source_time_function" title="pyfk.sync.sync.generate_source_time_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_source_time_function</span></code></a>(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) → Trace</p></td>
 <td><p>[summary]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.sync.sync.sync_calculate_gf" title="pyfk.sync.sync.sync_calculate_gf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sync_calculate_gf</span></code></a>(gf: List[Stream], source: SourceModel) → List[Stream]</p></td>
+<td><p>stack three the GF into three components based on the radiation pattern</p></td>
 </tr>
 </tbody>
 </table>
@@ -211,26 +229,6 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyfk.sync.sync.sync_calculate_gf">
-<code class="sig-prename descclassname">pyfk.sync.sync.</code><code class="sig-name descname">sync_calculate_gf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gf</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Stream<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">SourceModel</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Stream<span class="p">]</span><a class="reference internal" href="../../../../_modules/pyfk/sync/sync.html#sync_calculate_gf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.sync.sync.sync_calculate_gf" title="Permalink to this definition">¶</a></dt>
-<dd><p>stack three the GF into three components based on the radiation pattern</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>gf</strong> (<em>List</em><em>[</em><em>Stream</em><em>]</em>) – the calculated GF</p></li>
-<li><p><strong>source</strong> (<a class="reference internal" href="../../config/config/index.html#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel"><em>SourceModel</em></a>) – the source model, with attached actual source</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the stacked GF</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>List[Stream]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt id="pyfk.sync.sync.generate_source_time_function">
 <code class="sig-prename descclassname">pyfk.sync.sync.</code><code class="sig-name descname">generate_source_time_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dura</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">rise</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">delta</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.1</span></em><span class="sig-paren">)</span> &#x2192; Trace<a class="reference internal" href="../../../../_modules/pyfk/sync/sync.html#generate_source_time_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.sync.sync.generate_source_time_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>[summary]</p>
@@ -247,6 +245,26 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Trace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.sync.sync.sync_calculate_gf">
+<code class="sig-prename descclassname">pyfk.sync.sync.</code><code class="sig-name descname">sync_calculate_gf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gf</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Stream<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">SourceModel</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Stream<span class="p">]</span><a class="reference internal" href="../../../../_modules/pyfk/sync/sync.html#sync_calculate_gf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.sync.sync.sync_calculate_gf" title="Permalink to this definition">¶</a></dt>
+<dd><p>stack three the GF into three components based on the radiation pattern</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gf</strong> (<em>List</em><em>[</em><em>Stream</em><em>]</em>) – the calculated GF</p></li>
+<li><p><strong>source</strong> (<a class="reference internal" href="../../config/config/index.html#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel"><em>SourceModel</em></a>) – the source model, with attached actual source</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the stacked GF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Stream]</p>
 </dd>
 </dl>
 </dd></dl>

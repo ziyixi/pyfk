@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     
   <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,9 +38,13 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="autoapi/index.html" />
+    <link rel="next" title="Installing" href="introduction/install.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -59,6 +65,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item ">
             <a class="nav-link" href="autoapi/index.html">API Reference</a>
@@ -92,6 +106,10 @@
     
   
     <ul class="nav bd-sidenav">
+        
+        
+        
+        
         
         
         
@@ -140,11 +158,11 @@
 <h1>pyfk<a class="headerlink" href="#pyfk" title="Permalink to this headline">¶</a></h1>
 <p>The package pyfk is the python version of <a class="reference external" href="http://www.eas.slu.edu/People/LZhu/home.html">FK</a>.</p>
 <p>The frequency-Wavenumber (FK) is a synthetic seismogram package
-used to calculate the Green’s function and the synthetic waveforms for the 1D Earth model. The first version of FK is developed by Prof. Lupei Zhu in
+used to calculate the Green’s function and the synthetic waveforms of the 1D Earth model. The first version of FK is developed by Prof. Lupei Zhu in
 1996, and the code is written in Fortran, C and a Perl interface.</p>
 <p>Nowadays, it’s usually efficient to do the seismological research based on a python’s workflow,
 with the help of widely used packages such as <a class="reference external" href="http://www.eas.slu.edu/People/LZhu/home.html">Obspy</a>, <a class="reference external" href="https://numpy.org/">Numpy</a> and <a class="reference external" href="https://www.scipy.org/">Scipy</a>.
-It’s also easy to integrate with parallel computing packages such as <a class="reference external" href="https://github.com/mpi4py/mpi4py">mpi4py</a> to do multiple simulations at the same time.</p>
+Python is also easy to integrate with parallel computing packages such as <a class="reference external" href="https://github.com/mpi4py/mpi4py">mpi4py</a> to do multiple simulations at the same time.</p>
 <div class="section" id="about">
 <h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
 <p>🚨 <strong>This package is still undergoing rapid development.</strong> 🚨</p>
@@ -177,6 +195,10 @@ the time of AGU 2020 to refactor my previous work as it’s much slower than FK,
 Ph.D. advisor Prof. Min Chen for supporting my study and research in the US so I can have the time and energy to finish this project.</p>
 <div class="toctree-wrapper compound">
 </div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 
@@ -186,7 +208,7 @@ Ph.D. advisor Prof. Min Chen for supporting my study and research in the US so I
               
               <div class='prev-next-bottom'>
                 
-    <a class='right-next' id="next-link" href="autoapi/index.html" title="next page">API Reference</a>
+    <a class='right-next' id="next-link" href="introduction/install.html" title="next page">Installing</a>
 
               </div>
               

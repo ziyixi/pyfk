@@ -12,9 +12,79 @@ Classes
 
 .. autoapisummary::
 
+   pyfk.config.config.Config
    pyfk.config.config.SeisModel
    pyfk.config.config.SourceModel
-   pyfk.config.config.Config
+
+
+
+.. py:class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[float, float] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50)
+
+   Bases: :class:`object`
+
+   The configuration class used in generating Green's function and the synthetic waveform.
+
+   :param model: the Earth model used in calculation, defaults to None
+   :type model: Optional[SeisModel]
+   :param source: the source model used in calculation, defaults to None
+   :type source: Optional[SourceModel]
+   :param receiver_distance: a list of receiver distance in km, defaults to None
+   :type receiver_distance: Optional[Union[list, np.ndarray]]
+   :param degrees: use degrees instead of km, defaults to False
+   :type degrees: bool, optional
+   :param taper: taper applies a low-pass cosine filter at fc=(1-taper)*f_Niquest, defaults to 0.3
+   :type taper: float, optional
+   :param filter: apply a high-pass filter with a cosine transition zone between freq. f1 and f2 in Hz, defaults to (0, 0)
+   :type filter: Tuple[float, float], optional
+   :param npt: the number of points, defaults to 256
+   :type npt: int, optional
+   :param dt: the sampling interval in seconds, defaults to 1.
+   :type dt: float, optional
+   :param dk: the non-dimensional sampling interval of wavenumber, defaults to 0.3
+   :type dk: float, optional
+   :param smth: makes the final sampling interval to be dt/smth, defaults to 1.
+   :type smth: float, optional
+   :param pmin: the min slownesses in term of 1/vs_at_the_source, defaults to 0.
+   :type pmin: float, optional
+   :param pmax: the max slownesses in term of 1/vs_at_the_source, defaults to 1.
+   :type pmax: float, optional
+   :param kmax: kmax at zero frequency in term of 1/hs, defaults to 15.
+   :type kmax: float, optional
+   :param rdep: the depth for the receivers in km, defaults to 0.
+   :type rdep: float, optional
+   :param updn: "up" for up-going wave only, "down" for down-going wave only, "all" for both "up" and "down", defaults to "all"
+   :type updn: str, optional
+   :param samples_before_first_arrival: the number of points before the first arrival, defaults to 50
+   :type samples_before_first_arrival: int, optional
+   :raises PyfkError: Must provide a list of receiver distance
+   :raises PyfkError: Taper must be with (0,1)
+   :raises PyfkError: Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]
+   :raises PyfkError: npt should be positive.
+   :raises PyfkError: dt should be positive.
+   :raises PyfkError: dk should be within (0,0.5)
+   :raises PyfkError: smth should be positive.
+   :raises PyfkError: pmin should be within [0,1]
+   :raises PyfkError: pmax should be within [0,1]
+   :raises PyfkError: pmin should be smaller than pmax
+   :raises PyfkError: kmax should be larger or equal to 10
+   :raises PyfkError: the selection of phases should be either 'up', 'down' or 'all'
+   :raises PyfkError: samples_before_first_arrival should be positive
+   :raises PyfkError: Must provide a source
+   :raises PyfkError: Must provide a seisModel
+
+   .. method:: __repr__(self) -> str
+
+      Return repr(self).
+
+
+   .. method:: _couple_model_and_source(self) -> None
+
+
+   .. method:: _flattening_func(depth: float) -> float
+      :staticmethod:
+
+
+   .. method:: _insert_intf(self, depth: float) -> int
 
 
 
@@ -22,67 +92,35 @@ Classes
 
    Bases: :class:`object`
 
-   .. method:: th(self) -> np.ndarray
-      :property:
+   SeisModel stores the Earth model
 
-      get the thickness array
+   :param model: numpy.ndarray model: a 2D numpy array storing the information of the 1D earth model, with the same format as FK.
+          model has the following format (in units of km, km/s, g/cm3, each column):
+          thickness vs vp_or_vp/vs [rho Qs Qp]
+          rho=0.77 + 0.32*vp if not provided or the 4th column is larger than 20 (treated as Qs).
+          Qs=500, Qp=2*Qs, if they are not specified.
+          If the first layer thickness is zero, it represents the top elastic half-space.
+          Otherwise, the top half-space is assumed to be vacuum and does not need to be specified.
+          The last layer (i.e. the bottom half space) thickness should be always be zero. (if not, will use 0 anyway), defaults to None
+   :type model: np.ndarray
+   :param flattening: if the model and the source should be flatten, defaults to False
+   :type flattening: bool, optional
+   :param use_kappa: if the third column of the model file is vp/vs ratio, defaults to False
+   :type use_kappa: bool, optional
+   :raises PyfkError: Earth Model must be a 2D numpy array
+   :raises PyfkError: Must provide at least three columns for the model
 
-      :return: the thickness array
-      :rtype: np.ndarray
+   .. method:: __copy__(self)
 
+      make a copy of the current model, and the model numpy file will not be influenced
 
-   .. method:: vs(self) -> np.ndarray
-      :property:
-
-      get the vs array
-
-      :return: the vs array
-      :rtype: np.ndarray
-
-
-   .. method:: vp(self) -> np.ndarray
-      :property:
-
-      get the vp array
-
-      :return: the vp array
-      :rtype: np.ndarray
-
-
-   .. method:: rh(self) -> np.ndarray
-      :property:
-
-      get the density array
-
-      :return: the density array
-      :rtype: np.ndarray
+      :return: the copied SeisModel
+      :rtype: SeisModel
 
 
-   .. method:: qs(self) -> np.ndarray
-      :property:
+   .. method:: __repr__(self) -> str
 
-      get the attenuation qs array
-
-      :return: the attenuation qs array
-      :rtype: np.ndarray
-
-
-   .. method:: qp(self) -> np.ndarray
-      :property:
-
-      get the attenuation qp array
-
-      :return: the attenuation qp array
-      :rtype: np.ndarray
-
-
-   .. method:: flattening(self) -> bool
-      :property:
-
-      get the flatten status of the model
-
-      :return: the flatten status of the model
-      :rtype: bool
+      Return repr(self).
 
 
    .. method:: add_layer(self, dd: float, idep: int) -> None
@@ -95,23 +133,140 @@ Classes
       :type idep: int
 
 
+   .. method:: flattening(self) -> bool
+      :property:
+
+      get the flatten status of the model
+
+      :return: the flatten status of the model
+      :rtype: bool
+
+
+   .. method:: qp(self) -> np.ndarray
+      :property:
+
+      get the attenuation qp array
+
+      :return: the attenuation qp array
+      :rtype: np.ndarray
+
+
+   .. method:: qs(self) -> np.ndarray
+      :property:
+
+      get the attenuation qs array
+
+      :return: the attenuation qs array
+      :rtype: np.ndarray
+
+
    .. method:: remove_topo(self) -> None
 
       make the thickness for the first later to be 0 when the thickness is smaller than 0.
 
 
-   .. method:: __copy__(self)
+   .. method:: rh(self) -> np.ndarray
+      :property:
 
-      make a copy of the current model, and the model numpy file will not be influenced
+      get the density array
 
-      :return: the copied SeisModel
-      :rtype: SeisModel
+      :return: the density array
+      :rtype: np.ndarray
+
+
+   .. method:: th(self) -> np.ndarray
+      :property:
+
+      get the thickness array
+
+      :return: the thickness array
+      :rtype: np.ndarray
+
+
+   .. method:: vp(self) -> np.ndarray
+      :property:
+
+      get the vp array
+
+      :return: the vp array
+      :rtype: np.ndarray
+
+
+   .. method:: vs(self) -> np.ndarray
+      :property:
+
+      get the vs array
+
+      :return: the vs array
+      :rtype: np.ndarray
 
 
 
 .. py:class:: SourceModel(sdep: float = 0.0, srcType: str = 'dc', source_mechanism: Optional[Union[list, np.ndarray]] = None)
 
    Bases: :class:`object`
+
+   the information about the the source used in the FK
+
+   :param sdep: the depth of the source (km), and it should not be located between the interfaces of the Earth model, defaults to 0
+   :type sdep: float
+   :param srcType: the source type, can be ep (explosion), sf (single force) or dc (double couple), defaults to "dc"
+   :type srcType: str, optional
+   :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events), defaults to None
+   :type source_mechanism: Optional[Union[list, np.ndarray]], optional
+   :raises PyfkError: [description]
+
+   .. method:: __repr__(self) -> str
+
+      Return repr(self).
+
+
+   .. method:: _update_source_mechanism(self, source_mechanism: Optional[Union[list, np.ndarray]])
+
+      the internal function to update the source mechanism information
+
+      :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)
+      :type source_mechanism: Optional[Union[list, np.ndarray]]
+      :raises PyfkError: source_mechanism should be a 1D array
+      :raises PyfkError: length of source_mechanism is not correct
+      :raises PyfkError: source_mechanism must be None, a list or numpy.ndarray
+
+
+   .. method:: calculate_radiation_pattern(self, az: float) -> None
+
+      calculate the radiation pattern 3*3 array
+
+      :param az: station azimuth in degree measured from the North (clockwise)
+      :type az: float
+      :raises PyfkError: length of source_mechanism must be 1, 3, 4, 7
+
+
+   .. method:: m0(self) -> float
+      :property:
+
+      get the value associated with the magnitude in FK
+
+      :return: the value associated with the magnitude in FK
+      :rtype: float
+
+
+   .. method:: nn(self) -> int
+      :property:
+
+      get the value associated with the source type
+
+      :return: the value associated with the source type
+      :rtype: int
+
+
+   .. method:: rad(self) -> np.ndarray
+      :property:
+
+      get the radiation pattern
+
+      :return: the radiation pattern
+      :rtype: np.ndarray
+
 
    .. method:: sdep(self) -> float
       :property:
@@ -131,53 +286,6 @@ Classes
       :rtype: str
 
 
-   .. method:: nn(self) -> int
-      :property:
-
-      get the value associated with the source type
-
-      :return: the value associated with the source type
-      :rtype: int
-
-
-   .. method:: m0(self) -> float
-      :property:
-
-      get the value associated with the magnitude in FK
-
-      :return: the value associated with the magnitude in FK
-      :rtype: float
-
-
-   .. method:: rad(self) -> np.ndarray
-      :property:
-
-      get the radiation pattern
-
-      :return: the radiation pattern
-      :rtype: np.ndarray
-
-
-   .. method:: calculate_radiation_pattern(self, az: float) -> None
-
-      calculate the radiation pattern 3*3 array
-
-      :param az: station azimuth in degree measured from the North (clockwise)
-      :type az: float
-      :raises PyfkError: length of source_mechanism must be 1, 3, 4, 7
-
-
-   .. method:: _update_source_mechanism(self, source_mechanism: Optional[Union[list, np.ndarray]])
-
-      the internal function to update the source mechanism information
-
-      :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)
-      :type source_mechanism: Optional[Union[list, np.ndarray]]
-      :raises PyfkError: source_mechanism should be a 1D array
-      :raises PyfkError: length of source_mechanism is not correct
-      :raises PyfkError: source_mechanism must be None, a list or numpy.ndarray
-
-
    .. method:: update_source_mechanism(self, source_mechanism: Union[list, np.ndarray, Event])
 
       update the source mechanism information after creation of the SourceModel
@@ -185,21 +293,6 @@ Classes
       :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)
       :type source_mechanism: Union[list, np.ndarray, Event]
       :raises PyfkError: source mechanism couldn't be None
-
-
-
-.. py:class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[float, float] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50)
-
-   Bases: :class:`object`
-
-   .. method:: _couple_model_and_source(self) -> None
-
-
-   .. method:: _flattening_func(depth: float) -> float
-      :staticmethod:
-
-
-   .. method:: _insert_intf(self, depth: float) -> int
 
 
 

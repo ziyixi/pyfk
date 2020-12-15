@@ -12,72 +12,9 @@ Classes
 
 .. autoapisummary::
 
+   pyfk.tests.config.test_config.TestClassConfig
    pyfk.tests.config.test_config.TestClassSeisModel
    pyfk.tests.config.test_config.TestClassSourceModel
-   pyfk.tests.config.test_config.TestClassConfig
-
-
-
-.. py:class:: TestClassSeisModel
-
-   Bases: :class:`object`
-
-   .. attribute:: test_model_6column
-      
-
-      
-
-   .. method:: test_init_noflattening_nokappa_6column(self)
-
-
-   .. method:: test_init_noflattening_kappa_6column(self)
-
-
-   .. method:: test_init_flattening_nokappa_6column(self)
-
-
-   .. method:: test_init_flattening_kappa_6column(self)
-
-
-   .. method:: test_init_noflattening_nokappa_5column(self)
-
-
-   .. method:: test_init_noflattening_nokappa_4column_normal(self)
-
-
-   .. method:: test_init_noflattening_nokappa_3column(self)
-
-
-   .. method:: test_init_noflattening_nokappa_4column_abnormal(self)
-
-
-   .. method:: test_get_attribute(self)
-
-
-   .. method:: test_catch_exceptions(self)
-
-
-   .. method:: test_copy(self)
-
-
-   .. method:: test_remove_topo(self)
-
-
-   .. method:: test_add_layer(self)
-
-
-
-.. py:class:: TestClassSourceModel
-
-   Bases: :class:`object`
-
-   .. method:: test_init(self)
-
-
-   .. method:: test_set_sdep(self)
-
-
-   .. method:: test_catch_exceptions(self)
 
 
 
@@ -90,7 +27,7 @@ Classes
 
       
 
-   .. method:: test_init(self)
+   .. method:: test__flattening(self)
 
 
    .. method:: test_catch_exceptions(self)
@@ -99,16 +36,79 @@ Classes
    .. method:: test_catch_warning(self)
 
 
-   .. method:: test__flattening(self)
+   .. method:: test_free_surface(self)
+
+
+   .. method:: test_init(self)
+
+
+   .. method:: test_radiation_pattern(self)
 
 
    .. method:: test_topo(self)
 
 
-   .. method:: test_free_surface(self)
+
+.. py:class:: TestClassSeisModel
+
+   Bases: :class:`object`
+
+   .. attribute:: test_model_6column
+      
+
+      
+
+   .. method:: test_add_layer(self)
 
 
-   .. method:: test_radiation_pattern(self)
+   .. method:: test_catch_exceptions(self)
+
+
+   .. method:: test_copy(self)
+
+
+   .. method:: test_get_attribute(self)
+
+
+   .. method:: test_init_flattening_kappa_6column(self)
+
+
+   .. method:: test_init_flattening_nokappa_6column(self)
+
+
+   .. method:: test_init_noflattening_kappa_6column(self)
+
+
+   .. method:: test_init_noflattening_nokappa_3column(self)
+
+
+   .. method:: test_init_noflattening_nokappa_4column_abnormal(self)
+
+
+   .. method:: test_init_noflattening_nokappa_4column_normal(self)
+
+
+   .. method:: test_init_noflattening_nokappa_5column(self)
+
+
+   .. method:: test_init_noflattening_nokappa_6column(self)
+
+
+   .. method:: test_remove_topo(self)
+
+
+
+.. py:class:: TestClassSourceModel
+
+   Bases: :class:`object`
+
+   .. method:: test_catch_exceptions(self)
+
+
+   .. method:: test_init(self)
+
+
+   .. method:: test_set_sdep(self)
 
 
 

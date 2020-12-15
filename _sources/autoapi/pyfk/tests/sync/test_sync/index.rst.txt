@@ -20,10 +20,14 @@ Classes
 
    Bases: :class:`object`
 
-   .. method:: test_prem(self)
+   .. method:: get_sample_gcmt_file_path()
+      :staticmethod:
 
 
    .. method:: test_exceptions(self)
+
+
+   .. method:: test_prem(self)
 
 
 

@@ -14,8 +14,8 @@ Functions
 .. autoapisummary::
 
    pyfk.config.radiats.dc_radiat
-   pyfk.config.radiats.sf_radiat
    pyfk.config.radiats.mt_radiat
+   pyfk.config.radiats.sf_radiat
 
 
 .. function:: dc_radiat(stk: float, dip: float, rak: float) -> np.ndarray
@@ -32,6 +32,17 @@ Functions
    :rtype: np.ndarray
 
 
+.. function:: mt_radiat(az: float, m: np.ndarray) -> np.ndarray
+
+   calculate the radiation pattern providing a moment tensor in the order of x, y, z (NED coordinate, already converted from RTP coordinate)
+   :param az: azimuthal angle
+   :type az: float
+   :param m: moment tensor matrix (0 means symmetric)
+   :type m: np.ndarray
+   :return: the radiation pattern matrix
+   :rtype: np.ndarray
+
+
 .. function:: sf_radiat(stk: float, dip: float) -> np.ndarray
 
    calculate the radiation pattern for single force source.
@@ -40,17 +51,6 @@ Functions
    :type stk: float
    :param dip: dip
    :type dip: float
-   :return: the radiation pattern matrix
-   :rtype: np.ndarray
-
-
-.. function:: mt_radiat(az: float, m: np.ndarray) -> np.ndarray
-
-   calculate the radiation pattern providing a moment tensor in the order of x, y, z (NED coordinate, already converted from RTP coordinate)
-   :param az: azimuthal angle
-   :type az: float
-   :param m: moment tensor matrix (0 means symmetric)
-   :type m: np.ndarray
    :return: the radiation pattern matrix
    :rtype: np.ndarray
 

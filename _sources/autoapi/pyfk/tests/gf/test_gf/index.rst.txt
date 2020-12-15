@@ -20,11 +20,14 @@ Classes
 
    Bases: :class:`object`
 
+   .. method:: test_big_array(self)
+
+
+   .. method:: test_filter(self)
+
+
    .. method:: test_hk()
       :staticmethod:
-
-
-   .. method:: test_big_array(self)
 
 
    .. method:: test_prem_ep(self)
@@ -36,13 +39,10 @@ Classes
    .. method:: test_receiver_deeper(self)
 
 
-   .. method:: test_static_source(self)
-
-
    .. method:: test_smth(self)
 
 
-   .. method:: test_filter(self)
+   .. method:: test_static_source(self)
 
 
 

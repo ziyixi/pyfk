@@ -7,6 +7,11 @@
 Module Contents
 ---------------
 
+.. data:: EPSILON
+   :annotation: :float = 0.0001
+
+   
+
 .. data:: R_EARTH
    :annotation: :float = 6371.0
 
@@ -14,11 +19,6 @@ Module Contents
 
 .. data:: SIGMA
    :annotation: :float = 2.0
-
-   
-
-.. data:: EPSILON
-   :annotation: :float = 0.0001
 
    
 

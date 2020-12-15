@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     
   <link rel="preload" as="script" href="../../../../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,6 +38,10 @@
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
     <script src="../../../../../_static/language_data.js"></script>
+    <script src="../../../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="pyfk.tests.gf" href="../../gf/index.html" />
@@ -60,6 +66,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item active">
             <a class="nav-link" href="../../../../index.html">API Reference</a>
@@ -95,6 +109,10 @@
     <ul class="nav bd-sidenav">
         
         
+        
+        
+        
+        
           
             
                 <li class="active">
@@ -127,86 +145,6 @@
             <a href="#classes" class="nav-link">Classes</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h4">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel" class="nav-link">TestClassSeisModel</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_model_6column" class="nav-link">test_model_6column</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_6column" class="nav-link">test_init_noflattening_nokappa_6column</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_kappa_6column" class="nav-link">test_init_noflattening_kappa_6column</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_nokappa_6column" class="nav-link">test_init_flattening_nokappa_6column</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_kappa_6column" class="nav-link">test_init_flattening_kappa_6column</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_5column" class="nav-link">test_init_noflattening_nokappa_5column</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_normal" class="nav-link">test_init_noflattening_nokappa_4column_normal</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_3column" class="nav-link">test_init_noflattening_nokappa_3column</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal" class="nav-link">test_init_noflattening_nokappa_4column_abnormal</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_get_attribute" class="nav-link">test_get_attribute</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_catch_exceptions" class="nav-link">test_catch_exceptions</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_copy" class="nav-link">test_copy</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_remove_topo" class="nav-link">test_remove_topo</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_add_layer" class="nav-link">test_add_layer</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#pyfk.tests.config.test_config.TestClassSourceModel" class="nav-link">TestClassSourceModel</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSourceModel.test_init" class="nav-link">test_init</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSourceModel.test_set_sdep" class="nav-link">test_set_sdep</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassSourceModel.test_catch_exceptions" class="nav-link">test_catch_exceptions</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h4">
             <a href="#pyfk.tests.config.test_config.TestClassConfig" class="nav-link">TestClassConfig</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h5">
@@ -214,7 +152,7 @@
         </li>
     
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassConfig.test_init" class="nav-link">test_init</a>
+            <a href="#pyfk.tests.config.test_config.TestClassConfig.test__flattening" class="nav-link">test__flattening</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
@@ -226,19 +164,99 @@
         </li>
     
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassConfig.test__flattening" class="nav-link">test__flattening</a>
+            <a href="#pyfk.tests.config.test_config.TestClassConfig.test_free_surface" class="nav-link">test_free_surface</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassConfig.test_init" class="nav-link">test_init</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassConfig.test_radiation_pattern" class="nav-link">test_radiation_pattern</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
             <a href="#pyfk.tests.config.test_config.TestClassConfig.test_topo" class="nav-link">test_topo</a>
         </li>
     
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel" class="nav-link">TestClassSeisModel</a><ul class="nav section-nav flex-column">
+                
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassConfig.test_free_surface" class="nav-link">test_free_surface</a>
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_model_6column" class="nav-link">test_model_6column</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.config.test_config.TestClassConfig.test_radiation_pattern" class="nav-link">test_radiation_pattern</a>
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_add_layer" class="nav-link">test_add_layer</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_catch_exceptions" class="nav-link">test_catch_exceptions</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_copy" class="nav-link">test_copy</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_get_attribute" class="nav-link">test_get_attribute</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_kappa_6column" class="nav-link">test_init_flattening_kappa_6column</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_nokappa_6column" class="nav-link">test_init_flattening_nokappa_6column</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_kappa_6column" class="nav-link">test_init_noflattening_kappa_6column</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_3column" class="nav-link">test_init_noflattening_nokappa_3column</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal" class="nav-link">test_init_noflattening_nokappa_4column_abnormal</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_normal" class="nav-link">test_init_noflattening_nokappa_4column_normal</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_5column" class="nav-link">test_init_noflattening_nokappa_5column</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_6column" class="nav-link">test_init_noflattening_nokappa_6column</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSeisModel.test_remove_topo" class="nav-link">test_remove_topo</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.tests.config.test_config.TestClassSourceModel" class="nav-link">TestClassSourceModel</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSourceModel.test_catch_exceptions" class="nav-link">test_catch_exceptions</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSourceModel.test_init" class="nav-link">test_init</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.config.test_config.TestClassSourceModel.test_set_sdep" class="nav-link">test_set_sdep</a>
         </li>
     
             </ul>
@@ -275,114 +293,17 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.tests.config.test_config.TestClassSeisModel" title="pyfk.tests.config.test_config.TestClassSeisModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestClassSeisModel</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.tests.config.test_config.TestClassSourceModel" title="pyfk.tests.config.test_config.TestClassSourceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestClassSourceModel</span></code></a></p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.tests.config.test_config.TestClassConfig" title="pyfk.tests.config.test_config.TestClassConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestClassConfig</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.tests.config.test_config.TestClassSeisModel" title="pyfk.tests.config.test_config.TestClassSeisModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestClassSeisModel</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.tests.config.test_config.TestClassSourceModel" title="pyfk.tests.config.test_config.TestClassSourceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestClassSourceModel</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py class">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel">
-<em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.config.test_config.</code><code class="sig-name descname">TestClassSeisModel</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_model_6column">
-<code class="sig-name descname">test_model_6column</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_model_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_model_6column" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_6column">
-<code class="sig-name descname">test_init_noflattening_nokappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_6column" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_kappa_6column">
-<code class="sig-name descname">test_init_noflattening_kappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_kappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_kappa_6column" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_nokappa_6column">
-<code class="sig-name descname">test_init_flattening_nokappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_flattening_nokappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_nokappa_6column" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_kappa_6column">
-<code class="sig-name descname">test_init_flattening_kappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_flattening_kappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_kappa_6column" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_5column">
-<code class="sig-name descname">test_init_noflattening_nokappa_5column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_5column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_5column" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_normal">
-<code class="sig-name descname">test_init_noflattening_nokappa_4column_normal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_4column_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_normal" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_3column">
-<code class="sig-name descname">test_init_noflattening_nokappa_3column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_3column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_3column" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal">
-<code class="sig-name descname">test_init_noflattening_nokappa_4column_abnormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_get_attribute">
-<code class="sig-name descname">test_get_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_get_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_get_attribute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_catch_exceptions">
-<code class="sig-name descname">test_catch_exceptions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_catch_exceptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_catch_exceptions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_copy">
-<code class="sig-name descname">test_copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_copy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_remove_topo">
-<code class="sig-name descname">test_remove_topo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_remove_topo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_remove_topo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_add_layer">
-<code class="sig-name descname">test_add_layer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_add_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_add_layer" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="pyfk.tests.config.test_config.TestClassSourceModel">
-<em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.config.test_config.</code><code class="sig-name descname">TestClassSourceModel</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSourceModel.test_init">
-<code class="sig-name descname">test_init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel.test_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel.test_init" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSourceModel.test_set_sdep">
-<code class="sig-name descname">test_set_sdep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel.test_set_sdep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel.test_set_sdep" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassSourceModel.test_catch_exceptions">
-<code class="sig-name descname">test_catch_exceptions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel.test_catch_exceptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel.test_catch_exceptions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 <dl class="py class">
 <dt id="pyfk.tests.config.test_config.TestClassConfig">
 <em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.config.test_config.</code><code class="sig-name descname">TestClassConfig</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig" title="Permalink to this definition">¶</a></dt>
@@ -393,8 +314,8 @@
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassConfig.test_init">
-<code class="sig-name descname">test_init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test_init" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.config.test_config.TestClassConfig.test__flattening">
+<code class="sig-name descname">test__flattening</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test__flattening"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test__flattening" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -408,8 +329,18 @@
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassConfig.test__flattening">
-<code class="sig-name descname">test__flattening</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test__flattening"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test__flattening" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.config.test_config.TestClassConfig.test_free_surface">
+<code class="sig-name descname">test_free_surface</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test_free_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test_free_surface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassConfig.test_init">
+<code class="sig-name descname">test_init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassConfig.test_radiation_pattern">
+<code class="sig-name descname">test_radiation_pattern</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test_radiation_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test_radiation_pattern" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -417,14 +348,101 @@
 <code class="sig-name descname">test_topo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test_topo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test_topo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassConfig.test_free_surface">
-<code class="sig-name descname">test_free_surface</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test_free_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test_free_surface" title="Permalink to this definition">¶</a></dt>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel">
+<em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.config.test_config.</code><code class="sig-name descname">TestClassSeisModel</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_model_6column">
+<code class="sig-name descname">test_model_6column</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_model_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_model_6column" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.tests.config.test_config.TestClassConfig.test_radiation_pattern">
-<code class="sig-name descname">test_radiation_pattern</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassConfig.test_radiation_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassConfig.test_radiation_pattern" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_add_layer">
+<code class="sig-name descname">test_add_layer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_add_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_add_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_catch_exceptions">
+<code class="sig-name descname">test_catch_exceptions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_catch_exceptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_catch_exceptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_copy">
+<code class="sig-name descname">test_copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_get_attribute">
+<code class="sig-name descname">test_get_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_get_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_get_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_kappa_6column">
+<code class="sig-name descname">test_init_flattening_kappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_flattening_kappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_kappa_6column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_nokappa_6column">
+<code class="sig-name descname">test_init_flattening_nokappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_flattening_nokappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_flattening_nokappa_6column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_kappa_6column">
+<code class="sig-name descname">test_init_noflattening_kappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_kappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_kappa_6column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_3column">
+<code class="sig-name descname">test_init_noflattening_nokappa_3column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_3column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_3column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal">
+<code class="sig-name descname">test_init_noflattening_nokappa_4column_abnormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_abnormal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_normal">
+<code class="sig-name descname">test_init_noflattening_nokappa_4column_normal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_4column_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_4column_normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_5column">
+<code class="sig-name descname">test_init_noflattening_nokappa_5column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_5column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_5column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_6column">
+<code class="sig-name descname">test_init_noflattening_nokappa_6column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_init_noflattening_nokappa_6column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_init_noflattening_nokappa_6column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSeisModel.test_remove_topo">
+<code class="sig-name descname">test_remove_topo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSeisModel.test_remove_topo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSeisModel.test_remove_topo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyfk.tests.config.test_config.TestClassSourceModel">
+<em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.config.test_config.</code><code class="sig-name descname">TestClassSourceModel</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSourceModel.test_catch_exceptions">
+<code class="sig-name descname">test_catch_exceptions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel.test_catch_exceptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel.test_catch_exceptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSourceModel.test_init">
+<code class="sig-name descname">test_init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel.test_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel.test_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.config.test_config.TestClassSourceModel.test_set_sdep">
+<code class="sig-name descname">test_set_sdep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/config/test_config.html#TestClassSourceModel.test_set_sdep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.config.test_config.TestClassSourceModel.test_set_sdep" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

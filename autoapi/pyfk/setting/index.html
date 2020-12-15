@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     
   <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,6 +38,10 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="prev" title="pyfk.utils.error_message" href="../utils/error_message/index.html" />
@@ -59,6 +65,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item active">
             <a class="nav-link" href="../../index.html">API Reference</a>
@@ -94,6 +108,10 @@
     <ul class="nav bd-sidenav">
         
         
+        
+        
+        
+        
           
             
                 <li class="active">
@@ -123,15 +141,15 @@
             <a href="#module-contents" class="nav-link">Module Contents</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h3">
+            <a href="#pyfk.setting.EPSILON" class="nav-link">EPSILON</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
             <a href="#pyfk.setting.R_EARTH" class="nav-link">R_EARTH</a>
         </li>
     
         <li class="nav-item toc-entry toc-h3">
             <a href="#pyfk.setting.SIGMA" class="nav-link">SIGMA</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#pyfk.setting.EPSILON" class="nav-link">EPSILON</a>
         </li>
     
             </ul>
@@ -155,6 +173,11 @@
 <div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 <dl class="py data">
+<dt id="pyfk.setting.EPSILON">
+<code class="sig-prename descclassname">pyfk.setting.</code><code class="sig-name descname">EPSILON</code><em class="property"> :float = 0.0001</em><a class="reference internal" href="../../../_modules/pyfk/setting.html#EPSILON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.setting.EPSILON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
 <dt id="pyfk.setting.R_EARTH">
 <code class="sig-prename descclassname">pyfk.setting.</code><code class="sig-name descname">R_EARTH</code><em class="property"> :float = 6371.0</em><a class="reference internal" href="../../../_modules/pyfk/setting.html#R_EARTH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.setting.R_EARTH" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -162,11 +185,6 @@
 <dl class="py data">
 <dt id="pyfk.setting.SIGMA">
 <code class="sig-prename descclassname">pyfk.setting.</code><code class="sig-name descname">SIGMA</code><em class="property"> :float = 2.0</em><a class="reference internal" href="../../../_modules/pyfk/setting.html#SIGMA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.setting.SIGMA" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt id="pyfk.setting.EPSILON">
-<code class="sig-prename descclassname">pyfk.setting.</code><code class="sig-name descname">EPSILON</code><em class="property"> :float = 0.0001</em><a class="reference internal" href="../../../_modules/pyfk/setting.html#EPSILON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.setting.EPSILON" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

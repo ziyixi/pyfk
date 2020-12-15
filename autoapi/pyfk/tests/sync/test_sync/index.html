@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     
   <link rel="preload" as="script" href="../../../../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,6 +38,10 @@
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
     <script src="../../../../../_static/language_data.js"></script>
+    <script src="../../../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="pyfk.tests.taup" href="../../taup/index.html" />
@@ -60,6 +66,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item active">
             <a class="nav-link" href="../../../../index.html">API Reference</a>
@@ -93,6 +107,10 @@
     
   
     <ul class="nav bd-sidenav">
+        
+        
+        
+        
         
         
           
@@ -130,11 +148,15 @@
             <a href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync" class="nav-link">TestFunctionCalculateSync</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_prem" class="nav-link">test_prem</a>
+            <a href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.get_sample_gcmt_file_path" class="nav-link">get_sample_gcmt_file_path</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
             <a href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_exceptions" class="nav-link">test_exceptions</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_prem" class="nav-link">test_prem</a>
         </li>
     
             </ul>
@@ -181,13 +203,18 @@
 <em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.sync.test_sync.</code><code class="sig-name descname">TestFunctionCalculateSync</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/sync/test_sync.html#TestFunctionCalculateSync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt id="pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_prem">
-<code class="sig-name descname">test_prem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/sync/test_sync.html#TestFunctionCalculateSync.test_prem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_prem" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.sync.test_sync.TestFunctionCalculateSync.get_sample_gcmt_file_path">
+<em class="property">static </em><code class="sig-name descname">get_sample_gcmt_file_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/sync/test_sync.html#TestFunctionCalculateSync.get_sample_gcmt_file_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.get_sample_gcmt_file_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_exceptions">
 <code class="sig-name descname">test_exceptions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/sync/test_sync.html#TestFunctionCalculateSync.test_exceptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_exceptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_prem">
+<code class="sig-name descname">test_prem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/sync/test_sync.html#TestFunctionCalculateSync.test_prem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.sync.test_sync.TestFunctionCalculateSync.test_prem" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

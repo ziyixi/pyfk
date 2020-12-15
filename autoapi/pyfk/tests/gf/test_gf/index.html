@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     
   <link rel="preload" as="script" href="../../../../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,6 +38,10 @@
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
     <script src="../../../../../_static/language_data.js"></script>
+    <script src="../../../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="pyfk.tests.sync" href="../../sync/index.html" />
@@ -60,6 +66,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item active">
             <a class="nav-link" href="../../../../index.html">API Reference</a>
@@ -93,6 +107,10 @@
     
   
     <ul class="nav bd-sidenav">
+        
+        
+        
+        
         
         
           
@@ -130,11 +148,15 @@
             <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf" class="nav-link">TestFunctioncalculateGf</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk" class="nav-link">test_hk</a>
+            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array" class="nav-link">test_big_array</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array" class="nav-link">test_big_array</a>
+            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter" class="nav-link">test_filter</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h5">
+            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk" class="nav-link">test_hk</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
@@ -150,15 +172,11 @@
         </li>
     
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source" class="nav-link">test_static_source</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h5">
             <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_smth" class="nav-link">test_smth</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter" class="nav-link">test_filter</a>
+            <a href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source" class="nav-link">test_static_source</a>
         </li>
     
             </ul>
@@ -205,13 +223,18 @@
 <em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.gf.test_gf.</code><code class="sig-name descname">TestFunctioncalculateGf</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk">
-<em class="property">static </em><code class="sig-name descname">test_hk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_hk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array">
+<code class="sig-name descname">test_big_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_big_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array">
-<code class="sig-name descname">test_big_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_big_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter">
+<code class="sig-name descname">test_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk">
+<em class="property">static </em><code class="sig-name descname">test_hk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_hk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -230,18 +253,13 @@
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source">
-<code class="sig-name descname">test_static_source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_static_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_smth">
 <code class="sig-name descname">test_smth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_smth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_smth" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter">
-<code class="sig-name descname">test_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source">
+<code class="sig-name descname">test_static_source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf.html#TestFunctioncalculateGf.test_static_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

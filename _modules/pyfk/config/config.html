@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     
   <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -36,6 +38,10 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -58,6 +64,14 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../introduction/tutorial.html">Tutorial</a>
+        </li>
         
         <li class="nav-item ">
             <a class="nav-link" href="../../../autoapi/index.html">API Reference</a>
@@ -91,6 +105,10 @@
     
   
     <ul class="nav bd-sidenav">
+        
+        
+        
+        
         
         
         
@@ -323,7 +341,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_instance</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="n">new_instance</span><span class="o">.</span><span class="n">flattening</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flattening</span>
-        <span class="k">return</span> <span class="n">new_instance</span></div></div>
+        <span class="k">return</span> <span class="n">new_instance</span></div>
+
+<div class="viewcode-block" id="SeisModel.__repr__"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SeisModel(layers=</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, flattening=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">flattening</span><span class="si">}</span><span class="s2">)&quot;</span></div></div>
 
 
 <div class="viewcode-block" id="SourceModel"><a class="viewcode-back" href="../../../autoapi/pyfk/index.html#pyfk.config.config.SourceModel">[docs]</a><span class="k">class</span> <span class="nc">SourceModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -347,6 +368,7 @@
             <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span>
                 <span class="s2">&quot;Source type should be one of &#39;dc&#39;, &#39;sf&#39;, or &#39;ep&#39;.&quot;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_source_mechanism</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -503,7 +525,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">source_mechanism</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;source mechanism couldn&#39;t be None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_source_mechanism</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_source_mechanism</span><span class="p">(</span><span class="n">source_mechanism</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SourceModel.__repr__"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SourceModel.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SourceModel(sdep=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sdep</span><span class="si">}</span><span class="s2">, srcType=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">srcType</span><span class="si">}</span><span class="s2">, source_mechanism=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_mechanism</span><span class="si">}</span><span class="s2">)&quot;</span></div></div>
 
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../../autoapi/pyfk/index.html#pyfk.config.config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -698,7 +723,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">sdep</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rdep</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">th</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">remove_topo</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">idep</span> <span class="o">+</span> <span class="mi">1</span></div></div>
+        <span class="k">return</span> <span class="n">idep</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Config.__repr__"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.Config.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Config(model=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="si">}</span><span class="s2">, source=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="si">}</span><span class="s2">, receiver_distance=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">receiver_distance</span><span class="si">}</span><span class="s2">, taper=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">taper</span><span class="si">}</span><span class="s2">, filter=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="si">}</span><span class="s2">, npt=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">npt</span><span class="si">}</span><span class="s2">, dt=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="si">}</span><span class="s2">, dk=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dk</span><span class="si">}</span><span class="s2">, smth=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">smth</span><span class="si">}</span><span class="s2">, pmin=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pmin</span><span class="si">}</span><span class="s2">, pmax=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pmax</span><span class="si">}</span><span class="s2">, kmax=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kmax</span><span class="si">}</span><span class="s2">, rdep=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rdep</span><span class="si">}</span><span class="s2">, updn=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">updn</span><span class="si">}</span><span class="s2">, samples_before_first_arrival=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">samples_before_first_arrival</span><span class="si">}</span><span class="s2">)&quot;</span></div></div>
 </pre></div>
 
               </div>

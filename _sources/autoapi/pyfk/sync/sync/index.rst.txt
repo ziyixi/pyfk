@@ -14,8 +14,8 @@ Functions
 .. autoapisummary::
 
    pyfk.sync.sync.calculate_sync
-   pyfk.sync.sync.sync_calculate_gf
    pyfk.sync.sync.generate_source_time_function
+   pyfk.sync.sync.sync_calculate_gf
 
 
 .. function:: calculate_sync(gf: Union[List[Stream], Stream], config: Config, az: Union[float, int] = 0, source_time_function: Optional[Trace] = None) -> List[Stream]
@@ -38,18 +38,6 @@ Functions
    :rtype: List[Stream]
 
 
-.. function:: sync_calculate_gf(gf: List[Stream], source: SourceModel) -> List[Stream]
-
-   stack three the GF into three components based on the radiation pattern
-
-   :param gf: the calculated GF
-   :type gf: List[Stream]
-   :param source: the source model, with attached actual source
-   :type source: SourceModel
-   :return: the stacked GF
-   :rtype: List[Stream]
-
-
 .. function:: generate_source_time_function(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) -> Trace
 
    [summary]
@@ -62,5 +50,17 @@ Functions
    :type delta: float, optional
    :return: [description]
    :rtype: Trace
+
+
+.. function:: sync_calculate_gf(gf: List[Stream], source: SourceModel) -> List[Stream]
+
+   stack three the GF into three components based on the radiation pattern
+
+   :param gf: the calculated GF
+   :type gf: List[Stream]
+   :param source: the source model, with attached actual source
+   :type source: SourceModel
+   :return: the stacked GF
+   :rtype: List[Stream]
 
 

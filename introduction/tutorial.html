@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorial &#8212; pyfk 0.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../autoapi/index.html" />
+    <link rel="prev" title="Installing" href="install.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="">Tutorial</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../autoapi/index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+          
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#configurations" class="nav-link">Configurations</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#calculate-green-s-function" class="nav-link">Calculate Green’s function</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#generate-synthetic-waveform" class="nav-link">Generate synthetic waveform</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, I will introduce the basic usage of <code class="docutils literal notranslate"><span class="pre">pyfk</span></code>. The package <code class="docutils literal notranslate"><span class="pre">pyfk</span></code> can be divided into three parts, the configuration part, the Green’s function calculation part, and the synthetic waveform generation part.</p>
+<div class="section" id="configurations">
+<h2>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h2>
+<p>At the first step, we should generate three instances from the configuration classes including <code class="docutils literal notranslate"><span class="pre">SourceModel</span></code>, <code class="docutils literal notranslate"><span class="pre">SeisModel</span></code>, and <code class="docutils literal notranslate"><span class="pre">Config</span></code>. For details of these classes, you can refer to <a class="reference internal" href="../autoapi/pyfk/config/config/index.html#module-pyfk.config.config"><span class="std std-ref">pyfk.config.config</span></a>. Note the
+three classes have been imported into the upper-most level of the package, so you can directly import them:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyfk</span> <span class="kn">import</span> <span class="n">SourceModel</span><span class="p">,</span> <span class="n">SeisModel</span><span class="p">,</span> <span class="n">Config</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">SourceModel</span></code> contains the information of the earthquake depth, the source type, and the source mechanism. When calculating the Green’s function,
+there is no need to specify the source mechanism (but you can provide one anyway), so you can:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">srcType</span><span class="o">=</span><span class="s2">&quot;dc&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">source_prem</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>SourceModel(sdep=16.5, srcType=dc, source_mechanism=None)
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">source_prem</span></code> is a <code class="docutils literal notranslate"><span class="pre">SourceModel</span></code> that the depth is 16.5km, and the source type is double-couple.</p>
+<p>And you will also need to define the velocity and attenuation model. The model contains the information of the thickness, the S wave speed <span class="math notranslate nohighlight">\(V_s\)</span>, the P wave speed <span class="math notranslate nohighlight">\(V_p\)</span>, the
+density <span class="math notranslate nohighlight">\(\rho\)</span>, and the attenuation <span class="math notranslate nohighlight">\(Q_s\)</span> and <span class="math notranslate nohighlight">\(Q_p\)</span>. To initialize the <code class="docutils literal notranslate"><span class="pre">SeisModel</span></code>, we have to prepare a numpy array that stores the model information.
+The model is a 2D numpy array following the same format as in <code class="docutils literal notranslate"><span class="pre">FK</span></code>, and you can directly use <code class="docutils literal notranslate"><span class="pre">np.loadtxt</span></code> to load the model file in <code class="docutils literal notranslate"><span class="pre">FK</span></code>. Each row in the model represents
+a layer and the columns are for <span class="math notranslate nohighlight">\(thickness\)</span> , <span class="math notranslate nohighlight">\(V_s\)</span> , <span class="math notranslate nohighlight">\(V_p\)</span> , <span class="math notranslate nohighlight">\(\rho\)</span> , <span class="math notranslate nohighlight">\(Q_s\)</span> , <span class="math notranslate nohighlight">\(Q_p\)</span> . Similar to <code class="docutils literal notranslate"><span class="pre">FK</span></code>, you can use less than 6 columns. For the detail
+of the model setting, you can refer to <code class="docutils literal notranslate"><span class="pre">SeisModel</span></code> in <a class="reference internal" href="../autoapi/pyfk/config/config/index.html#module-pyfk.config.config"><span class="std std-ref">pyfk.config.config</span></a>.</p>
+<p>Here we use the PREM model as an example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">pyfk.tests.taup.test_taup</span> <span class="kn">import</span> <span class="n">TestFunctionTaup</span>
+
+<span class="c1"># we use a function in tests to generate the prem model</span>
+<span class="n">prem_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
+
+<span class="n">prem_data</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([[   15.     ,     3.2    ,     5.8    ,     2.6    ,   600.     ,
+         1456.     ],
+       [    9.4    ,     3.9    ,     6.8    ,     2.9    ,   600.     ,
+         1350.     ],
+       [   15.6    ,     4.49094,     8.11061,     3.38076,   600.     ,
+         1446.     ],
+       [   20.     ,     4.48486,     8.10119,     3.37906,   600.     ,
+         1446.     ],
+       [   20.     ,     4.47715,     8.08907,     3.37688,   600.     ,
+         1447.     ]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see the top 5 layers of the PREM model. And based on the model data, we can initialize the <code class="docutils literal notranslate"><span class="pre">SeisModel</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">prem_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_prem</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>SeisModel(layers=44, flattening=False)
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are also options to control whether we should flatten the model, or whether we are using <span class="math notranslate nohighlight">\(\frac{V_p}{V_s}\)</span> ratio to get <span class="math notranslate nohighlight">\(V_p\)</span> in the model data. By default, these two flags are set
+as <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>Based on the <code class="docutils literal notranslate"><span class="pre">SourceModel</span></code> and <code class="docutils literal notranslate"><span class="pre">SeisModel</span></code>, we can now initialize the <code class="docutils literal notranslate"><span class="pre">Config</span></code> class. The <code class="docutils literal notranslate"><span class="pre">Config</span></code> stores the information such as the receiver depth, the receiver distance, and the
+number of points in the simulation. Generally speaking, they are similar to the flags in <code class="docutils literal notranslate"><span class="pre">FK</span></code>, but in a more pythonic way.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+        <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+        <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">receiver_distance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Config(model=SeisModel(layers=45, flattening=False), source=SourceModel(sdep=16.5, srcType=dc, source_mechanism=None), receiver_distance=[ 10.  20.  30.], taper=0.3, filter=(0, 0), npt=512, dt=0.1, dk=0.3, smth=1.0, pmin=0.0, pmax=1.0, kmax=15.0, rdep=0.0, updn=all, samples_before_first_arrival=50)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For this example, we are using the <code class="docutils literal notranslate"><span class="pre">model_prem</span></code> and <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> defined previously. And our output should be 512 points with
+0.1s interval. The receiver distances are 10km, 20km, and 30km. If you are planning to use degrees instead, simply set <code class="docutils literal notranslate"><span class="pre">degrees=True</span></code>,
+and the <code class="docutils literal notranslate"><span class="pre">receiver_distance</span></code> will be automatically converted to the corresponding distance in km. The default values are set to be the same as
+<code class="docutils literal notranslate"><span class="pre">FK</span></code>. One thing to note is that after creation,  <code class="docutils literal notranslate"><span class="pre">model_prem</span></code>, <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> and <code class="docutils literal notranslate"><span class="pre">config_prem</span></code> will not be modified by the code, so
+you can reuse it in the future.</p>
+</div>
+<div class="section" id="calculate-green-s-function">
+<h2>Calculate Green’s function<a class="headerlink" href="#calculate-green-s-function" title="Permalink to this headline">¶</a></h2>
+<p>After the configuration part, you can simply call <code class="docutils literal notranslate"><span class="pre">pyfk.calculate_gf</span></code> to calculate the Green’s function.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyfk</span> <span class="kn">import</span> <span class="n">calculate_gf</span>
+
+<span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;obspy.core.stream.Stream object at 0x7f03010fa390&gt;, &lt;obspy.core.stream.Stream object at 0x7f0303a2d210&gt;, &lt;obspy.core.stream.Stream object at 0x7f0301116ad0&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gf</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">Stream</span></code> in <code class="docutils literal notranslate"><span class="pre">obspy</span></code>, the order of <code class="docutils literal notranslate"><span class="pre">Stream</span></code> is consistent with the order of <code class="docutils literal notranslate"><span class="pre">receiver_distance</span></code>.
+Each <code class="docutils literal notranslate"><span class="pre">Stream</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">Trace</span></code>, and each one represents a component of Green’s function. The order of <code class="docutils literal notranslate"><span class="pre">Trace</span></code> is
+the same as <code class="docutils literal notranslate"><span class="pre">FK</span></code>. For the meaning of these Green’s functions, you might refer to <a class="reference external" href="https://blog.seisman.info/fk-notes/">The introduction from Seisman (In Chinese)</a>.</p>
+<p>Each component of the Green’s function also contains the header information:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>         network: 
+         station: 
+        location: 
+         channel: 
+       starttime: 1969-12-31T23:59:58.280712Z
+         endtime: 1970-01-01T00:00:49.380712Z
+   sampling_rate: 10.0
+           delta: 0.1
+            npts: 512
+           calib: 1.0
+             sac: AttribDict({&#39;delta&#39;: 0.1, &#39;b&#39;: -1.7192882278141499, &#39;e&#39;: 49.480711772185856, &#39;o&#39;: 0.0, &#39;dist&#39;: 10.0, &#39;t1&#39;: 3.2807117721858501, &#39;t2&#39;: 5.9271516805655189, &#39;user1&#39;: 143.31697531118135, &#39;user2&#39;: 141.84277884684661, &#39;npts&#39;: 512})
+</pre></div>
+</div>
+</div>
+</div>
+<p>The header information is the same as the result from <code class="docutils literal notranslate"><span class="pre">FK</span></code>. The event origin time is at <code class="docutils literal notranslate"><span class="pre">1970-01-01T00:00:00.00000Z</span></code>, and the starting time
+of this <code class="docutils literal notranslate"><span class="pre">Trace</span></code> is calculated based on the first arrival time and the sample numbers before the first arrival. For the sac header, <code class="docutils literal notranslate"><span class="pre">t1</span></code> is the
+first arrival of P wave and <code class="docutils literal notranslate"><span class="pre">t2</span></code> is the first arrival of S wave. <code class="docutils literal notranslate"><span class="pre">user1</span></code> and <code class="docutils literal notranslate"><span class="pre">user2</span></code> represent the corresponding trace’s emission angle.</p>
+<p>If we set <code class="docutils literal notranslate"><span class="pre">npt=1</span></code> or <code class="docutils literal notranslate"><span class="pre">npt=2</span></code> in the <code class="docutils literal notranslate"><span class="pre">Config</span></code>, <code class="docutils literal notranslate"><span class="pre">calculate_gf</span></code> will not generate <code class="docutils literal notranslate"><span class="pre">Stream</span></code> for each distance, but a 1D array.
+The 1D array represents the static displacement, similar to <code class="docutils literal notranslate"><span class="pre">FK</span></code>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config_prem_static</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
+        <span class="n">npt</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">receiver_distance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">gf_static</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem_static</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gf_static</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1.82673652e-05   1.17738753e-05   0.00000000e+00   1.15497928e-05
+   8.98601238e-06  -1.35277284e-06  -3.14708835e-06  -3.08999374e-06
+   9.47056943e-07]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">dt</span></code> will be automatically set as 1000 in such the case if the user provided one is smaller than 1000.</p>
+<p>We can also have a view of the Green’s function:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/tutorial_8_0.png" src="../_images/tutorial_8_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="generate-synthetic-waveform">
+<h2>Generate synthetic waveform<a class="headerlink" href="#generate-synthetic-waveform" title="Permalink to this headline">¶</a></h2>
+<p>By convolving the Green’s function with the source time function, we can generate the synthetic waveform. There are mainly
+two ways to set up the source time function, similar to <code class="docutils literal notranslate"><span class="pre">FK</span></code>, that is to generate a trapezoid shaped source time function, or
+provide a user defined <code class="docutils literal notranslate"><span class="pre">Trace</span></code> containing the source information (only the data attribute is needed at the moment). Note the
+sampling rate of the Green’s function and the source time function should be identical.</p>
+<p>In this example, we simply call <code class="docutils literal notranslate"><span class="pre">pyfk.generate_source_time_function</span></code> to generate a trapezoid shaped source:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyfk</span> <span class="kn">import</span> <span class="n">generate_source_time_function</span>
+
+<span class="n">source_time_function</span><span class="o">=</span><span class="n">generate_source_time_function</span><span class="p">(</span><span class="n">dura</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">rise</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">gf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>And we also need to provide a source mechanism. In <code class="docutils literal notranslate"><span class="pre">FK</span></code>, the source mechanism is provided as a series of number (-M flag in syn). The source mechanism in
+<code class="docutils literal notranslate"><span class="pre">pyfk</span></code> should be a list of these numbers. And also you can provide a global CMT solution file:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyfk.tests.sync.test_sync</span> <span class="kn">import</span> <span class="n">TestFunctionCalculateSync</span>
+
+<span class="n">test_gcmt_path</span> <span class="o">=</span> <span class="n">TestFunctionCalculateSync</span><span class="o">.</span><span class="n">get_sample_gcmt_file_path</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">test_gcmt_path</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span> MLI 1976  1  1  1 29 39.60 -28.6100 -177.6400  59.0 6.2 0.0 KERMADEC ISLANDS REGION
+event name:     010176A
+time shift:     13.8000
+half duration:   9.4000
+latitude:      -29.2500
+longitude:    -176.9600
+depth:          16.5000
+Mrr:       7.680000e+26
+Mtt:       9.000000e+24
+Mpp:      -7.770000e+26
+Mrt:       1.390000e+26
+Mrp:       4.520000e+26
+Mtp:      -3.260000e+26
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can read this global CMT solution file, and attach it to <code class="docutils literal notranslate"><span class="pre">source_prem</span></code>. Something to notice here is that <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> is actually
+<code class="docutils literal notranslate"><span class="pre">config_prem.source</span></code>, but <code class="docutils literal notranslate"><span class="pre">config_prem.model</span></code> is actually a copy of <code class="docutils literal notranslate"><span class="pre">prem_model</span></code>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">obspy</span>
+<span class="kn">from</span> <span class="nn">pyfk</span> <span class="kn">import</span> <span class="n">calculate_sync</span>
+
+<span class="n">event</span><span class="o">=</span><span class="n">obspy</span><span class="o">.</span><span class="n">read_events</span><span class="p">(</span><span class="n">test_gcmt_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">source_prem</span><span class="o">.</span><span class="n">update_source_mechanism</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<span class="n">sync_result</span> <span class="o">=</span> <span class="n">calculate_sync</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">config_prem</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">source_time_function</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sync_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>3 Trace(s) in Stream:
+... | 1969-12-31T23:59:58.280712Z - 1970-01-01T00:00:49.380712Z | 10.0 Hz, 512 samples
+... | 1969-12-31T23:59:58.280712Z - 1970-01-01T00:00:49.380712Z | 10.0 Hz, 512 samples
+... | 1969-12-31T23:59:58.280712Z - 1970-01-01T00:00:49.380712Z | 10.0 Hz, 512 samples
+</pre></div>
+</div>
+</div>
+</div>
+<p>The three traces in each Stream is ordered as Z, R, and T components. We can view the synthetic waveform in the Z component:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sync_result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/tutorial_12_0.png" src="../_images/tutorial_12_0.png" />
+</div>
+</div>
+<p>It’s not strange to have the amplitude around several hundred, as the unit here is cm. But we do see lots of numerical noise. The synthetics
+calculated from <code class="docutils literal notranslate"><span class="pre">FK</span></code> will also have this kind of noise. The possible reason might be our largest distance is relative small, thus the upper bound for the integration
+of the wave number will be relative small.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">FK</span></code>, it provides the flag to do the waveform integration, the differentiation, and the band-pass filter. Here we can just use <code class="docutils literal notranslate"><span class="pre">obspy</span></code> to process the waveform.
+For this example, our highest frequency is defined by the Nyquist sampling rate, which is 5HZ. If we want to bandpass the waveform between 0.5HZ and 3HZ, we can:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sync_result_to_filter</span><span class="o">=</span><span class="n">sync_result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">sync_result_to_filter</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+<span class="n">sync_result_to_filter</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;hann&#39;</span><span class="p">)</span>
+<span class="n">sync_result_to_filter</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;bandpass&quot;</span><span class="p">,</span> <span class="n">freqmin</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="n">freqmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">corners</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zerophase</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sync_result_to_filter</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/tutorial_13_0.png" src="../_images/tutorial_13_0.png" />
+</div>
+</div>
+<p>It is the waveform after performing the bandpass filter, with a second stage and two side filter (zerophase=True).</p>
+<p>Congratulations! You have finished reading the tutorial part. For more information about the algorithm in <code class="docutils literal notranslate"><span class="pre">FK</span></code>, you can read the source code in
+<a class="reference internal" href="../autoapi/index.html#api-reference"><span class="std std-ref">API Reference</span></a>. The package has been tested for several cases using the PREM model with <code class="docutils literal notranslate"><span class="pre">FK</span></code>, and the the result is close enough. The numerical
+difference might be mainly due to that we are using <code class="docutils literal notranslate"><span class="pre">double</span></code> but not <code class="docutils literal notranslate"><span class="pre">float</span></code> as in <code class="docutils literal notranslate"><span class="pre">FK</span></code>, or the difference between the programming languages.</p>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="install.html" title="previous page">Installing</a>
+    <a class='right-next' id="next-link" href="../autoapi/index.html" title="next page">API Reference</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
