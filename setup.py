@@ -1,5 +1,7 @@
 """
-pyfk
+Pyfk is the python version of FK used to calculate the Green's function and the synthetic waveforms for the 1D Earth model.
+The frequency-Wavenumber (FK) is a synthetic seismogram package used to calculate the Green’s function and the synthetic waveforms of the 1D Earth model. The first version of FK is developed by Prof. Lupei Zhu in 1996, and the code is written in Fortran, C and a Perl interface.
+Nowadays, it’s usually efficient to do the seismological research based on a python’s workflow, with the help of widely used packages such as Obspy, Numpy and Scipy. Python is also easy to integrate with parallel computing packages such as mpi4py to do multiple simulations at the same time.
 """
 import inspect
 import os
@@ -38,6 +40,11 @@ extensions = [
 ]
 
 
+def readme():
+    with open('README.rst') as f:
+        return f.read()
+
+
 def get_package_data():
     """
     Returns a list of all files needed for the installation relative to the
@@ -70,9 +77,9 @@ def get_package_data():
 
 setup_config = dict(
     name="pyfk",
-    version="0.0.1",
+    version="0.1.0-alpha.1",
     description=DOCSTRING[0],
-    long_description="\n".join(DOCSTRING),
+    long_description=readme(),
     author="Ziyi Xi",
     author_email="xiziyi2015@gmail.com",
     url="https://github.com/ziyixi/pyfk",
@@ -82,7 +89,7 @@ setup_config = dict(
     package_data={"pyfk": get_package_data()},
     python_requires=">=3.6",
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 3 - Alpha",
         "Environment :: Console",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Developers",
