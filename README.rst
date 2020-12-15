@@ -10,6 +10,9 @@ pyfk
 .. image:: https://img.shields.io/badge/docs-dev-blue.svg
     :target: https://ziyixi.github.io/pyfk/
 
+.. image:: https://badge.fury.io/py/pyfk.svg
+    :target: https://badge.fury.io/py/pyfk
+
 .. placeholder-for-doc-index
 
 About
