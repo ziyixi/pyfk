@@ -15,6 +15,7 @@ jobs:
         run: |
           pip install pipenv
           pipenv install -d
+          pipenv run python setup.py develop
           export VENV_HOME_DIR=$(pipenv --venv)
           source $VENV_HOME_DIR/bin/activate
           cd docs
