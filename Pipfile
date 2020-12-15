@@ -12,7 +12,6 @@ cysignals = "*"
 
 [dev-packages]
 autopep8 = "*"
-pipenv-setup = "*"
 coverage = "*"
 pytest = "*"
 sphinx = "*"
