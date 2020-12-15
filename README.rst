@@ -8,7 +8,7 @@ pyfk
     :target: https://codecov.io/gh/ziyixi/pyfk
 
 .. image:: https://img.shields.io/badge/docs-dev-blue.svg
-    :target:https://ziyixi.github.io/pyfk/
+    :target: https://ziyixi.github.io/pyfk/
 
 .. placeholder-for-doc-index
 
