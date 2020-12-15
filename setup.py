@@ -77,7 +77,7 @@ def get_package_data():
 
 setup_config = dict(
     name="pyfk",
-    version="0.1.0-alpha.2",
+    version="0.1.0-alpha.1",
     description=DOCSTRING[0],
     long_description=readme(),
     author="Ziyi Xi",
