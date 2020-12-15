@@ -20,6 +20,7 @@ docutils = "*"
 rstcheck = "*"
 pydata-sphinx-theme = "*"
 sphinx-autoapi = "*"
+jupyter-sphinx = "*"
 
 [requires]
 python_version = "3"

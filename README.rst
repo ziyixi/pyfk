@@ -43,11 +43,3 @@ License
 Pyfk is a free software: you can redistribute it and/or modify it under the terms of
 the **MIT License**. A copy of this license is provided in
 `LICENSE <https://github.com/ziyixi/pyfk/blob/master/LICENSE>`__.
-
-
-Acknowledgement
----------------------
-
-The development of pyfk was initially my undergraduate thesis project in USTC, and I would thank Prof. Daoyuan Sun in USTC for mentoring me of this project. I am using
-the time of AGU 2020 to refactor my previous work as it's much slower than FK, since I'm simply using numba to speed up the code. And I would also thank my
-Ph.D. advisor Prof. Min Chen for supporting my study and research in the US so I can have the time and energy to finish this project.

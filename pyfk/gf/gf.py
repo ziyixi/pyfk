@@ -155,7 +155,7 @@ def calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[St
     if nfft2 == 1:
         static_return_list = []
         for irec in range(len(config.receiver_distance)):
-            static_return_list.append(sum_waveform[irec, :, 0])
+            static_return_list.append(np.real(sum_waveform[irec, :, 0]))
         return static_return_list
     fac = np.array([dfac**index for index in range(nfft_smth)])
     nCom_mapper = {"dc": 9, "sf": 6, "ep": 3}

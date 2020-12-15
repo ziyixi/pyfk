@@ -12,6 +12,12 @@ from pyfk.utils.error_message import PyfkError
 
 
 class TestFunctionCalculateSync(object):
+    @staticmethod
+    def get_sample_gcmt_file_path():
+        return join(
+            dirname(__file__),
+            "../data/sync_prem_gcmt/test_gcmt")
+
     def test_prem(self):
         model_data = TestFunctionTaup.gen_test_model("prem")
         model_prem = SeisModel(model=model_data)

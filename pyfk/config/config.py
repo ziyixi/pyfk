@@ -202,6 +202,9 @@ class SeisModel(object):
         new_instance.flattening = self.flattening
         return new_instance
 
+    def __repr__(self) -> str:
+        return f"SeisModel(layers={np.shape(self.model_values)[0]}, flattening={self.flattening})"
+
 
 class SourceModel(object):
     def __init__(self, sdep: float = 0., srcType: str = "dc",
@@ -224,6 +227,7 @@ class SourceModel(object):
             raise PyfkError(
                 "Source type should be one of 'dc', 'sf', or 'ep'.")
 
+        self._source_mechanism = None
         self._update_source_mechanism(source_mechanism)
 
     @property
@@ -381,6 +385,9 @@ class SourceModel(object):
         if source_mechanism is None:
             raise PyfkError("source mechanism couldn't be None")
         self._update_source_mechanism(source_mechanism)
+
+    def __repr__(self) -> str:
+        return f"SourceModel(sdep={self.sdep}, srcType={self.srcType}, source_mechanism={self._source_mechanism})"
 
 
 class Config(object):
@@ -576,3 +583,6 @@ class Config(object):
             self.rdep -= self.model.th[0]
             self.model.remove_topo()
         return idep + 1
+
+    def __repr__(self) -> str:
+        return f"Config(model={self.model.__repr__()}, source={self.source.__repr__()}, receiver_distance={self.receiver_distance}, taper={self.taper}, filter={self.filter}, npt={self.npt}, dt={self.dt}, dk={self.dk}, smth={self.smth}, pmin={self.pmin}, pmax={self.pmax}, kmax={self.kmax}, rdep={self.rdep}, updn={self.updn}, samples_before_first_arrival={self.samples_before_first_arrival})"
