@@ -10,4 +10,4 @@ __all__ = [
     "calculate_sync",
     "generate_source_time_function"]
 
-__version__ = "0.1.0-alpha.3"
+__version__ = "0.1.0-alpha.4"
