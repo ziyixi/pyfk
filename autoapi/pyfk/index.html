@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyfk &#8212; pyfk 0.1.0-alpha.6 documentation</title>
+    <title>pyfk &#8212; pyfk 0.1.0 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -37,10 +37,9 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -404,8 +403,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="config/config/index.html#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel"><em>SeisModel</em></a><em>]</em>) – the Earth model used in calculation, defaults to None</p></li>
-<li><p><strong>source</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="config/config/index.html#pyfk.config.config.SourceModel" title="pyfk.config.config.SourceModel"><em>SourceModel</em></a><em>]</em>) – the source model used in calculation, defaults to None</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.SeisModel" title="pyfk.SeisModel"><em>SeisModel</em></a><em>]</em>) – the Earth model used in calculation, defaults to None</p></li>
+<li><p><strong>source</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.SourceModel" title="pyfk.SourceModel"><em>SourceModel</em></a><em>]</em>) – the source model used in calculation, defaults to None</p></li>
 <li><p><strong>receiver_distance</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – a list of receiver distance in km, defaults to None</p></li>
 <li><p><strong>degrees</strong> (<em>bool</em><em>, </em><em>optional</em>) – use degrees instead of km, defaults to False</p></li>
 <li><p><strong>taper</strong> (<em>float</em><em>, </em><em>optional</em>) – taper applies a low-pass cosine filter at fc=(1-taper)*f_Niquest, defaults to 0.3</p></li>
@@ -501,7 +500,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <dd class="field-odd"><p>the copied SeisModel</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="config/config/index.html#pyfk.config.config.SeisModel" title="pyfk.config.config.SeisModel">SeisModel</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#pyfk.SeisModel" title="pyfk.SeisModel">SeisModel</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -779,7 +778,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <dd><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="config/config/index.html#pyfk.config.config.Config" title="pyfk.config.config.Config"><em>Config</em></a><em>]</em><em>, </em><em>optional</em>) – the configuration of calculating the Green’s function, defaults to None</p>
+<dd class="field-odd"><p><strong>config</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.Config" title="pyfk.Config"><em>Config</em></a><em>]</em><em>, </em><em>optional</em>) – the configuration of calculating the Green’s function, defaults to None</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>if npt==2 or 1, return a 2D list, and each row represents the static displacements; otherwise, return a list of Stream, each stream keeps the order of GF as in FK, and the order of streams is the same as the receiver_distance.</p>
@@ -798,7 +797,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>gf</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>Stream</em><em>]</em><em>, </em><em>Stream</em><em>]</em>) – the Green’s function list (or just an obspy Stream representing one distance) from calculate_gf; or read from the Green’s function database from FK</p></li>
-<li><p><strong>config</strong> (<a class="reference internal" href="config/config/index.html#pyfk.config.config.Config" title="pyfk.config.config.Config"><em>Config</em></a>) – the configuration of sync calculation</p></li>
+<li><p><strong>config</strong> (<a class="reference internal" href="#pyfk.Config" title="pyfk.Config"><em>Config</em></a>) – the configuration of sync calculation</p></li>
 <li><p><strong>az</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – set station azimuth in degree measured from the North, defaults to 0</p></li>
 <li><p><strong>source_time_function</strong> (<em>Optional</em><em>[</em><em>Trace</em><em>]</em><em>, </em><em>optional</em>) – should be an obspy Trace with the data as the source time function, can use generate_source_time_function to generate a trapezoid shaped source time function, defaults to None</p></li>
 </ul>
@@ -870,7 +869,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, Ziyi Xi.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.1.<br/>
     </p>
   </div>
 </footer>
