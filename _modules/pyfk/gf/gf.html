@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pyfk.gf.gf &#8212; pyfk 0.1.0 documentation</title>
     
-  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
     
   <link rel="stylesheet"
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     
-  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../../../_static/js/index.d3f166471bb80abb5163.js">
 
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -455,6 +455,16 @@
     <span class="n">mu</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">rh</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span>
     <span class="n">sum_waveform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
         <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">nfft2</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">updn_mapper</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;all&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;up&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;down&quot;</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">}</span>
+    <span class="n">srcType_mapper</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;dc&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;sf&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;ep&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
     <span class="n">_waveform_integration</span><span class="p">(</span>
         <span class="n">nfft2</span><span class="p">,</span>
         <span class="n">dw</span><span class="p">,</span>
@@ -473,7 +483,7 @@
         <span class="n">dynamic</span><span class="p">,</span>
         <span class="n">wc2</span><span class="p">,</span>
         <span class="n">t0</span><span class="p">,</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">srcType</span><span class="p">,</span>
+        <span class="n">srcType_mapper</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">srcType</span><span class="p">],</span>
         <span class="n">taper</span><span class="p">,</span>
         <span class="n">wc</span><span class="p">,</span>
         <span class="n">mu</span><span class="p">,</span>
@@ -481,7 +491,7 @@
         <span class="n">si</span><span class="p">,</span>
         <span class="n">src_layer</span><span class="p">,</span>
         <span class="n">rcv_layer</span><span class="p">,</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">updn</span><span class="p">,</span>
+        <span class="n">updn_mapper</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">updn</span><span class="p">],</span>
         <span class="n">EPSILON</span><span class="p">,</span>
         <span class="n">sigma</span><span class="p">,</span>
         <span class="n">sum_waveform</span><span class="p">)</span>
@@ -503,14 +513,14 @@
     </div>
 
     
-  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../../../_static/js/index.d3f166471bb80abb5163.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, Ziyi Xi.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.1.<br/>
+          &copy; Copyright 2020-2021, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>
 </footer>
