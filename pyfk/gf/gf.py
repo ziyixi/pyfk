@@ -315,6 +315,16 @@ def waveform_integration(
     mu = model.rh * model.vs * model.vs
     sum_waveform = np.zeros(
         (len(config.receiver_distance), 9, int(nfft2)), dtype=np.complex)
+    updn_mapper = {
+        "all": 0,
+        "up": 1,
+        "down": 2
+    }
+    srcType_mapper = {
+        "dc": 2,
+        "sf": 1,
+        "ep": 0
+    }
     _waveform_integration(
         nfft2,
         dw,
@@ -333,7 +343,7 @@ def waveform_integration(
         dynamic,
         wc2,
         t0,
-        config.source.srcType,
+        srcType_mapper[config.source.srcType],
         taper,
         wc,
         mu,
@@ -341,7 +351,7 @@ def waveform_integration(
         si,
         src_layer,
         rcv_layer,
-        config.updn,
+        updn_mapper[config.updn],
         EPSILON,
         sigma,
         sum_waveform)
