@@ -9,8 +9,9 @@ from libc.math cimport pi, cos, sin, exp
 from pyfk.utils.complex cimport clog, csqrt, creal, cimag, conj
 from cysignals.signals cimport sig_on, sig_off
 
-from mpi4py cimport libmpi as mpi
-from mpi4py import MPI
+IF PYFK_USE_MPI == "1":
+    from mpi4py import MPI
+    from mpi4py cimport libmpi as mpi
 
 
 def _waveform_integration(
@@ -85,11 +86,11 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
                                       int src_layer, int rcv_layer, int updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
     # * init mpi
     # mpi.MPI_Init(NULL,NULL)
-    cdef:
-        mpi.MPI_Comm comm = mpi.MPI_COMM_WORLD
-        int size = 0, rank = 0
-    mpi.MPI_Comm_size(comm, & size)
-    mpi.MPI_Comm_rank(comm, & rank)
+    cdef int size = 1, rank = 0
+    IF PYFK_USE_MPI == "1":
+        cdef mpi.MPI_Comm comm = mpi.MPI_COMM_WORLD
+        mpi.MPI_Comm_size(comm, & size)
+        mpi.MPI_Comm_rank(comm, & rank)
 
     cdef:
         int ik, idep, n, i, irec, flip_val, icom
@@ -121,27 +122,47 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
         double complex[:, ::1] kp_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
         double complex[:, ::1] ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
         int[::1] flip_val_list = np.zeros(nfft2-wc1+1, dtype=np.intc)
+        # work for mpi each rank
+        double complex[:, ::1] kp_list_each_rank = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
+        double complex[:, ::1] ks_list_each_rank = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
+        int[::1] n_list_each_rank = np.zeros(nfft2-wc1+1, dtype=np.intc)
 
-    for ik in range(wc1 - 1, nfft2):
+    if flip:
+        flip_val_list[:] = -1
+    else:
+        flip_val_list[:] = 1
+
+    for ik in range(wc1 - 1+rank, nfft2, size):
         kc2 = kc**2
         omega = ik * dw
         w = omega - sigma * 1j
         att = clog(w / (2 * pi)) / pi + 0.5j
         k = omega * pmin + 0.5 * dk
         n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
-        n_list[ik-wc1+1] = n
-        n_total = n_total+n
-        n_list_accumulate[ik-wc1+1] = n_total
+        n_list_each_rank[ik-wc1+1] = n
+        # n_total = n_total+n
+        # n_list_accumulate[ik-wc1+1] = n_total
         # fill in values
         for idep in range(len(thickness)):
-            kp_list[ik-wc1+1, idep] = (w /
-                                       (vp[idep] * (1. + att / qp[idep])))**2
-            ks_list[ik-wc1+1, idep] = (w /
-                                       (vs[idep] * (1. + att / qs[idep])))**2
-        if flip:
-            flip_val_list[ik-wc1+1] = -1
-        else:
-            flip_val_list[ik-wc1+1] = 1
+            kp_list_each_rank[ik-wc1+1, idep] = (w /
+                                                 (vp[idep] * (1. + att / qp[idep])))**2
+            ks_list_each_rank[ik-wc1+1, idep] = (w /
+                                                 (vs[idep] * (1. + att / qs[idep])))**2
+    # reduce to all
+    IF PYFK_USE_MPI == "1":
+        mpi.MPI_Allreduce( & kp_list_each_rank[0, 0], & kp_list[0, 0], (nfft2-wc1+1)*len(thickness), mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
+        mpi.MPI_Allreduce( & ks_list_each_rank[0, 0], & ks_list[0, 0], (nfft2-wc1+1)*len(thickness), mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
+        mpi.MPI_Allreduce( & n_list_each_rank[0], & n_list[0], nfft2-wc1+1, mpi.MPI_INT, mpi.MPI_SUM, comm)
+    ELSE:
+        kp_list[:, :] = kp_list_each_rank[:, :]
+        ks_list[:, :] = ks_list_each_rank[:, :]
+        n_list[:] = n_list_each_rank[:]
+
+    # * get n_total and n_list_accumulate
+    for ik in range(wc1 - 1, nfft2):
+        n = n_list[ik-wc1+1]
+        n_total = n_total+n
+        n_list_accumulate[ik-wc1+1] = n_total
 
     # * we can run the code in parallel for n_total tasks
     # we run n_total loops, then map back
@@ -211,136 +232,18 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
             sum_waveform[irec, 8, ik] += u[2, 2] * aj1 - nf
 
     # * we need to gather sum_waveform together and sum them together
-    cdef double complex[:, :, :] sum_waveform_all
-    if rank == 0:
-        # init sum_waveform_all
-        # note the size of sum_waveform at the last axis is nfft2
-        sum_waveform_all = np.zeros(
-            (len(receiver_distance), 9, nfft2), dtype=np.complex)
-    else:
-        # just a placeholder
-        sum_waveform_all = np.zeros((1, 1, 1), dtype=np.complex)
+    cdef double complex[:, :, :] sum_waveform_all = np.zeros(
+        (len(receiver_distance), 9, nfft2), dtype=np.complex)
 
-    mpi.MPI_Reduce(& sum_waveform[0, 0, 0], & sum_waveform_all[0, 0, 0], len(receiver_distance)*9*nfft2, mpi.MPI_DOUBLE_COMPLEX,
-                    mpi.MPI_SUM, 0, comm)
+    # mpi.MPI_Reduce(& sum_waveform[0, 0, 0], & sum_waveform_all[0, 0, 0], len(receiver_distance)*9*nfft2, mpi.MPI_C_DOUBLE_COMPLEX,
+    #                 mpi.MPI_SUM, 0, comm)
+    IF PYFK_USE_MPI == "1":
+        mpi.MPI_Allreduce( & sum_waveform[0, 0, 0], & sum_waveform_all[0, 0, 0], len(receiver_distance)*9*nfft2, mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
+    ELSE:
+        sum_waveform_all[:, :, :] = sum_waveform[:, :, :]
 
-    # * return only at rank 0
-    if rank == 0:
-        for ik in range(wc1 - 1, nfft2):
-            omega = ik * dw
-            # * for each ik, we apply the filtering and apply the time shift in the frequency domain
-            filtering = filter_const
-            if dynamic and (ik + 1 > wc):
-                filtering = 0.5 * (1. + cos((ik + 1 - wc) * taper)) * filtering
-            if dynamic and (ik + 1 < wc2):
-                filtering = 0.5 * \
-                    (1. + cos((wc2 - ik - 1) * pi / (wc2 - wc1))) * filtering
-            # in fk's code, only apply atttemp for ncom, here we apply to all, with
-            # no difference
-            for icom in range(9):
-                for irec in range(len(receiver_distance)):
-                    phi = omega * t0[irec]
-                    atttemp = filtering * (cos(phi) + sin(phi) * 1j)
-                    sum_waveform_all[irec, icom, ik] *= atttemp
-        sum_waveform[:, :, :] = sum_waveform_all[:, :, :]
-    else:
-        sum_waveform[:, :, :] = 0.+0.j
-
-    # mpi.MPI_Finalize()
-
-
-cdef void _waveform_integration_sigin_old(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
-                                          double[:] receiver_distance, int wc1,
-                                          double[:] vs, double[:] vp, double[:] qs, double[:] qp,
-                                          bint flip, double filter_const, bint dynamic, int wc2, double[:] t0, int src_type,
-                                          double taper, int wc, double[:] mu, double[:] thickness, double[:, :] si,
-                                          int src_layer, int rcv_layer, int updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
-    # # * main loop, the index in ik, means each wave number
-    cdef:
-        int ik, idep, n, i, irec, flip_val, icom
-        double ztemp, k, kc2, omega, z, aj0, aj1, aj2, filtering, phi
-        double complex w, att, atttemp, nf
-    # * init some arrays
-    cdef:
-        double complex[::1] kp = np.zeros(len(thickness), dtype=np.complex)
-        double complex[::1] ks = np.zeros(len(thickness), dtype=np.complex)
-        double complex[:, ::1] u = np.zeros((3, 3), dtype=np.complex)
-        double complex[:, ::1] aaa = np.zeros((5, 5), dtype=np.complex)
-        double complex[:, ::1] bbb = np.zeros((7, 7), dtype=np.complex)
-        double complex[:, ::1] ccc = np.zeros((7, 7), dtype=np.complex)
-        double complex[::1] eee = np.zeros(7, dtype=np.complex)
-        double complex[::1] ggg = np.zeros(7, dtype=np.complex)
-        double complex[:, ::1] zzz = np.zeros((3, 5), dtype=np.complex)
-        double complex[:, ::1] sss = np.zeros((3, 6), dtype=np.complex)
-        double complex[:, ::1] temppp = np.zeros((4, 4), dtype=np.complex)
-
-        double complex[::1] ggg_temp = np.zeros(7, dtype=np.complex)
-        double complex[:, ::1] zzz_temp = np.zeros((3, 5), dtype=np.complex)
-        double complex[:, ::1] bbb_temp = np.zeros((7, 7), dtype=np.complex)
     for ik in range(wc1 - 1, nfft2):
-        # * the code below is modified from FK
-        kc2 = kc**2
         omega = ik * dw
-        w = omega - sigma * 1j
-        # apply attenuation
-        att = clog(w / (2 * pi)) / pi + 0.5j
-        for idep in range(len(thickness)):
-            kp[idep] = (w / (vp[idep] * (1. + att / qp[idep])))**2
-            ks[idep] = (w / (vs[idep] * (1. + att / qs[idep])))**2
-        k = omega * pmin + 0.5 * dk
-        n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
-        if flip:
-            flip_val = -1
-        else:
-            flip_val = 1
-        for i in range(n):
-            kernel(
-                k,
-                u,
-                kp,
-                ks,
-                aaa,
-                bbb,
-                ccc,
-                eee,
-                ggg,
-                zzz,
-                sss,
-                temppp,
-                mu,
-                si,
-                thickness,
-                src_type,
-                src_layer,
-                rcv_layer,
-                updn,
-                epsilon,
-                # temp
-                ggg_temp,
-                zzz_temp,
-                bbb_temp)
-            # * loop irec to get the value of sum_waveform
-            for irec in range(len(receiver_distance)):
-                z = k * receiver_distance[irec]
-                aj0 = jv(0., z)
-                aj1 = jv(1., z)
-                aj2 = jv(2., z)
-                # do the numerical integration here
-                sum_waveform[irec, 0, ik] += u[0, 0] * aj0 * flip_val
-                sum_waveform[irec, 1, ik] += -u[0, 1] * aj1
-                sum_waveform[irec, 2, ik] += -u[0, 2] * aj1
-
-                nf = (u[1, 1] + u[1, 2]) * aj1 / z
-                sum_waveform[irec, 3, ik] += u[1, 0] * aj1 * flip_val
-                sum_waveform[irec, 4, ik] += u[1, 1] * aj0 - nf
-                sum_waveform[irec, 5, ik] += u[1, 2] * aj0 - nf
-
-                nf = 2. * (u[2, 1] + u[2, 2]) * aj2 / z
-                sum_waveform[irec, 6, ik] += u[2, 0] * aj2 * flip_val
-                sum_waveform[irec, 7, ik] += u[2, 1] * aj1 - nf
-                sum_waveform[irec, 8, ik] += u[2, 2] * aj1 - nf
-
-            k = k + dk
         # * for each ik, we apply the filtering and apply the time shift in the frequency domain
         filtering = filter_const
         if dynamic and (ik + 1 > wc):
@@ -354,7 +257,10 @@ cdef void _waveform_integration_sigin_old(int nfft2, double dw, double pmin, dou
             for irec in range(len(receiver_distance)):
                 phi = omega * t0[irec]
                 atttemp = filtering * (cos(phi) + sin(phi) * 1j)
-                sum_waveform[irec, icom, ik] *= atttemp
+                sum_waveform[irec, icom,
+                             ik] = sum_waveform_all[irec, icom, ik]*atttemp
+
+    # mpi.MPI_Finalize()
 
 cdef void kernel(double k, double complex[:, ::1] u, double complex[::1] kp, double complex[::1] ks,
                  double complex[:, ::1] aaa, double complex[:, ::1] bbb, double complex[:, ::1] ccc, double complex[::1] eee,

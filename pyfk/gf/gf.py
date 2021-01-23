@@ -1,15 +1,14 @@
 from copy import copy
-from typing import Optional, Union, List
+from typing import List, Optional, Union
 
 import numpy as np
 from numpy.fft import irfft
 from obspy.core.stream import Stream
 from obspy.core.trace import Trace
-from pyfk.gf.waveform_integration import _waveform_integration
-from pyfk.taup.taup import taup
-
 from pyfk.config.config import Config, SeisModel
+from pyfk.gf.waveform_integration import _waveform_integration
 from pyfk.setting import EPSILON, SIGMA
+from pyfk.taup.taup import taup
 
 
 def calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[Stream]]:

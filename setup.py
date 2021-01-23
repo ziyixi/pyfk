@@ -18,9 +18,30 @@ root_dir = os.path.join(
         inspect.getfile(inspect.currentframe()))), "pyfk"
 )
 
-mpi_compile_args = os.popen("mpicc --showme:compile").read().strip().split(' ')
-mpi_link_args = os.popen("mpicc --showme:link").read().strip().split(' ')
+# * MPI mode
+compile_time_env = {
+    "PYFK_USE_MPI": "0"
+}
+PYFK_USE_MPI = os.getenv("PYFK_USE_MPI", "0")
+PYFK_MPI_HOME = os.getenv("PYFK_MPI_HOME", "")
+if PYFK_USE_MPI == "1" and PYFK_MPI_HOME != "":
+    # set mpi_compile_args and mpi_link_args based on PYFK_MPI_HOME
+    mpi_compile_args = [f"-I{os.path.join(PYFK_MPI_HOME,'include')}"]
+    mpi_link_args = [
+        f"-L{os.path.join(PYFK_MPI_HOME,'lib')}",
+        "-lmpi"
+    ]
+    compile_time_env["PYFK_USE_MPI"] = "1"
+elif PYFK_USE_MPI == "1" and PYFK_MPI_HOME == "":
+    mpi_compile_args = os.popen(
+        "mpicc --showme:compile").read().strip().split(' ')
+    mpi_link_args = os.popen("mpicc --showme:link").read().strip().split(' ')
+    compile_time_env["PYFK_USE_MPI"] = "1"
+else:
+    mpi_compile_args = []
+    mpi_link_args = []
 
+# * only for debug purpose
 CYTHON_TRACE = 0
 if "--CYTHON_TRACE" in sys.argv:
     CYTHON_TRACE = 1
@@ -126,7 +147,8 @@ setup_config = dict(
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Physics",
     ],
-    ext_modules=cythonize(extensions, language_level="3", annotate=False),
+    ext_modules=cythonize(extensions, language_level="3",
+                          annotate=False, compile_time_env=compile_time_env),
     zip_safe=False,
     install_requires=["numpy", "obspy", "cython", "scipy", "cysignals"]
 )
