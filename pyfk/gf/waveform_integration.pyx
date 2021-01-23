@@ -13,6 +13,19 @@ IF PYFK_USE_MPI == "1":
     from mpi4py import MPI
     from mpi4py cimport libmpi as mpi
 
+IF PYFK_USE_MPI == "1":
+    def mpi_info():
+        vendor = MPI.get_vendor()
+        version = vendor[0]+" "+".".join(map(str, vendor[1]))
+        var = f"MPI installed correctly, version: {version}."
+        print(var)
+        return var
+ELSE:
+    def mpi_info():
+        var = f"MPI is not used."
+        print(var)
+        return var
+
 
 def _waveform_integration(
         nfft2,
@@ -150,9 +163,9 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
                                                  (vs[idep] * (1. + att / qs[idep])))**2
     # reduce to all
     IF PYFK_USE_MPI == "1":
-        mpi.MPI_Allreduce( & kp_list_each_rank[0, 0], & kp_list[0, 0], (nfft2-wc1+1)*len(thickness), mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
-        mpi.MPI_Allreduce( & ks_list_each_rank[0, 0], & ks_list[0, 0], (nfft2-wc1+1)*len(thickness), mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
-        mpi.MPI_Allreduce( & n_list_each_rank[0], & n_list[0], nfft2-wc1+1, mpi.MPI_INT, mpi.MPI_SUM, comm)
+        mpi.MPI_Allreduce(& kp_list_each_rank[0, 0], & kp_list[0, 0], (nfft2-wc1+1)*len(thickness), mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
+        mpi.MPI_Allreduce(& ks_list_each_rank[0, 0], & ks_list[0, 0], (nfft2-wc1+1)*len(thickness), mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
+        mpi.MPI_Allreduce(& n_list_each_rank[0], & n_list[0], nfft2-wc1+1, mpi.MPI_INT, mpi.MPI_SUM, comm)
     ELSE:
         kp_list[:, :] = kp_list_each_rank[:, :]
         ks_list[:, :] = ks_list_each_rank[:, :]
@@ -238,7 +251,7 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
     # mpi.MPI_Reduce(& sum_waveform[0, 0, 0], & sum_waveform_all[0, 0, 0], len(receiver_distance)*9*nfft2, mpi.MPI_C_DOUBLE_COMPLEX,
     #                 mpi.MPI_SUM, 0, comm)
     IF PYFK_USE_MPI == "1":
-        mpi.MPI_Allreduce( & sum_waveform[0, 0, 0], & sum_waveform_all[0, 0, 0], len(receiver_distance)*9*nfft2, mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
+        mpi.MPI_Allreduce(& sum_waveform[0, 0, 0], & sum_waveform_all[0, 0, 0], len(receiver_distance)*9*nfft2, mpi.MPI_C_DOUBLE_COMPLEX, mpi.MPI_SUM, comm)
     ELSE:
         sum_waveform_all[:, :, :] = sum_waveform[:, :, :]
 

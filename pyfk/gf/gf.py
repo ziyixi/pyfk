@@ -355,5 +355,4 @@ def waveform_integration(
         EPSILON,
         sigma,
         sum_waveform)
-    print(np.sum(sum_waveform))
     return sum_waveform

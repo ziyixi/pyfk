@@ -2,7 +2,7 @@ from os.path import dirname, join
 
 import numpy as np
 import obspy
-
+import pytest
 from pyfk.config.config import Config, SeisModel, SourceModel
 from pyfk.gf.gf import calculate_gf
 from pyfk.tests.taup.test_taup import TestFunctionTaup
@@ -10,6 +10,7 @@ from pyfk.tests.taup.test_taup import TestFunctionTaup
 
 class TestFunctioncalculateGf(object):
     @staticmethod
+    @pytest.mark.mpi_skip
     def test_hk():
         # * perl fk.pl -Mhk/15/k -N512/0.1 10 20 30
         model_path = join(dirname(__file__), f"../data/hk")
@@ -42,6 +43,7 @@ class TestFunctioncalculateGf(object):
                     coef = 1.0
                 assert coef > 0.99
 
+    @pytest.mark.mpi_skip
     def test_big_array(self):
         # model_data = TestFunctionTaup.gen_test_model("prem")
         # there is a possibility that we write x=f(x) where x is a memoryview in the code
@@ -57,6 +59,7 @@ class TestFunctioncalculateGf(object):
             receiver_distance=np.arange(10, 40, 10))
         _ = calculate_gf(config_hk)
 
+    @pytest.mark.mpi_skip
     def test_prem_ep(self):
         model_data = TestFunctionTaup.gen_test_model("prem")
         model_prem = SeisModel(model=model_data)
@@ -81,6 +84,7 @@ class TestFunctioncalculateGf(object):
                 coef = 1.
             assert coef > 0.99
 
+    @pytest.mark.mpi_skip
     def test_prem_sf(self):
         model_data = TestFunctionTaup.gen_test_model("prem")
         model_prem = SeisModel(model=model_data)
@@ -105,6 +109,7 @@ class TestFunctioncalculateGf(object):
                 coef = 1.
             assert coef > 0.99
 
+    @pytest.mark.mpi_skip
     def test_receiver_deeper(self):
         model_data = TestFunctionTaup.gen_test_model("prem")
         model_prem = SeisModel(model=model_data)
@@ -130,6 +135,7 @@ class TestFunctioncalculateGf(object):
                 coef = 1.
             assert coef > 0.99
 
+    @pytest.mark.mpi_skip
     def test_static_source(self):
         model_data = TestFunctionTaup.gen_test_model("prem")
         model_prem = SeisModel(model=model_data)
@@ -149,6 +155,7 @@ class TestFunctioncalculateGf(object):
         )[0, 1]
         assert coef > 0.99999
 
+    @pytest.mark.mpi_skip
     def test_smth(self):
         model_data = TestFunctionTaup.gen_test_model("prem")
         model_prem = SeisModel(model=model_data)
@@ -174,6 +181,7 @@ class TestFunctioncalculateGf(object):
                 coef = 1.
             assert coef > 0.99
 
+    @pytest.mark.mpi_skip
     def test_filter(self):
         model_data = TestFunctionTaup.gen_test_model("prem")
         model_prem = SeisModel(model=model_data)

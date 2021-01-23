@@ -9,7 +9,6 @@ obspy = "*"
 cython = "*"
 scipy = "*"
 cysignals = "*"
-mpi4py = "*"
 
 [dev-packages]
 autopep8 = "*"
@@ -21,6 +20,8 @@ rstcheck = "*"
 pydata-sphinx-theme = "*"
 sphinx-autoapi = "*"
 jupyter-sphinx = "*"
+mpi4py = "*"
+pytest-mpi = "*"
 
 [requires]
 python_version = "3"
