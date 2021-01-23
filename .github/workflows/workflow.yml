@@ -20,12 +20,41 @@ jobs:
       - name: Install pipenv
         run: |
           pip install pipenv
+
+      - id: cache-pipenv
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ matrix.os }}-${{ matrix.python }}-pipenv-${{ hashFiles('**/Pipfile') }}
+
+      - name: Install pipenv packages if not cached
+        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+        run: |
           pipenv install -d
+
+      - id: cache-openmp
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/share/openmp
+          key: ${{ matrix.os }}-${{ matrix.python }}-openmp
+
+      - name: Install openmp if not cached
+        if: steps.cache-openmp.outputs.cache-hit != 'true'
+        run: |
+          wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz
+          tar -xvf ./openmpi-4.0.2.tar.gz
+          cd openmpi-4.0.2
+          ./configure --prefix="~/.local/share/openmp"
+          make
+          make install
+          cd ..
+
       - name: Generate coverage report
         run: |
-          pipenv run python setup.py develop
+          pipenv run pip install .
           pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
           pipenv run coverage xml
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
@@ -34,3 +63,14 @@ jobs:
           env_vars: OS
           fail_ci_if_error: false
           verbose: true
+
+      - name: Test MPI run
+        run: |
+          export PATH=${PATH}:~/.local/share/openmp
+          export PYFK_USE_MPI=1
+          export PYFK_MPI_HOME="~/.local/share/openmp"
+          pipenv run pip uninstall pyfk -y
+          pipenv run pipenv install mpi4py
+          pipenv run pip install .
+          pipenv run mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
+          pipenv run mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk

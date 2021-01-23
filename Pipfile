@@ -20,7 +20,6 @@ rstcheck = "*"
 pydata-sphinx-theme = "*"
 sphinx-autoapi = "*"
 jupyter-sphinx = "*"
-mpi4py = "*"
 pytest-mpi = "*"
 
 [requires]
