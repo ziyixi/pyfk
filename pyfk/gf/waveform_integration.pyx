@@ -80,9 +80,149 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
                                       bint flip, double filter_const, bint dynamic, int wc2, double[:] t0, int src_type,
                                       double taper, int wc, double[:] mu, double[:] thickness, double[:, :] si,
                                       int src_layer, int rcv_layer, int updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
-    # * get jv
-    cdef double[:, :, :] aj0list, aj1list, aj2list
+    cdef:
+        int ik, idep, n, i, irec, flip_val, icom
+        double ztemp, k, kc2, omega, z, aj0, aj1, aj2, filtering, phi
+        double complex w, att, atttemp, nf
+    # * init some arrays
+    cdef:
+        double complex[::1] kp = np.zeros(len(thickness), dtype=np.complex)
+        double complex[::1] ks = np.zeros(len(thickness), dtype=np.complex)
+        double complex[:, ::1] u = np.zeros((3, 3), dtype=np.complex)
+        double complex[:, ::1] aaa = np.zeros((5, 5), dtype=np.complex)
+        double complex[:, ::1] bbb = np.zeros((7, 7), dtype=np.complex)
+        double complex[:, ::1] ccc = np.zeros((7, 7), dtype=np.complex)
+        double complex[::1] eee = np.zeros(7, dtype=np.complex)
+        double complex[::1] ggg = np.zeros(7, dtype=np.complex)
+        double complex[:, ::1] zzz = np.zeros((3, 5), dtype=np.complex)
+        double complex[:, ::1] sss = np.zeros((3, 6), dtype=np.complex)
+        double complex[:, ::1] temppp = np.zeros((4, 4), dtype=np.complex)
 
+        double complex[::1] ggg_temp = np.zeros(7, dtype=np.complex)
+        double complex[:, ::1] zzz_temp = np.zeros((3, 5), dtype=np.complex)
+        double complex[:, ::1] bbb_temp = np.zeros((7, 7), dtype=np.complex)
+
+    # * get the n list
+    cdef:
+        int[::1] n_list = np.zeros(nfft2-wc1+1, dtype=np.intc), n_list_accumulate = np.zeros(nfft2-wc1+1, dtype=np.intc)
+        int n_total = 0
+        # some ik determined value
+        double complex[:, ::1] kp_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
+        double complex[:, ::1] ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
+        int[::1] flip_val_list = np.zeros(nfft2-wc1+1, dtype=np.intc)
+
+    for ik in range(wc1 - 1, nfft2):
+        kc2 = kc**2
+        omega = ik * dw
+        w = omega - sigma * 1j
+        att = clog(w / (2 * pi)) / pi + 0.5j
+        k = omega * pmin + 0.5 * dk
+        n = int(((kc2 + (pmax * omega)**2)**0.5 - k) / dk)
+        n_list[ik-wc1+1] = n
+        n_total = n_total+n
+        n_list_accumulate[ik-wc1+1] = n_total
+        # fill in values
+        for idep in range(len(thickness)):
+            kp_list[ik-wc1+1, idep] = (w /
+                                       (vp[idep] * (1. + att / qp[idep])))**2
+            ks_list[ik-wc1+1, idep] = (w /
+                                       (vs[idep] * (1. + att / qs[idep])))**2
+        if flip:
+            flip_val_list[ik-wc1+1] = -1
+        else:
+            flip_val_list[ik-wc1+1] = 1
+
+    # * we can run the code in parallel for n_total tasks
+    # we run n_total loops, then map back
+    cdef:
+        Py_ssize_t ibool, isearch
+
+    ik = 0
+    i = 0
+    for ibool in range(n_total):
+        # find current index ik and i
+        for isearch in range(nfft2-wc1+1):
+            if(n_list_accumulate[isearch] > ibool):
+                ik = isearch+wc1 - 1
+                i = ibool-(n_list_accumulate[isearch]-n_list[isearch])
+                break
+
+        omega = ik * dw
+        k = omega * pmin + (0.5+i) * dk
+
+        # * run kernel
+        kernel(
+            k,
+            u,
+            kp_list[ik-wc1+1, :],
+            ks_list[ik-wc1+1, :],
+            aaa,
+            bbb,
+            ccc,
+            eee,
+            ggg,
+            zzz,
+            sss,
+            temppp,
+            mu,
+            si,
+            thickness,
+            src_type,
+            src_layer,
+            rcv_layer,
+            updn,
+            epsilon,
+            # temp
+            ggg_temp,
+            zzz_temp,
+            bbb_temp)
+        for irec in range(len(receiver_distance)):
+            z = k * receiver_distance[irec]
+            aj0 = jv(0., z)
+            aj1 = jv(1., z)
+            aj2 = jv(2., z)
+            # do the numerical integration here
+            sum_waveform[irec, 0, ik] += u[0, 0] * \
+                aj0 * flip_val_list[ik-wc1+1]
+            sum_waveform[irec, 1, ik] += -u[0, 1] * aj1
+            sum_waveform[irec, 2, ik] += -u[0, 2] * aj1
+
+            nf = (u[1, 1] + u[1, 2]) * aj1 / z
+            sum_waveform[irec, 3, ik] += u[1, 0] * \
+                aj1 * flip_val_list[ik-wc1+1]
+            sum_waveform[irec, 4, ik] += u[1, 1] * aj0 - nf
+            sum_waveform[irec, 5, ik] += u[1, 2] * aj0 - nf
+
+            nf = 2. * (u[2, 1] + u[2, 2]) * aj2 / z
+            sum_waveform[irec, 6, ik] += u[2, 0] * \
+                aj2 * flip_val_list[ik-wc1+1]
+            sum_waveform[irec, 7, ik] += u[2, 1] * aj1 - nf
+            sum_waveform[irec, 8, ik] += u[2, 2] * aj1 - nf
+
+    for ik in range(wc1 - 1, nfft2):
+        omega = ik * dw
+        # * for each ik, we apply the filtering and apply the time shift in the frequency domain
+        filtering = filter_const
+        if dynamic and (ik + 1 > wc):
+            filtering = 0.5 * (1. + cos((ik + 1 - wc) * taper)) * filtering
+        if dynamic and (ik + 1 < wc2):
+            filtering = 0.5 * \
+                (1. + cos((wc2 - ik - 1) * pi / (wc2 - wc1))) * filtering
+        # in fk's code, only apply atttemp for ncom, here we apply to all, with
+        # no difference
+        for icom in range(9):
+            for irec in range(len(receiver_distance)):
+                phi = omega * t0[irec]
+                atttemp = filtering * (cos(phi) + sin(phi) * 1j)
+                sum_waveform[irec, icom, ik] *= atttemp
+
+
+cdef void _waveform_integration_sigin_old(int nfft2, double dw, double pmin, double dk, double kc, double pmax,
+                                          double[:] receiver_distance, int wc1,
+                                          double[:] vs, double[:] vp, double[:] qs, double[:] qp,
+                                          bint flip, double filter_const, bint dynamic, int wc2, double[:] t0, int src_type,
+                                          double taper, int wc, double[:] mu, double[:] thickness, double[:, :] si,
+                                          int src_layer, int rcv_layer, int updn, double epsilon, double sigma, double complex[:, :, :] sum_waveform):
     # # * main loop, the index in ik, means each wave number
     cdef:
         int ik, idep, n, i, irec, flip_val, icom
@@ -90,24 +230,23 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
         double complex w, att, atttemp, nf
     # * init some arrays
     cdef:
-        double complex[:] kp = np.zeros(len(thickness), dtype=np.complex)
-        double complex[:] ks = np.zeros(len(thickness), dtype=np.complex)
+        double complex[::1] kp = np.zeros(len(thickness), dtype=np.complex)
+        double complex[::1] ks = np.zeros(len(thickness), dtype=np.complex)
         double complex[:, ::1] u = np.zeros((3, 3), dtype=np.complex)
         double complex[:, ::1] aaa = np.zeros((5, 5), dtype=np.complex)
         double complex[:, ::1] bbb = np.zeros((7, 7), dtype=np.complex)
         double complex[:, ::1] ccc = np.zeros((7, 7), dtype=np.complex)
-        double complex[:] eee = np.zeros(7, dtype=np.complex)
-        double complex[:] ggg = np.zeros(7, dtype=np.complex)
+        double complex[::1] eee = np.zeros(7, dtype=np.complex)
+        double complex[::1] ggg = np.zeros(7, dtype=np.complex)
         double complex[:, ::1] zzz = np.zeros((3, 5), dtype=np.complex)
         double complex[:, ::1] sss = np.zeros((3, 6), dtype=np.complex)
         double complex[:, ::1] temppp = np.zeros((4, 4), dtype=np.complex)
 
-        double complex[:] ggg_temp = np.zeros(7, dtype=np.complex)
+        double complex[::1] ggg_temp = np.zeros(7, dtype=np.complex)
         double complex[:, ::1] zzz_temp = np.zeros((3, 5), dtype=np.complex)
         double complex[:, ::1] bbb_temp = np.zeros((7, 7), dtype=np.complex)
     for ik in range(wc1 - 1, nfft2):
         # * the code below is modified from FK
-        ztemp = pmax * nfft2 * dw / kc
         kc2 = kc**2
         omega = ik * dw
         w = omega - sigma * 1j
@@ -185,15 +324,15 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
                 atttemp = filtering * (cos(phi) + sin(phi) * 1j)
                 sum_waveform[irec, icom, ik] *= atttemp
 
-cdef void kernel(double k, double complex[:, :] u, double complex[:] kp, double complex[:] ks,
-                 double complex[:, :] aaa, double complex[:, :] bbb, double complex[:, :] ccc, double complex[:] eee,
-                 double complex[:] ggg, double complex[:, :] zzz, double complex[:, :] sss, double complex[:, :] temppp,
+cdef void kernel(double k, double complex[:, ::1] u, double complex[::1] kp, double complex[::1] ks,
+                 double complex[:, ::1] aaa, double complex[:, ::1] bbb, double complex[:, ::1] ccc, double complex[::1] eee,
+                 double complex[::1] ggg, double complex[:, ::1] zzz, double complex[:, ::1] sss, double complex[:, ::1] temppp,
                  double[:] mu, double[:, :] si, double[:] thickness, int src_type, int src_layer, int rcv_layer,
                  int updn, double epsilon,
                  # temps
-                 double complex[:] ggg_temp, double complex[:, :] zzz_temp, double complex[:, :] bbb_temp):
+                 double complex[::1] ggg_temp, double complex[:, ::1] zzz_temp, double complex[:, ::1] bbb_temp):
     # * the code below is directly modified from the FK code
-    cdef int index, ilayer
+    cdef Py_ssize_t index, ilayer
 
     # * Explanations:
     # ? aaa --- 4x4 p-sv Haskell matrix and a(5,5)=exb.
@@ -368,7 +507,7 @@ cdef inline(double complex, double complex, double complex, double) sh_ch(double
     x = x * a
     return c, y, x, ex
 
-cdef inline void initialG(double complex[:] ggg, double complex r, double complex ra, double complex rb, double complex r1, double mu2):
+cdef inline void initialG(double complex[::1] ggg, double complex r, double complex ra, double complex rb, double complex r1, double mu2):
     cdef double complex delta
 
     delta = r * (1. - ra * rb) - 1.
@@ -381,7 +520,7 @@ cdef inline void initialG(double complex[:] ggg, double complex r, double comple
     ggg[5] = -1.
     ggg[6] = 2. / (rb * mu2)
 
-cdef inline void eVector(double complex[:] eee, double complex ra, double complex rb, double complex r1, double mu2):
+cdef inline void eVector(double complex[::1] eee, double complex ra, double complex rb, double complex r1, double mu2):
     eee[0] = ra * rb - 1.
     eee[1] = mu2 * rb * (1. - r1)
     eee[2] = mu2 * (r1 - ra * rb)
@@ -391,7 +530,7 @@ cdef inline void eVector(double complex[:] eee, double complex ra, double comple
     eee[5] = -1.
     eee[6] = mu2 * rb / 2.
 
-cdef inline void compoundMatrix(double complex[:, :] ccc, double complex Ca, double complex Ya, double complex Xa, double complex Cb,
+cdef inline void compoundMatrix(double complex[:, ::1] ccc, double complex Ca, double complex Ya, double complex Xa, double complex Cb,
                                 double complex Yb, double complex Xb, double exa, double exb, double complex r, double complex r1,
                                 double complex r2, double complex r3, double mu2):
     cdef:
@@ -452,8 +591,8 @@ cdef inline void compoundMatrix(double complex[:, :] ccc, double complex Ca, dou
     ccc[6, 5] = -mu2 * Xb / 2.
     ccc[6, 6] = Cb
 
-cdef inline void propagateG(double complex[:] ggg, double complex[:, :] ccc, double complex[:] ggg_temp):
-    cdef size_t imat, jmat
+cdef inline void propagateG(double complex[::1] ggg, double complex[:, ::1] ccc, double complex[::1] ggg_temp):
+    cdef Py_ssize_t imat, jmat
 
     ggg_temp[:] = 0. + 0.j
     for imat in range(7):
@@ -463,12 +602,12 @@ cdef inline void propagateG(double complex[:] ggg, double complex[:, :] ccc, dou
     ggg[:] = ggg_temp[:]
 
 
-cdef inline void separatS(double complex[:, :] sss, int updn, int src_type, double complex ra, double complex rb,
-                          double complex r, double mu2, double complex[:, :] temppp, double complex r1, double[:, :] si):
+cdef inline void separatS(double complex[:, ::1] sss, int updn, int src_type, double complex ra, double complex rb,
+                          double complex r, double mu2, double complex[:, ::1] temppp, double complex r1, double[:, :] si):
     cdef:
         int isrc_type
         double complex ra1, rb1, dum, temp_sh
-        size_t jmat, kmat, index
+        Py_ssize_t jmat, kmat, index
         int imat
         double complex ctemp
 
@@ -523,8 +662,8 @@ cdef inline void separatS(double complex[:, :] sss, int updn, int src_type, doub
             sss[imat, 4] = (si[imat, 4] + temp_sh * si[imat, 5]) / 2.
             sss[imat, 5] = (si[imat, 5] + si[imat, 4] / temp_sh) / 2.
 
-cdef inline void initialZ(double complex[:, :] zzz, double complex[:] ggg, double complex[:, :] sss):
-    cdef size_t index
+cdef inline void initialZ(double complex[:, ::1] zzz, double complex[::1] ggg, double complex[:, ::1] sss):
+    cdef Py_ssize_t index
     for index in range(3):
         # c for p-sv, see WH p1018
         zzz[index, 0] = -sss[index, 1] * ggg[0] - \
@@ -539,7 +678,7 @@ cdef inline void initialZ(double complex[:, :] zzz, double complex[:] ggg, doubl
         zzz[index, 4] = sss[index, 4] * ggg[5] + sss[index, 5] * ggg[6]
 
 
-cdef inline void haskellMatrix(double complex[:, :] aaa, double complex Ca, double complex Ya, double complex Xa, double complex Cb,
+cdef inline void haskellMatrix(double complex[:, ::1] aaa, double complex Ca, double complex Ya, double complex Xa, double complex Cb,
                                double complex Yb, double complex Xb, double exa, double exb, double complex r, double complex r1,  double mu2):
     Ca = Ca * exb
     Xa = Xa * exb
@@ -572,8 +711,8 @@ cdef inline void haskellMatrix(double complex[:, :] aaa, double complex Ca, doub
     # c sh, the Haskell matrix is not needed. it is replaced by exb
     aaa[4, 4] = exb
 
-cdef inline void propagateZ(double complex[:, :] zzz, double complex[:, :] aaa, double complex[:, :] zzz_temp):
-    cdef size_t imat, jmat, kmat
+cdef inline void propagateZ(double complex[:, ::1] zzz, double complex[:, ::1] aaa, double complex[:, ::1] zzz_temp):
+    cdef Py_ssize_t imat, jmat, kmat
 
     zzz_temp[:, :] = 0. + 0.j
     for imat in range(3):
@@ -585,7 +724,7 @@ cdef inline void propagateZ(double complex[:, :] zzz, double complex[:, :] aaa, 
 
 cdef inline void propagateB(double complex[:, :] bbb, double complex[:, :] ccc, double complex[:, :] bbb_temp):
 
-    cdef size_t imat, jmat, kmat
+    cdef Py_ssize_t imat, jmat, kmat
 
     bbb_temp[:, :] = 0. + 0.j
     for imat in range(7):
