@@ -9,6 +9,7 @@ obspy = "*"
 cython = "*"
 scipy = "*"
 cysignals = "*"
+mpi4py = "*"
 
 [dev-packages]
 autopep8 = "*"

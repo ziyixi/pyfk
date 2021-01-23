@@ -313,6 +313,7 @@ def waveform_integration(
     """
     # * note, here we use parameters within config as their value is different from config
     mu = model.rh * model.vs * model.vs
+    # nust be c contiguous as we are using MPI
     sum_waveform = np.zeros(
         (len(config.receiver_distance), 9, int(nfft2)), dtype=np.complex)
     updn_mapper = {
@@ -355,4 +356,5 @@ def waveform_integration(
         EPSILON,
         sigma,
         sum_waveform)
+    print(np.sum(sum_waveform))
     return sum_waveform

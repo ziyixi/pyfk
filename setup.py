@@ -18,6 +18,9 @@ root_dir = os.path.join(
         inspect.getfile(inspect.currentframe()))), "pyfk"
 )
 
+mpi_compile_args = os.popen("mpicc --showme:compile").read().strip().split(' ')
+mpi_link_args = os.popen("mpicc --showme:link").read().strip().split(' ')
+
 CYTHON_TRACE = 0
 if "--CYTHON_TRACE" in sys.argv:
     CYTHON_TRACE = 1
@@ -37,7 +40,9 @@ extensions = [
         [os.path.join(root_dir, "gf/waveform_integration.pyx")],
         include_dirs=[np.get_include()],
         define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
-        language="c"
+        language="c",
+        extra_compile_args=mpi_compile_args,
+        extra_link_args=mpi_link_args,
         # extra_compile_args=["-fopenmp"]
     ),
 ]
