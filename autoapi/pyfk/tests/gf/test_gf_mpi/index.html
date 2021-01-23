@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyfk.tests.taup.test_taup &#8212; pyfk 0.2.0-alpha.1 documentation</title>
+    <title>pyfk.tests.gf.test_gf_mpi &#8212; pyfk 0.2.0-alpha.1 documentation</title>
     
   <link rel="stylesheet" href="../../../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -43,8 +43,8 @@
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="pyfk.utils" href="../../../utils/index.html" />
-    <link rel="prev" title="pyfk.tests.taup" href="../index.html" />
+    <link rel="next" title="pyfk.tests.sync" href="../../sync/index.html" />
+    <link rel="prev" title="pyfk.tests.gf.test_gf" href="../test_gf/index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -144,14 +144,14 @@
             <a href="#classes" class="nav-link">Classes</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h4">
-            <a href="#pyfk.tests.taup.test_taup.TestFunctionTaup" class="nav-link">TestFunctionTaup</a><ul class="nav section-nav flex-column">
+            <a href="#pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI" class="nav-link">TestFunctioncalculateGf_MPI</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.taup.test_taup.TestFunctionTaup.gen_test_model" class="nav-link">gen_test_model</a>
+            <a href="#pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI.test_mpi_info" class="nav-link">test_mpi_info</a>
         </li>
     
         <li class="nav-item toc-entry toc-h5">
-            <a href="#pyfk.tests.taup.test_taup.TestFunctionTaup.test_earth_models" class="nav-link">test_earth_models</a>
+            <a href="#pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI.test_val_correct" class="nav-link">test_val_correct</a>
         </li>
     
             </ul>
@@ -176,8 +176,8 @@
               
               <div>
                 
-  <div class="section" id="module-pyfk.tests.taup.test_taup">
-<span id="pyfk-tests-taup-test-taup"></span><h1><a class="reference internal" href="#module-pyfk.tests.taup.test_taup" title="pyfk.tests.taup.test_taup"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.tests.taup.test_taup</span></code></a><a class="headerlink" href="#module-pyfk.tests.taup.test_taup" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyfk.tests.gf.test_gf_mpi">
+<span id="pyfk-tests-gf-test-gf-mpi"></span><h1><a class="reference internal" href="#module-pyfk.tests.gf.test_gf_mpi" title="pyfk.tests.gf.test_gf_mpi"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.tests.gf.test_gf_mpi</span></code></a><a class="headerlink" href="#module-pyfk.tests.gf.test_gf_mpi" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="classes">
@@ -188,23 +188,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.tests.taup.test_taup.TestFunctionTaup" title="pyfk.tests.taup.test_taup.TestFunctionTaup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestFunctionTaup</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI" title="pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestFunctioncalculateGf_MPI</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt id="pyfk.tests.taup.test_taup.TestFunctionTaup">
-<em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.taup.test_taup.</code><code class="sig-name descname">TestFunctionTaup</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/taup/test_taup.html#TestFunctionTaup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.taup.test_taup.TestFunctionTaup" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI">
+<em class="property">class </em><code class="sig-prename descclassname">pyfk.tests.gf.test_gf_mpi.</code><code class="sig-name descname">TestFunctioncalculateGf_MPI</code><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf_mpi.html#TestFunctioncalculateGf_MPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt id="pyfk.tests.taup.test_taup.TestFunctionTaup.gen_test_model">
-<em class="property">static </em><code class="sig-name descname">gen_test_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/taup/test_taup.html#TestFunctionTaup.gen_test_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.taup.test_taup.TestFunctionTaup.gen_test_model" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI.test_mpi_info">
+<code class="sig-name descname">test_mpi_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf_mpi.html#TestFunctioncalculateGf_MPI.test_mpi_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI.test_mpi_info" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pyfk.tests.taup.test_taup.TestFunctionTaup.test_earth_models">
-<code class="sig-name descname">test_earth_models</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/taup/test_taup.html#TestFunctionTaup.test_earth_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.taup.test_taup.TestFunctionTaup.test_earth_models" title="Permalink to this definition">¶</a></dt>
+<dt id="pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI.test_val_correct">
+<code class="sig-name descname">test_val_correct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/tests/gf/test_gf_mpi.html#TestFunctioncalculateGf_MPI.test_val_correct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI.test_val_correct" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -219,8 +219,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="../index.html" title="previous page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.tests.taup</span></code></a>
-    <a class='right-next' id="next-link" href="../../../utils/index.html" title="next page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.utils</span></code></a>
+    <a class='left-prev' id="prev-link" href="../test_gf/index.html" title="previous page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.tests.gf.test_gf</span></code></a>
+    <a class='right-next' id="next-link" href="../../sync/index.html" title="next page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.tests.sync</span></code></a>
 
               </div>
               

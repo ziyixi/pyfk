@@ -1,0 +1,29 @@
+:mod:`pyfk.tests.gf.test_gf_mpi`
+================================
+
+.. py:module:: pyfk.tests.gf.test_gf_mpi
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pyfk.tests.gf.test_gf_mpi.TestFunctioncalculateGf_MPI
+
+
+
+.. py:class:: TestFunctioncalculateGf_MPI
+
+   Bases: :class:`object`
+
+   .. method:: test_mpi_info(self)
+
+
+   .. method:: test_val_correct(self)
+
+
+

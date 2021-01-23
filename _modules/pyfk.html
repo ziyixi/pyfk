@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyfk &#8212; pyfk 0.1.0 documentation</title>
+    <title>pyfk &#8212; pyfk 0.2.0-alpha.1 documentation</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -138,8 +138,9 @@
               <div>
                 
   <h1>Source code for pyfk</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">SourceModel</span><span class="p">,</span> <span class="n">SeisModel</span><span class="p">,</span> <span class="n">Config</span>
+<span></span><span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">SeisModel</span><span class="p">,</span> <span class="n">SourceModel</span>
 <span class="kn">from</span> <span class="nn">pyfk.gf.gf</span> <span class="kn">import</span> <span class="n">calculate_gf</span>
+<span class="kn">from</span> <span class="nn">pyfk.gf.waveform_integration</span> <span class="kn">import</span> <span class="n">mpi_info</span>
 <span class="kn">from</span> <span class="nn">pyfk.sync.sync</span> <span class="kn">import</span> <span class="n">calculate_sync</span><span class="p">,</span> <span class="n">generate_source_time_function</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -148,9 +149,10 @@
     <span class="s2">&quot;Config&quot;</span><span class="p">,</span>
     <span class="s2">&quot;calculate_gf&quot;</span><span class="p">,</span>
     <span class="s2">&quot;calculate_sync&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;generate_source_time_function&quot;</span><span class="p">]</span>
+    <span class="s2">&quot;generate_source_time_function&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mpi_info&quot;</span><span class="p">]</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.2.0-alpha.1&quot;</span>
 </pre></div>
 
               </div>

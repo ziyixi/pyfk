@@ -11,5 +11,6 @@ Submodules
    :maxdepth: 1
 
    test_gf/index.rst
+   test_gf_mpi/index.rst
 
 

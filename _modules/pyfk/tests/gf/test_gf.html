@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyfk.tests.gf.test_gf &#8212; pyfk 0.1.0 documentation</title>
+    <title>pyfk.tests.gf.test_gf &#8212; pyfk 0.2.0-alpha.1 documentation</title>
     
   <link rel="stylesheet" href="../../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -142,7 +142,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">obspy</span>
-
+<span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">SeisModel</span><span class="p">,</span> <span class="n">SourceModel</span>
 <span class="kn">from</span> <span class="nn">pyfk.gf.gf</span> <span class="kn">import</span> <span class="n">calculate_gf</span>
 <span class="kn">from</span> <span class="nn">pyfk.tests.taup.test_taup</span> <span class="kn">import</span> <span class="n">TestFunctionTaup</span>
@@ -150,6 +150,7 @@
 
 <div class="viewcode-block" id="TestFunctioncalculateGf"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf">[docs]</a><span class="k">class</span> <span class="nc">TestFunctioncalculateGf</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="nd">@staticmethod</span>
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_hk"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_hk">[docs]</a>    <span class="k">def</span> <span class="nf">test_hk</span><span class="p">():</span>
         <span class="c1"># * perl fk.pl -Mhk/15/k -N512/0.1 10 20 30</span>
         <span class="n">model_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;../data/hk&quot;</span><span class="p">)</span>
@@ -182,6 +183,7 @@
                     <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.0</span>
                 <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
 
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_big_array"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_big_array">[docs]</a>    <span class="k">def</span> <span class="nf">test_big_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># model_data = TestFunctionTaup.gen_test_model(&quot;prem&quot;)</span>
         <span class="c1"># there is a possibility that we write x=f(x) where x is a memoryview in the code</span>
@@ -197,6 +199,7 @@
             <span class="n">receiver_distance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         <span class="n">_</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_hk</span><span class="p">)</span></div>
 
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_prem_ep"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_prem_ep">[docs]</a>    <span class="k">def</span> <span class="nf">test_prem_ep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
         <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
@@ -221,6 +224,7 @@
                 <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
             <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
 
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_prem_sf"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_prem_sf">[docs]</a>    <span class="k">def</span> <span class="nf">test_prem_sf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
         <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
@@ -245,6 +249,7 @@
                 <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
             <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
 
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_receiver_deeper"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_receiver_deeper">[docs]</a>    <span class="k">def</span> <span class="nf">test_receiver_deeper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
         <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
@@ -270,6 +275,7 @@
                 <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
             <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
 
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_static_source"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_static_source">[docs]</a>    <span class="k">def</span> <span class="nf">test_static_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
         <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
@@ -289,6 +295,7 @@
         <span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99999</span></div>
 
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_smth"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_smth">[docs]</a>    <span class="k">def</span> <span class="nf">test_smth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
         <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
@@ -314,6 +321,7 @@
                 <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span>
             <span class="k">assert</span> <span class="n">coef</span> <span class="o">&gt;</span> <span class="mf">0.99</span></div>
 
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">mpi_skip</span>
 <div class="viewcode-block" id="TestFunctioncalculateGf.test_filter"><a class="viewcode-back" href="../../../../autoapi/pyfk/tests/gf/test_gf/index.html#pyfk.tests.gf.test_gf.TestFunctioncalculateGf.test_filter">[docs]</a>    <span class="k">def</span> <span class="nf">test_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">model_data</span> <span class="o">=</span> <span class="n">TestFunctionTaup</span><span class="o">.</span><span class="n">gen_test_model</span><span class="p">(</span><span class="s2">&quot;prem&quot;</span><span class="p">)</span>
         <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>

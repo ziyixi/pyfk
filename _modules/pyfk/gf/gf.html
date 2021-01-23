@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyfk.gf.gf &#8212; pyfk 0.1.0 documentation</title>
+    <title>pyfk.gf.gf &#8212; pyfk 0.2.0-alpha.1 documentation</title>
     
   <link rel="stylesheet" href="../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -139,17 +139,16 @@
                 
   <h1>Source code for pyfk.gf.gf</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.fft</span> <span class="kn">import</span> <span class="n">irfft</span>
 <span class="kn">from</span> <span class="nn">obspy.core.stream</span> <span class="kn">import</span> <span class="n">Stream</span>
 <span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Trace</span>
-<span class="kn">from</span> <span class="nn">pyfk.gf.waveform_integration</span> <span class="kn">import</span> <span class="n">_waveform_integration</span>
-<span class="kn">from</span> <span class="nn">pyfk.taup.taup</span> <span class="kn">import</span> <span class="n">taup</span>
-
 <span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">SeisModel</span>
+<span class="kn">from</span> <span class="nn">pyfk.gf.waveform_integration</span> <span class="kn">import</span> <span class="n">_waveform_integration</span>
 <span class="kn">from</span> <span class="nn">pyfk.setting</span> <span class="kn">import</span> <span class="n">EPSILON</span><span class="p">,</span> <span class="n">SIGMA</span>
+<span class="kn">from</span> <span class="nn">pyfk.taup.taup</span> <span class="kn">import</span> <span class="n">taup</span>
 
 
 <div class="viewcode-block" id="calculate_gf"><a class="viewcode-back" href="../../../autoapi/pyfk/index.html#pyfk.gf.gf.calculate_gf">[docs]</a><span class="k">def</span> <span class="nf">calculate_gf</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Config</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Stream</span><span class="p">]]:</span>
@@ -453,6 +452,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># * note, here we use parameters within config as their value is different from config</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">rh</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">vs</span>
+    <span class="c1"># nust be c contiguous as we are using MPI</span>
     <span class="n">sum_waveform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
         <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">receiver_distance</span><span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">nfft2</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
     <span class="n">updn_mapper</span> <span class="o">=</span> <span class="p">{</span>
