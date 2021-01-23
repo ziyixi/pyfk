@@ -30,12 +30,14 @@ extensions = [
         [os.path.join(root_dir, "taup/taup.pyx")],
         include_dirs=[np.get_include()],
         define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
+        language="c"
     ),
     Extension(
         "pyfk.gf.waveform_integration",
         [os.path.join(root_dir, "gf/waveform_integration.pyx")],
         include_dirs=[np.get_include()],
         define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
+        language="c"
         # extra_compile_args=["-fopenmp"]
     ),
 ]
