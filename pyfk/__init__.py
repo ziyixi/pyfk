@@ -12,4 +12,4 @@ __all__ = [
     "generate_source_time_function",
     "mpi_info"]
 
-__version__ = "0.2.0-alpha.2"
+__version__ = "0.2.0-alpha.3"

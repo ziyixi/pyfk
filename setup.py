@@ -23,23 +23,9 @@ compile_time_env = {
     "PYFK_USE_MPI": "0"
 }
 PYFK_USE_MPI = os.getenv("PYFK_USE_MPI", "0")
-PYFK_MPI_HOME = os.getenv("PYFK_MPI_HOME", "")
-if PYFK_USE_MPI == "1" and PYFK_MPI_HOME != "":
-    # set mpi_compile_args and mpi_link_args based on PYFK_MPI_HOME
-    mpi_compile_args = [f"-I{os.path.join(PYFK_MPI_HOME,'include')}"]
-    mpi_link_args = [
-        f"-L{os.path.join(PYFK_MPI_HOME,'lib')}",
-        "-lmpi"
-    ]
-    compile_time_env["PYFK_USE_MPI"] = "1"
-elif PYFK_USE_MPI == "1" and PYFK_MPI_HOME == "":
-    mpi_compile_args = os.popen(
-        "mpicc --showme:compile").read().strip().split(' ')
-    mpi_link_args = os.popen("mpicc --showme:link").read().strip().split(' ')
-    compile_time_env["PYFK_USE_MPI"] = "1"
-else:
-    mpi_compile_args = []
-    mpi_link_args = []
+if PYFK_USE_MPI == "1":
+    os.environ["CC"] = "mpicc"
+    compile_time_env["PYFK_USE_MPI"]="1"
 
 # * only for debug purpose
 CYTHON_TRACE = 0
@@ -61,10 +47,7 @@ extensions = [
         [os.path.join(root_dir, "gf/waveform_integration.pyx")],
         include_dirs=[np.get_include()],
         define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
-        language="c",
-        extra_compile_args=mpi_compile_args,
-        extra_link_args=mpi_link_args,
-        # extra_compile_args=["-fopenmp"]
+        language="c"
     ),
 ]
 
