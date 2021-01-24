@@ -32,6 +32,21 @@ jobs:
         run: |
           pipenv install -d
 
+      - name: Generate coverage report
+        run: |
+          pipenv run pip install .
+          pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
+          pipenv run coverage xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          env_vars: OS
+          fail_ci_if_error: false
+          verbose: true
+
       - id: cache-openmp
         uses: actions/cache@v2
         with:
@@ -49,24 +64,9 @@ jobs:
           make install
           cd ..
 
-      - name: Generate coverage report
-        run: |
-          pipenv run pip install .
-          pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
-          pipenv run coverage xml
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          env_vars: OS
-          fail_ci_if_error: false
-          verbose: true
-
       - name: Test MPI run
         run: |
-          export PATH=${PATH}:$HOME/.local/share/openmp
+          export PATH=${PATH}:$HOME/.local/share/openmp/bin
           export PYFK_USE_MPI=1
           export PYFK_MPI_HOME="$HOME/.local/share/openmp"
           pipenv run pip uninstall pyfk -y
