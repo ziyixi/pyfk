@@ -23,9 +23,11 @@ compile_time_env = {
     "PYFK_USE_MPI": "0"
 }
 PYFK_USE_MPI = os.getenv("PYFK_USE_MPI", "0")
+mpi_link_args=[]
 if PYFK_USE_MPI == "1":
     os.environ["CC"] = "mpicc"
     compile_time_env["PYFK_USE_MPI"]="1"
+    mpi_link_args=["-lmpi"]
 
 # * only for debug purpose
 CYTHON_TRACE = 0
@@ -47,7 +49,8 @@ extensions = [
         [os.path.join(root_dir, "gf/waveform_integration.pyx")],
         include_dirs=[np.get_include()],
         define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
-        language="c"
+        language="c",
+        extra_link_args=mpi_link_args
     ),
 ]
 
