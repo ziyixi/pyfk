@@ -17,18 +17,22 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+
+      - name: Install openmp on mac
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install mpich
+
+      - name: Install openmp on ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt install mpich -y
+
       - name: Install pipenv
         run: |
           pip install pipenv
 
-      - id: cache-pipenv
-        uses: actions/cache@v2
-        with:
-          path: $HOME/.local/share/virtualenvs
-          key: ${{ matrix.os }}-${{ matrix.python }}-pipenv-${{ hashFiles('**/Pipfile') }}
-
-      - name: Install pipenv packages if not cached
-        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+      - name: Install pipenv packages
         run: |
           pipenv install -d
 
@@ -51,28 +55,9 @@ jobs:
           fail_ci_if_error: false
           verbose: true
 
-      - id: cache-openmp
-        uses: actions/cache@v2
-        with:
-          path: $HOME/.local/share/openmp
-          key: ${{ matrix.os }}-${{ matrix.python }}-openmp
-
-      - name: Install openmp if not cached
-        if: steps.cache-openmp.outputs.cache-hit != 'true'
-        run: |
-          wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz
-          tar -xf ./openmpi-4.0.2.tar.gz
-          cd openmpi-4.0.2
-          ./configure --prefix="$HOME/.local/share/openmp"
-          make
-          make install
-          cd ..
-
       - name: Test MPI run
         run: |
-          export PATH=${PATH}:$HOME/.local/share/openmp/bin
           export PYFK_USE_MPI=1
-          export PYFK_MPI_HOME="$HOME/.local/share/openmp"
           pipenv run pip uninstall pyfk -y
           pipenv run pipenv install mpi4py
           pipenv run pip install .
