@@ -38,8 +38,9 @@ jobs:
           mkdir coverage_test
           cd coverage_test
           pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
-          cd ..
           pipenv run coverage xml
+          cd ..
+          mv coverage_test/coverage.xml .
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
