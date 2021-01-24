@@ -24,7 +24,7 @@ jobs:
       - id: cache-pipenv
         uses: actions/cache@v2
         with:
-          path: ~/.local/share/virtualenvs
+          path: $HOME/.local/share/virtualenvs
           key: ${{ matrix.os }}-${{ matrix.python }}-pipenv-${{ hashFiles('**/Pipfile') }}
 
       - name: Install pipenv packages if not cached
@@ -35,7 +35,7 @@ jobs:
       - id: cache-openmp
         uses: actions/cache@v2
         with:
-          path: ~/.local/share/openmp
+          path: $HOME/.local/share/openmp
           key: ${{ matrix.os }}-${{ matrix.python }}-openmp
 
       - name: Install openmp if not cached
@@ -44,7 +44,7 @@ jobs:
           wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz
           tar -xvf ./openmpi-4.0.2.tar.gz
           cd openmpi-4.0.2
-          ./configure --prefix="~/.local/share/openmp"
+          ./configure --prefix="$HOME/.local/share/openmp"
           make
           make install
           cd ..
@@ -66,9 +66,9 @@ jobs:
 
       - name: Test MPI run
         run: |
-          export PATH=${PATH}:~/.local/share/openmp
+          export PATH=${PATH}:$HOME/.local/share/openmp
           export PYFK_USE_MPI=1
-          export PYFK_MPI_HOME="~/.local/share/openmp"
+          export PYFK_MPI_HOME="$HOME/.local/share/openmp"
           pipenv run pip uninstall pyfk -y
           pipenv run pipenv install mpi4py
           pipenv run pip install .
