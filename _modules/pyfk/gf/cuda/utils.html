@@ -140,7 +140,10 @@
   <h1>Source code for pyfk.gf.cuda.utils</h1><div class="highlight"><pre>
 <span></span><span class="c1"># define utils functions used by the main computation</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">complex128</span>
+
+<span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">complex128</span><span class="p">,</span> <span class="n">cuda</span>
 
 
 <span class="nd">@cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="s2">&quot;Tuple((complex128,complex128,complex128,float64))(complex128,float64)&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -383,6 +386,19 @@
     <span class="k">for</span> <span class="n">imat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">kmat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
             <span class="n">bbb</span><span class="p">[</span><span class="n">imat</span><span class="p">,</span> <span class="n">kmat</span><span class="p">]</span> <span class="o">=</span> <span class="n">bbb_temp</span><span class="p">[</span><span class="n">imat</span><span class="p">,</span> <span class="n">kmat</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="cujn"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/utils/index.html#pyfk.gf.cuda.utils.cujn">[docs]</a><span class="n">cujn</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">ElementwiseKernel</span><span class="p">(</span>
+    <span class="s1">&#39;int64 n, float64 x&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;float64 z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;z=jn(n,x)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cujn&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cal_cujn"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/utils/index.html#pyfk.gf.cuda.utils.cal_cujn">[docs]</a><span class="k">def</span> <span class="nf">cal_cujn</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="n">x_cu</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">result_cu</span> <span class="o">=</span> <span class="n">cujn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x_cu</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">result_cu</span><span class="p">)</span></div>
 </pre></div>
 
               </div>

@@ -144,6 +144,14 @@
             <a href="#functions" class="nav-link">Functions</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.cujn" class="nav-link">cujn</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.cal_cujn" class="nav-link">cal_cujn</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
             <a href="#pyfk.gf.cuda.utils.compoundMatrix" class="nav-link">compoundMatrix</a>
         </li>
     
@@ -214,38 +222,51 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.compoundMatrix" title="pyfk.gf.cuda.utils.compoundMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compoundMatrix</span></code></a>(ccc, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.cal_cujn" title="pyfk.gf.cuda.utils.cal_cujn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cal_cujn</span></code></a>(n: int, x: np.ndarray)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.eVector" title="pyfk.gf.cuda.utils.eVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eVector</span></code></a>(eee, ra, rb, r1, mu2)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.compoundMatrix" title="pyfk.gf.cuda.utils.compoundMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compoundMatrix</span></code></a>(ccc, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.haskellMatrix" title="pyfk.gf.cuda.utils.haskellMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">haskellMatrix</span></code></a>(aaa, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.eVector" title="pyfk.gf.cuda.utils.eVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eVector</span></code></a>(eee, ra, rb, r1, mu2)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.initialG" title="pyfk.gf.cuda.utils.initialG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialG</span></code></a>(ggg, r, ra, rb, r1, mu2)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.haskellMatrix" title="pyfk.gf.cuda.utils.haskellMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">haskellMatrix</span></code></a>(aaa, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.initialZ" title="pyfk.gf.cuda.utils.initialZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialZ</span></code></a>(zzz, ggg, sss)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.initialG" title="pyfk.gf.cuda.utils.initialG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialG</span></code></a>(ggg, r, ra, rb, r1, mu2)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateB" title="pyfk.gf.cuda.utils.propagateB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateB</span></code></a>(bbb, ccc)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.initialZ" title="pyfk.gf.cuda.utils.initialZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialZ</span></code></a>(zzz, ggg, sss)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateG" title="pyfk.gf.cuda.utils.propagateG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateG</span></code></a>(ggg, ccc)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateB" title="pyfk.gf.cuda.utils.propagateB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateB</span></code></a>(bbb, ccc)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateZ" title="pyfk.gf.cuda.utils.propagateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateZ</span></code></a>(zzz, aaa)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateG" title="pyfk.gf.cuda.utils.propagateG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateG</span></code></a>(ggg, ccc)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.separatS" title="pyfk.gf.cuda.utils.separatS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separatS</span></code></a>(sss, updn, src_type, ra, rb, r, mu2, temppp, r1, si)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateZ" title="pyfk.gf.cuda.utils.propagateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateZ</span></code></a>(zzz, aaa)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.sh_ch" title="pyfk.gf.cuda.utils.sh_ch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sh_ch</span></code></a>(a, kd)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.separatS" title="pyfk.gf.cuda.utils.separatS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separatS</span></code></a>(sss, updn, src_type, ra, rb, r, mu2, temppp, r1, si)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.sh_ch" title="pyfk.gf.cuda.utils.sh_ch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sh_ch</span></code></a>(a, kd)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py data">
+<dt id="pyfk.gf.cuda.utils.cujn">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">cujn</code><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#cujn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.cujn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.cal_cujn">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">cal_cujn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">np.ndarray</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#cal_cujn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.cal_cujn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt id="pyfk.gf.cuda.utils.compoundMatrix">
 <code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">compoundMatrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ccc</span></em>, <em class="sig-param"><span class="n">Ca</span></em>, <em class="sig-param"><span class="n">Ya</span></em>, <em class="sig-param"><span class="n">Xa</span></em>, <em class="sig-param"><span class="n">Cb</span></em>, <em class="sig-param"><span class="n">Yb</span></em>, <em class="sig-param"><span class="n">Xb</span></em>, <em class="sig-param"><span class="n">exa</span></em>, <em class="sig-param"><span class="n">exb</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">r1</span></em>, <em class="sig-param"><span class="n">mu2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#compoundMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.compoundMatrix" title="Permalink to this definition">¶</a></dt>

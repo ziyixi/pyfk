@@ -13,6 +13,7 @@ Functions
 
 .. autoapisummary::
 
+   pyfk.gf.cuda.utils.cal_cujn
    pyfk.gf.cuda.utils.compoundMatrix
    pyfk.gf.cuda.utils.eVector
    pyfk.gf.cuda.utils.haskellMatrix
@@ -23,6 +24,14 @@ Functions
    pyfk.gf.cuda.utils.propagateZ
    pyfk.gf.cuda.utils.separatS
    pyfk.gf.cuda.utils.sh_ch
+
+
+.. data:: cujn
+   
+
+   
+
+.. function:: cal_cujn(n: int, x: np.ndarray)
 
 
 .. function:: compoundMatrix(ccc, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)
