@@ -9,7 +9,6 @@ obspy = "*"
 cython = "*"
 scipy = "*"
 cysignals = "*"
-numba = "*"
 
 [dev-packages]
 autopep8 = "*"

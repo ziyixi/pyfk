@@ -1,11 +1,10 @@
 # write cuda kernels with numba, parallel for each ibool
 
 import numpy as np
-import scipy
 from numba import complex128, cuda, njit
-from pyfk.gf.cuda.utils import (compoundMatrix, eVector, haskellMatrix,
-                                initialG, initialZ, propagateB, propagateG,
-                                propagateZ, separatS, sh_ch)
+from pyfk.gf.cuda.utils import (cal_cujn, compoundMatrix, eVector,
+                                haskellMatrix, initialG, initialZ, propagateB,
+                                propagateG, propagateZ, separatS, sh_ch)
 
 
 def _waveform_integration(
@@ -52,7 +51,15 @@ def _waveform_integration(
     # * generate the ik and i list representing the i wavenumber and i frequency
     ik_list = np.zeros(n_all, dtype=np.int)
     i_list = np.zeros(n_all, dtype=np.int)
-    fill_vals(n_list, n_list_accumulate, ik_list, i_list)
+
+    # * call fill_vals cuda kernel
+    threadsperblock = 128
+    blockspergrid = (n_all + (threadsperblock - 1)) // threadsperblock
+
+    ik_list_d = cuda.to_device(ik_list)
+    i_list_d = cuda.to_device(i_list)
+    fill_vals[blockspergrid, threadsperblock](
+        n_list, n_list_accumulate, ik_list_d, i_list_d, wc1, nfft2)
 
     # * initialize the big matrix u (n_all*3*3)
     u: np.ndarray = np.zeros((n_all, 3, 3), dtype=np.complex)
@@ -60,8 +67,6 @@ def _waveform_integration(
     # * init cuda arrays
     # u, ik_list, i_list, kp, ks, thickness, mu, si
     u_d = cuda.to_device(u)
-    ik_list_d = cuda.to_device(ik_list)
-    i_list_d = cuda.to_device(i_list)
     kp_list_d = cuda.to_device(kp_list)
     ks_list_d = cuda.to_device(ks_list)
     thickness_d = cuda.to_device(thickness)
@@ -69,8 +74,6 @@ def _waveform_integration(
     si_d = cuda.to_device(si)
 
     # * run the cuda kernel function
-    threadsperblock = 128
-    blockspergrid = (n_all + (threadsperblock - 1)) // threadsperblock
     parallel_kernel[blockspergrid, threadsperblock](u_d, ik_list_d, i_list_d, kp_list_d, ks_list_d, thickness_d, mu_d, si_d,
                                                     dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1)
     u = u_d.copy_to_host()
@@ -83,10 +86,11 @@ def _waveform_integration(
         flip_val = 1.
 
     z_list = np.zeros((n_all, len(receiver_distance)), dtype=np.float)
-    get_z_list(z_list, u, ik_list, i_list, receiver_distance, dw, pmin, dk)
-    aj0_list = scipy.special.jv(0., z_list)
-    aj1_list = scipy.special.jv(1., z_list)
-    aj2_list = scipy.special.jv(2., z_list)
+    get_z_list(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk)
+    aj0_list = cal_cujn(0, z_list)
+    aj1_list = cal_cujn(1, z_list)
+    aj2_list = cal_cujn(2, z_list)
+    # it's not appropriate to use cuda here, as it will use large atomic operation.
     get_sum_waveform(sum_waveform, u, ik_list, receiver_distance,  flip_val,
                      z_list, aj0_list, aj1_list, aj2_list)
 
@@ -118,14 +122,15 @@ def get_n_list_kpks(wc1: int, nfft2: int, kc: float, dw: float, pmin: float, pma
                                        (vs[idep] * (1. + att / qs[idep])))**2
 
 
-@njit("void(int64[:],int64[:],int64[:],int64[:],int64,int64)")
+@cuda.jit("void(int64[:],int64[:],int64[:],int64[:],int64,int64)")
 def fill_vals(n_list: np.ndarray, n_list_accumulate: np.ndarray, ik_list: np.ndarray, i_list: np.ndarray, wc1: int, nfft2: int):
     n_all = n_list_accumulate[-1]
-    for ibool in range(n_all):
+    pos = cuda.grid(1)
+    if pos < n_all:
         for isearch in range(nfft2-wc1+1):
-            if(n_list_accumulate[isearch] > ibool):
-                ik_list[ibool] = isearch+wc1 - 1
-                i_list[ibool] = ibool - \
+            if(n_list_accumulate[isearch] > pos):
+                ik_list[pos] = isearch+wc1 - 1
+                i_list[pos] = pos - \
                     (n_list_accumulate[isearch]-n_list[isearch])
                 break
 
@@ -148,7 +153,6 @@ def get_sum_waveform(sum_waveform, u, ik_list, receiver_distance,  flip_val,
         ik = ik_list[ibool]
         for irec in range(len(receiver_distance)):
             z = z_list[ibool, irec]
-            # ! removed as there is currently a bug in scipy-numba
             aj0 = aj0_list[ibool, irec]
             aj1 = aj1_list[ibool, irec]
             aj2 = aj2_list[ibool, irec]

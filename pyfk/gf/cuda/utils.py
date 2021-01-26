@@ -1,6 +1,9 @@
 # define utils functions used by the main computation
 import math
-from numba import cuda, complex128
+
+import cupy as cp
+import numpy as np
+from numba import complex128, cuda
 
 
 @cuda.jit("Tuple((complex128,complex128,complex128,float64))(complex128,float64)", device=True)
@@ -243,3 +246,16 @@ def propagateB(bbb, ccc):
     for imat in range(7):
         for kmat in range(7):
             bbb[imat, kmat] = bbb_temp[imat, kmat]
+
+
+cujn = cp.ElementwiseKernel(
+    'int64 n, float64 x',
+    'float64 z',
+    'z=jn(n,x)',
+    'cujn')
+
+
+def cal_cujn(n: int, x: np.ndarray):
+    x_cu = cp.asarray(x)
+    result_cu = cujn(n, x_cu)
+    return cp.asnumpy(result_cu)
