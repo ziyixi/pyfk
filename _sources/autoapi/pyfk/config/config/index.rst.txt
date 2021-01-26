@@ -18,7 +18,7 @@ Classes
 
 
 
-.. py:class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[float, float] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50)
+.. py:class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[float, float] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50, cuda: bool = False)
 
    Bases: :class:`object`
 

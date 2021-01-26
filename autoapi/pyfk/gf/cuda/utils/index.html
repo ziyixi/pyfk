@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.gf.cuda.utils &#8212; pyfk 0.2.0-alpha.3 documentation</title>
+    
+  <link rel="stylesheet" href="../../../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
+    
+  <link rel="preload" as="script" href="../../../../../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="pyfk.gf.cuda.waveform_integration_cuda" href="../waveform_integration_cuda/index.html" />
+    <link rel="prev" title="pyfk.gf.cuda" href="../index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../../introduction/tutorial.html">Tutorial</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../../../../index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+          
+            
+                <li class="active">
+                    <a href="../../../index.html">pyfk</a>
+                </li>
+            
+          
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#module-contents" class="nav-link">Module Contents</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#functions" class="nav-link">Functions</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.compoundMatrix" class="nav-link">compoundMatrix</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.eVector" class="nav-link">eVector</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.haskellMatrix" class="nav-link">haskellMatrix</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.initialG" class="nav-link">initialG</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.initialZ" class="nav-link">initialZ</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.propagateB" class="nav-link">propagateB</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.propagateG" class="nav-link">propagateG</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.propagateZ" class="nav-link">propagateZ</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.separatS" class="nav-link">separatS</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#pyfk.gf.cuda.utils.sh_ch" class="nav-link">sh_ch</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="module-pyfk.gf.cuda.utils">
+<span id="pyfk-gf-cuda-utils"></span><h1><a class="reference internal" href="#module-pyfk.gf.cuda.utils" title="pyfk.gf.cuda.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.cuda.utils</span></code></a><a class="headerlink" href="#module-pyfk.gf.cuda.utils" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.compoundMatrix" title="pyfk.gf.cuda.utils.compoundMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compoundMatrix</span></code></a>(ccc, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.eVector" title="pyfk.gf.cuda.utils.eVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eVector</span></code></a>(eee, ra, rb, r1, mu2)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.haskellMatrix" title="pyfk.gf.cuda.utils.haskellMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">haskellMatrix</span></code></a>(aaa, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.initialG" title="pyfk.gf.cuda.utils.initialG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialG</span></code></a>(ggg, r, ra, rb, r1, mu2)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.initialZ" title="pyfk.gf.cuda.utils.initialZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialZ</span></code></a>(zzz, ggg, sss)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateB" title="pyfk.gf.cuda.utils.propagateB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateB</span></code></a>(bbb, ccc)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateG" title="pyfk.gf.cuda.utils.propagateG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateG</span></code></a>(ggg, ccc)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.propagateZ" title="pyfk.gf.cuda.utils.propagateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagateZ</span></code></a>(zzz, aaa)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.separatS" title="pyfk.gf.cuda.utils.separatS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separatS</span></code></a>(sss, updn, src_type, ra, rb, r, mu2, temppp, r1, si)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.utils.sh_ch" title="pyfk.gf.cuda.utils.sh_ch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sh_ch</span></code></a>(a, kd)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.compoundMatrix">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">compoundMatrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ccc</span></em>, <em class="sig-param"><span class="n">Ca</span></em>, <em class="sig-param"><span class="n">Ya</span></em>, <em class="sig-param"><span class="n">Xa</span></em>, <em class="sig-param"><span class="n">Cb</span></em>, <em class="sig-param"><span class="n">Yb</span></em>, <em class="sig-param"><span class="n">Xb</span></em>, <em class="sig-param"><span class="n">exa</span></em>, <em class="sig-param"><span class="n">exb</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">r1</span></em>, <em class="sig-param"><span class="n">mu2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#compoundMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.compoundMatrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.eVector">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">eVector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eee</span></em>, <em class="sig-param"><span class="n">ra</span></em>, <em class="sig-param"><span class="n">rb</span></em>, <em class="sig-param"><span class="n">r1</span></em>, <em class="sig-param"><span class="n">mu2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#eVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.eVector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.haskellMatrix">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">haskellMatrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">aaa</span></em>, <em class="sig-param"><span class="n">Ca</span></em>, <em class="sig-param"><span class="n">Ya</span></em>, <em class="sig-param"><span class="n">Xa</span></em>, <em class="sig-param"><span class="n">Cb</span></em>, <em class="sig-param"><span class="n">Yb</span></em>, <em class="sig-param"><span class="n">Xb</span></em>, <em class="sig-param"><span class="n">exa</span></em>, <em class="sig-param"><span class="n">exb</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">r1</span></em>, <em class="sig-param"><span class="n">mu2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#haskellMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.haskellMatrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.initialG">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">initialG</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ggg</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">ra</span></em>, <em class="sig-param"><span class="n">rb</span></em>, <em class="sig-param"><span class="n">r1</span></em>, <em class="sig-param"><span class="n">mu2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#initialG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.initialG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.initialZ">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">initialZ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zzz</span></em>, <em class="sig-param"><span class="n">ggg</span></em>, <em class="sig-param"><span class="n">sss</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#initialZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.initialZ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.propagateB">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">propagateB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bbb</span></em>, <em class="sig-param"><span class="n">ccc</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#propagateB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.propagateB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.propagateG">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">propagateG</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ggg</span></em>, <em class="sig-param"><span class="n">ccc</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#propagateG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.propagateG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.propagateZ">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">propagateZ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zzz</span></em>, <em class="sig-param"><span class="n">aaa</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#propagateZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.propagateZ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.separatS">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">separatS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sss</span></em>, <em class="sig-param"><span class="n">updn</span></em>, <em class="sig-param"><span class="n">src_type</span></em>, <em class="sig-param"><span class="n">ra</span></em>, <em class="sig-param"><span class="n">rb</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">mu2</span></em>, <em class="sig-param"><span class="n">temppp</span></em>, <em class="sig-param"><span class="n">r1</span></em>, <em class="sig-param"><span class="n">si</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#separatS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.separatS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyfk.gf.cuda.utils.sh_ch">
+<code class="sig-prename descclassname">pyfk.gf.cuda.utils.</code><code class="sig-name descname">sh_ch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">kd</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/utils.html#sh_ch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.gf.cuda.utils.sh_ch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="../index.html" title="previous page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.cuda</span></code></a>
+    <a class='right-next' id="next-link" href="../waveform_integration_cuda/index.html" title="next page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.cuda.waveform_integration_cuda</span></code></a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../../../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2021, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

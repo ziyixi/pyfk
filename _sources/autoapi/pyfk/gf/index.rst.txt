@@ -4,6 +4,15 @@
 .. py:module:: pyfk.gf
 
 
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   cuda/index.rst
+
+
 Submodules
 ----------
 .. toctree::

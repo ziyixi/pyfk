@@ -1,0 +1,45 @@
+:mod:`pyfk.gf.cuda.waveform_integration_cuda`
+=============================================
+
+.. py:module:: pyfk.gf.cuda.waveform_integration_cuda
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   pyfk.gf.cuda.waveform_integration_cuda._waveform_integration
+   pyfk.gf.cuda.waveform_integration_cuda.apply_filter
+   pyfk.gf.cuda.waveform_integration_cuda.fill_vals
+   pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks
+   pyfk.gf.cuda.waveform_integration_cuda.get_sum_waveform
+   pyfk.gf.cuda.waveform_integration_cuda.get_z_list
+   pyfk.gf.cuda.waveform_integration_cuda.parallel_kernel
+
+
+.. function:: _waveform_integration(nfft2: int, dw: float, pmin: float, dk: float, kc: float, pmax: float, receiver_distance: np.ndarray, wc1: int, vs: np.ndarray, vp: np.ndarray, qs: np.ndarray, qp: np.ndarray, flip: bool, filter_const: float, dynamic: bool, wc2: int, t0: int, src_type: int, taper: float, wc: int, mu: np.ndarray, thickness: np.ndarray, si: np.ndarray, src_layer: int, rcv_layer: int, updn: int, epsilon: float, sigma: float, sum_waveform: np.ndarray)
+
+
+.. function:: apply_filter(wc1, nfft2, dw, filter_const, dynamic, wc, taper, wc2, receiver_distance, t0, sum_waveform)
+
+
+.. function:: fill_vals(n_list: np.ndarray, n_list_accumulate: np.ndarray, ik_list: np.ndarray, i_list: np.ndarray, wc1: int, nfft2: int)
+
+
+.. function:: get_n_list_kpks(wc1: int, nfft2: int, kc: float, dw: float, pmin: float, pmax: float, dk: float, sigma: float, thickness: np.ndarray, vp: np.ndarray, vs: np.ndarray, qp: np.ndarray, qs: np.ndarray, n_list: np.ndarray, n_list_accumulate: np.ndarray, kp_list: np.ndarray, ks_list: np.ndarray)
+
+
+.. function:: get_sum_waveform(sum_waveform, u, ik_list, receiver_distance, flip_val, z_list, aj0_list, aj1_list, aj2_list)
+
+
+.. function:: get_z_list(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk)
+
+
+.. function:: parallel_kernel(u, ik_list, i_list, kp_list, ks_list, thickness, mu, si, dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1)
+
+

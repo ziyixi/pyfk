@@ -234,7 +234,7 @@
 <span class="sd">        :return: the thickness array</span>
 <span class="sd">        :rtype: np.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span></div>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="SeisModel.vs"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.vs">[docs]</a>    <span class="k">def</span> <span class="nf">vs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -244,7 +244,7 @@
 <span class="sd">        :return: the vs array</span>
 <span class="sd">        :rtype: np.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span></div>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="SeisModel.vp"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.vp">[docs]</a>    <span class="k">def</span> <span class="nf">vp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -254,7 +254,7 @@
 <span class="sd">        :return: the vp array</span>
 <span class="sd">        :rtype: np.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span></div>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="SeisModel.rh"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.rh">[docs]</a>    <span class="k">def</span> <span class="nf">rh</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -264,7 +264,7 @@
 <span class="sd">        :return: the density array</span>
 <span class="sd">        :rtype: np.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span></div>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="SeisModel.qs"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.qs">[docs]</a>    <span class="k">def</span> <span class="nf">qs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -274,7 +274,7 @@
 <span class="sd">        :return: the attenuation qs array</span>
 <span class="sd">        :rtype: np.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span></div>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="SeisModel.qp"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.qp">[docs]</a>    <span class="k">def</span> <span class="nf">qp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -284,7 +284,7 @@
 <span class="sd">        :return: the attenuation qp array</span>
 <span class="sd">        :rtype: np.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_values</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">])</span></div>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="SeisModel.flattening"><a class="viewcode-back" href="../../../autoapi/pyfk/config/config/index.html#pyfk.config.config.SeisModel.flattening">[docs]</a>    <span class="k">def</span> <span class="nf">flattening</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -550,7 +550,8 @@
                  <span class="n">kmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">15.</span><span class="p">,</span>
                  <span class="n">rdep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
                  <span class="n">updn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
-                 <span class="n">samples_before_first_arrival</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">samples_before_first_arrival</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+                 <span class="n">cuda</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The configuration class used in generating Green&#39;s function and the synthetic waveform.</span>
 
@@ -668,6 +669,8 @@
         <span class="k">if</span> <span class="n">samples_before_first_arrival</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;samples_before_first_arrival should be positive&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">samples_before_first_arrival</span> <span class="o">=</span> <span class="n">samples_before_first_arrival</span>
+        <span class="c1"># cuda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cuda</span> <span class="o">=</span> <span class="n">cuda</span>
         <span class="c1"># source and model</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">SourceModel</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="n">PyfkError</span><span class="p">(</span><span class="s2">&quot;Must provide a source&quot;</span><span class="p">)</span>

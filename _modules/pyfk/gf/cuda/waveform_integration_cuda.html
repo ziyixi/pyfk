@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyfk.gf.cuda.waveform_integration_cuda &#8212; pyfk 0.2.0-alpha.3 documentation</title>
+    
+  <link rel="stylesheet" href="../../../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../../../index.html">
+    
+      <p class="title">pyfk</p>
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../introduction/install.html">Installing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../introduction/tutorial.html">Tutorial</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../../autoapi/index.html">API Reference</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pyfk.gf.cuda.waveform_integration_cuda</h1><div class="highlight"><pre>
+<span></span><span class="c1"># write cuda kernels with numba, parallel for each ibool</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">complex128</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">pyfk.gf.cuda.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">compoundMatrix</span><span class="p">,</span> <span class="n">eVector</span><span class="p">,</span> <span class="n">haskellMatrix</span><span class="p">,</span>
+                                <span class="n">initialG</span><span class="p">,</span> <span class="n">initialZ</span><span class="p">,</span> <span class="n">propagateB</span><span class="p">,</span> <span class="n">propagateG</span><span class="p">,</span>
+                                <span class="n">propagateZ</span><span class="p">,</span> <span class="n">separatS</span><span class="p">,</span> <span class="n">sh_ch</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="_waveform_integration"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/waveform_integration_cuda/index.html#pyfk.gf.cuda.waveform_integration_cuda._waveform_integration">[docs]</a><span class="k">def</span> <span class="nf">_waveform_integration</span><span class="p">(</span>
+        <span class="n">nfft2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">dw</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">pmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dk</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">pmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">receiver_distance</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">wc1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">vs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">qs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">qp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">flip</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">filter_const</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">wc2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">t0</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">src_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">taper</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">wc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">mu</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">thickness</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">si</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">src_layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">rcv_layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">updn</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">sum_waveform</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="c1"># * generate kp and ks array ((nfft2-wc1+1)*len(thickness))</span>
+    <span class="n">kp_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfft2</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">thickness</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">ks_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfft2</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">thickness</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+
+    <span class="c1"># * get the n list, kp and ks</span>
+    <span class="n">n_list</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nfft2</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">n_list_accumulate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nfft2</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">get_n_list_kpks</span><span class="p">(</span><span class="n">wc1</span><span class="p">,</span> <span class="n">nfft2</span><span class="p">,</span> <span class="n">kc</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">pmin</span><span class="p">,</span> <span class="n">pmax</span><span class="p">,</span> <span class="n">dk</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span> <span class="n">qp</span><span class="p">,</span> <span class="n">qs</span><span class="p">,</span>
+                    <span class="n">n_list</span><span class="p">,</span> <span class="n">n_list_accumulate</span><span class="p">,</span> <span class="n">kp_list</span><span class="p">,</span> <span class="n">ks_list</span><span class="p">)</span>
+    <span class="n">n_all</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">n_list_accumulate</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># * generate the ik and i list representing the i wavenumber and i frequency</span>
+    <span class="n">ik_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_all</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">i_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_all</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">fill_vals</span><span class="p">(</span><span class="n">n_list</span><span class="p">,</span> <span class="n">n_list_accumulate</span><span class="p">,</span> <span class="n">ik_list</span><span class="p">,</span> <span class="n">i_list</span><span class="p">)</span>
+
+    <span class="c1"># * initialize the big matrix u (n_all*3*3)</span>
+    <span class="n">u</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_all</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+
+    <span class="c1"># * init cuda arrays</span>
+    <span class="c1"># u, ik_list, i_list, kp, ks, thickness, mu, si</span>
+    <span class="n">u_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">ik_list_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">ik_list</span><span class="p">)</span>
+    <span class="n">i_list_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">i_list</span><span class="p">)</span>
+    <span class="n">kp_list_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">kp_list</span><span class="p">)</span>
+    <span class="n">ks_list_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">ks_list</span><span class="p">)</span>
+    <span class="n">thickness_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span>
+    <span class="n">mu_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+    <span class="n">si_d</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">si</span><span class="p">)</span>
+
+    <span class="c1"># * run the cuda kernel function</span>
+    <span class="n">threadsperblock</span> <span class="o">=</span> <span class="mi">128</span>
+    <span class="n">blockspergrid</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_all</span> <span class="o">+</span> <span class="p">(</span><span class="n">threadsperblock</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">//</span> <span class="n">threadsperblock</span>
+    <span class="n">parallel_kernel</span><span class="p">[</span><span class="n">blockspergrid</span><span class="p">,</span> <span class="n">threadsperblock</span><span class="p">](</span><span class="n">u_d</span><span class="p">,</span> <span class="n">ik_list_d</span><span class="p">,</span> <span class="n">i_list_d</span><span class="p">,</span> <span class="n">kp_list_d</span><span class="p">,</span> <span class="n">ks_list_d</span><span class="p">,</span> <span class="n">thickness_d</span><span class="p">,</span> <span class="n">mu_d</span><span class="p">,</span> <span class="n">si_d</span><span class="p">,</span>
+                                                    <span class="n">dw</span><span class="p">,</span> <span class="n">pmin</span><span class="p">,</span> <span class="n">dk</span><span class="p">,</span> <span class="n">src_layer</span><span class="p">,</span> <span class="n">rcv_layer</span><span class="p">,</span> <span class="n">updn</span><span class="p">,</span> <span class="n">src_type</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">wc1</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">u_d</span><span class="o">.</span><span class="n">copy_to_host</span><span class="p">()</span>
+
+    <span class="c1"># * get sum_waveform</span>
+    <span class="n">flip_val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">flip</span><span class="p">:</span>
+        <span class="n">flip_val</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flip_val</span> <span class="o">=</span> <span class="mf">1.</span>
+
+    <span class="n">z_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_all</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">receiver_distance</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+    <span class="n">get_z_list</span><span class="p">(</span><span class="n">z_list</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">ik_list</span><span class="p">,</span> <span class="n">i_list</span><span class="p">,</span> <span class="n">receiver_distance</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">pmin</span><span class="p">,</span> <span class="n">dk</span><span class="p">)</span>
+    <span class="n">aj0_list</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">z_list</span><span class="p">)</span>
+    <span class="n">aj1_list</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="n">z_list</span><span class="p">)</span>
+    <span class="n">aj2_list</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="mf">2.</span><span class="p">,</span> <span class="n">z_list</span><span class="p">)</span>
+    <span class="n">get_sum_waveform</span><span class="p">(</span><span class="n">sum_waveform</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">ik_list</span><span class="p">,</span> <span class="n">receiver_distance</span><span class="p">,</span>  <span class="n">flip_val</span><span class="p">,</span>
+                     <span class="n">z_list</span><span class="p">,</span> <span class="n">aj0_list</span><span class="p">,</span> <span class="n">aj1_list</span><span class="p">,</span> <span class="n">aj2_list</span><span class="p">)</span>
+
+    <span class="c1"># * perform the filtering</span>
+    <span class="n">apply_filter</span><span class="p">(</span><span class="n">wc1</span><span class="p">,</span> <span class="n">nfft2</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">filter_const</span><span class="p">,</span> <span class="n">dynamic</span><span class="p">,</span> <span class="n">wc</span><span class="p">,</span> <span class="n">taper</span><span class="p">,</span> <span class="n">wc2</span><span class="p">,</span>
+                 <span class="n">receiver_distance</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">sum_waveform</span><span class="p">)</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="s2">&quot;void(int64,int64,float64,float64,float64,float64,float64,float64,float64[:],float64[:],float64[:],float64[:],float64[:],int64[:],int64[:],complex128[:,:],complex128[:,:])&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="get_n_list_kpks"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/waveform_integration_cuda/index.html#pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks">[docs]</a><span class="k">def</span> <span class="nf">get_n_list_kpks</span><span class="p">(</span><span class="n">wc1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nfft2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">kc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dw</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dk</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="n">thickness</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">qp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">qs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                    <span class="c1"># output</span>
+                    <span class="n">n_list</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n_list_accumulate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="n">kp_list</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ks_list</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="n">n_all</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">ik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wc1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nfft2</span><span class="p">):</span>
+        <span class="n">kc2</span> <span class="o">=</span> <span class="n">kc</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">omega</span> <span class="o">=</span> <span class="n">ik</span> <span class="o">*</span> <span class="n">dw</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">-</span> <span class="n">sigma</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
+        <span class="n">att</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">+</span> <span class="mf">0.5</span><span class="n">j</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">pmin</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dk</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(((</span><span class="n">kc2</span> <span class="o">+</span> <span class="p">(</span><span class="n">pmax</span> <span class="o">*</span> <span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="n">dk</span><span class="p">)</span>
+        <span class="n">n_list</span><span class="p">[</span><span class="n">ik</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">n_all</span> <span class="o">=</span> <span class="n">n_all</span><span class="o">+</span><span class="n">n</span>
+        <span class="n">n_list_accumulate</span><span class="p">[</span><span class="n">ik</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_all</span>
+        <span class="k">for</span> <span class="n">idep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thickness</span><span class="p">)):</span>
+            <span class="n">kp_list</span><span class="p">[</span><span class="n">ik</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">idep</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span>
+                                       <span class="p">(</span><span class="n">vp</span><span class="p">[</span><span class="n">idep</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">att</span> <span class="o">/</span> <span class="n">qp</span><span class="p">[</span><span class="n">idep</span><span class="p">])))</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">ks_list</span><span class="p">[</span><span class="n">ik</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">idep</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span>
+                                       <span class="p">(</span><span class="n">vs</span><span class="p">[</span><span class="n">idep</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">att</span> <span class="o">/</span> <span class="n">qs</span><span class="p">[</span><span class="n">idep</span><span class="p">])))</span><span class="o">**</span><span class="mi">2</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="s2">&quot;void(int64[:],int64[:],int64[:],int64[:],int64,int64)&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="fill_vals"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/waveform_integration_cuda/index.html#pyfk.gf.cuda.waveform_integration_cuda.fill_vals">[docs]</a><span class="k">def</span> <span class="nf">fill_vals</span><span class="p">(</span><span class="n">n_list</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n_list_accumulate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ik_list</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">i_list</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">wc1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nfft2</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="n">n_all</span> <span class="o">=</span> <span class="n">n_list_accumulate</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">ibool</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_all</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">isearch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfft2</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">n_list_accumulate</span><span class="p">[</span><span class="n">isearch</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ibool</span><span class="p">):</span>
+                <span class="n">ik_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">]</span> <span class="o">=</span> <span class="n">isearch</span><span class="o">+</span><span class="n">wc1</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">i_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">]</span> <span class="o">=</span> <span class="n">ibool</span> <span class="o">-</span> \
+                    <span class="p">(</span><span class="n">n_list_accumulate</span><span class="p">[</span><span class="n">isearch</span><span class="p">]</span><span class="o">-</span><span class="n">n_list</span><span class="p">[</span><span class="n">isearch</span><span class="p">])</span>
+                <span class="k">break</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="s2">&quot;void(float64[:,:],int64[:],int64[:],float64[:],float64,float64,float64)&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="get_z_list"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/waveform_integration_cuda/index.html#pyfk.gf.cuda.waveform_integration_cuda.get_z_list">[docs]</a><span class="k">def</span> <span class="nf">get_z_list</span><span class="p">(</span><span class="n">z_list</span><span class="p">,</span> <span class="n">ik_list</span><span class="p">,</span> <span class="n">i_list</span><span class="p">,</span> <span class="n">receiver_distance</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">pmin</span><span class="p">,</span> <span class="n">dk</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">ibool</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ik_list</span><span class="p">)):</span>
+        <span class="n">ik</span> <span class="o">=</span> <span class="n">ik_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">]</span>
+        <span class="n">omega</span> <span class="o">=</span> <span class="n">ik</span> <span class="o">*</span> <span class="n">dw</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">pmin</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">dk</span>
+        <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">receiver_distance</span><span class="p">)):</span>
+            <span class="n">z_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="n">irec</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">receiver_distance</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="s2">&quot;void(complex128[:,:,:],complex128[:,:,:],int64[:],float64[:],float64,float64[:,:],float64[:,:],float64[:,:],float64[:,:])&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="get_sum_waveform"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/waveform_integration_cuda/index.html#pyfk.gf.cuda.waveform_integration_cuda.get_sum_waveform">[docs]</a><span class="k">def</span> <span class="nf">get_sum_waveform</span><span class="p">(</span><span class="n">sum_waveform</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">ik_list</span><span class="p">,</span> <span class="n">receiver_distance</span><span class="p">,</span>  <span class="n">flip_val</span><span class="p">,</span>
+                     <span class="n">z_list</span><span class="p">,</span> <span class="n">aj0_list</span><span class="p">,</span> <span class="n">aj1_list</span><span class="p">,</span> <span class="n">aj2_list</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">ibool</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">ik</span> <span class="o">=</span> <span class="n">ik_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">receiver_distance</span><span class="p">)):</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="n">irec</span><span class="p">]</span>
+            <span class="c1"># ! removed as there is currently a bug in scipy-numba</span>
+            <span class="n">aj0</span> <span class="o">=</span> <span class="n">aj0_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="n">irec</span><span class="p">]</span>
+            <span class="n">aj1</span> <span class="o">=</span> <span class="n">aj1_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="n">irec</span><span class="p">]</span>
+            <span class="n">aj2</span> <span class="o">=</span> <span class="n">aj2_list</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="n">irec</span><span class="p">]</span>
+            <span class="c1"># do the numerical integration here</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> \
+                <span class="n">aj0</span> <span class="o">*</span> <span class="n">flip_val</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span><span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">aj1</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span><span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">aj1</span>
+
+            <span class="n">nf</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">aj1</span> <span class="o">/</span> <span class="n">z</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> \
+                <span class="n">aj1</span> <span class="o">*</span> <span class="n">flip_val</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">aj0</span> <span class="o">-</span> <span class="n">nf</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">aj0</span> <span class="o">-</span> <span class="n">nf</span>
+
+            <span class="n">nf</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">aj2</span> <span class="o">/</span> <span class="n">z</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> \
+                <span class="n">aj2</span> <span class="o">*</span> <span class="n">flip_val</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">aj1</span> <span class="o">-</span> <span class="n">nf</span>
+            <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">ibool</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">aj1</span> <span class="o">-</span> <span class="n">nf</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="s2">&quot;void(int64,int64,float64,float64,boolean,int64,float64,int64,float64[:],float64[:],complex128[:,:,:])&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="apply_filter"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/waveform_integration_cuda/index.html#pyfk.gf.cuda.waveform_integration_cuda.apply_filter">[docs]</a><span class="k">def</span> <span class="nf">apply_filter</span><span class="p">(</span><span class="n">wc1</span><span class="p">,</span> <span class="n">nfft2</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">filter_const</span><span class="p">,</span> <span class="n">dynamic</span><span class="p">,</span> <span class="n">wc</span><span class="p">,</span> <span class="n">taper</span><span class="p">,</span> <span class="n">wc2</span><span class="p">,</span>
+                 <span class="n">receiver_distance</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">sum_waveform</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">ik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wc1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nfft2</span><span class="p">):</span>
+        <span class="n">omega</span> <span class="o">=</span> <span class="n">ik</span> <span class="o">*</span> <span class="n">dw</span>
+        <span class="c1"># * for each ik, we apply the filtering and apply the time shift in the frequency domain</span>
+        <span class="n">filtering</span> <span class="o">=</span> <span class="n">filter_const</span>
+        <span class="k">if</span> <span class="n">dynamic</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ik</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">wc</span><span class="p">):</span>
+            <span class="n">filtering</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">ik</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">wc</span><span class="p">)</span> <span class="o">*</span> <span class="n">taper</span><span class="p">))</span> <span class="o">*</span> <span class="n">filtering</span>
+        <span class="k">if</span> <span class="n">dynamic</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ik</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">wc2</span><span class="p">):</span>
+            <span class="n">filtering</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> \
+                <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">wc2</span> <span class="o">-</span> <span class="n">ik</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">wc2</span> <span class="o">-</span> <span class="n">wc1</span><span class="p">)))</span> <span class="o">*</span> <span class="n">filtering</span>
+        <span class="c1"># in fk&#39;s code, only apply atttemp for ncom, here we apply to all, with</span>
+        <span class="c1"># no difference</span>
+        <span class="k">for</span> <span class="n">icom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">irec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">receiver_distance</span><span class="p">)):</span>
+                <span class="n">phi</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">t0</span><span class="p">[</span><span class="n">irec</span><span class="p">]</span>
+                <span class="n">atttemp</span> <span class="o">=</span> <span class="n">filtering</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+                <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="n">icom</span><span class="p">,</span>
+                             <span class="n">ik</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_waveform</span><span class="p">[</span><span class="n">irec</span><span class="p">,</span> <span class="n">icom</span><span class="p">,</span> <span class="n">ik</span><span class="p">]</span><span class="o">*</span><span class="n">atttemp</span></div>
+
+
+<span class="nd">@cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="s2">&quot;void(complex128[:,:,:],int64[:],int64[:],complex128[:,:],complex128[:,:],float64[:],float64[:],float64[:,:],float64,float64,float64,int64,int64,int64,int64,float64,int64)&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="parallel_kernel"><a class="viewcode-back" href="../../../../autoapi/pyfk/gf/cuda/waveform_integration_cuda/index.html#pyfk.gf.cuda.waveform_integration_cuda.parallel_kernel">[docs]</a><span class="k">def</span> <span class="nf">parallel_kernel</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">ik_list</span><span class="p">,</span> <span class="n">i_list</span><span class="p">,</span> <span class="n">kp_list</span><span class="p">,</span> <span class="n">ks_list</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">si</span><span class="p">,</span>
+                    <span class="n">dw</span><span class="p">,</span> <span class="n">pmin</span><span class="p">,</span> <span class="n">dk</span><span class="p">,</span> <span class="n">src_layer</span><span class="p">,</span> <span class="n">rcv_layer</span><span class="p">,</span> <span class="n">updn</span><span class="p">,</span> <span class="n">src_type</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">wc1</span><span class="p">):</span>
+    <span class="c1"># * pos for this thread</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ik_list</span><span class="p">)):</span>
+        <span class="n">ik</span> <span class="o">=</span> <span class="n">ik_list</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i_list</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+
+        <span class="c1"># * generate some local arrays</span>
+        <span class="n">aaa</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">bbb</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">ccc</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">eee</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">ggg</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">zzz</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">sss</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">temppp</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complex128</span><span class="p">)</span>
+
+        <span class="n">omega</span> <span class="o">=</span> <span class="n">ik</span> <span class="o">*</span> <span class="n">dw</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">pmin</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">dk</span>
+
+        <span class="c1"># * here we directly run the kernel function as in cython</span>
+        <span class="n">aaa</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="n">bbb</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="n">ccc</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="n">eee</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="n">ggg</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="n">zzz</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="n">sss</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="n">temppp</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+            <span class="n">bbb</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">eee</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">eee</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span>
+
+        <span class="k">for</span> <span class="n">ilayer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">Ca</span><span class="p">,</span> <span class="n">Ya</span><span class="p">,</span> <span class="n">Xa</span><span class="p">,</span> <span class="n">Cb</span><span class="p">,</span> <span class="n">Yb</span><span class="p">,</span> <span class="n">Xb</span> <span class="o">=</span> <span class="mf">0.</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span>
+            <span class="n">exa</span><span class="p">,</span> <span class="n">exb</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span>
+            <span class="n">kka</span> <span class="o">=</span> <span class="n">kp_list</span><span class="p">[</span><span class="n">ik</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ilayer</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">kkb</span> <span class="o">=</span> <span class="n">ks_list</span><span class="p">[</span><span class="n">ik</span><span class="o">-</span><span class="n">wc1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ilayer</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">/</span> <span class="n">kkb</span>
+            <span class="n">kd</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">thickness</span><span class="p">[</span><span class="n">ilayer</span><span class="p">]</span>
+            <span class="n">mu2</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">mu</span><span class="p">[</span><span class="n">ilayer</span><span class="p">]</span>
+            <span class="n">ra</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">kka</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+            <span class="n">rb</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">kkb</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+            <span class="n">r1</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">r</span>
+
+            <span class="k">if</span> <span class="n">ilayer</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">thickness</span><span class="p">[</span><span class="n">ilayer</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="c1"># * begin initialG</span>
+                <span class="c1"># ? Initialize the g row-vector. The first 5 elements are the</span>
+                <span class="c1"># ? inverse(E)|_{ij}^{12}, ij=12,13,23,24,34.</span>
+                <span class="c1"># ? g14 is omitted because g14 = -g23.</span>
+                <span class="c1"># ? The last two are the 5th row of E^-1.</span>
+                <span class="c1"># p-sv, see EQ 33 on ZR/p623, constant omitted.</span>
+                <span class="n">initialG</span><span class="p">(</span><span class="n">ggg</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">)</span>
+                <span class="c1"># * end initailG</span>
+            <span class="k">elif</span> <span class="n">ilayer</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">thickness</span><span class="p">[</span><span class="n">ilayer</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="c1"># * begin eVector(e)</span>
+                <span class="c1"># ? The first 5 members are E|_12^ij, ij=12,13,23,24,34.</span>
+                <span class="c1"># ? The last two are the first column of SH E matrix.</span>
+                <span class="c1"># For p-sv, compute E|_(12)^(ij), ij=12, 13, 23, 24, 34.</span>
+                <span class="n">eVector</span><span class="p">(</span><span class="n">eee</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">)</span>
+                <span class="c1"># * end eVector(e)</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># * begin compoundMatrix(c)</span>
+                <span class="c1"># ? The upper-left 5x5 is the 6x6 compound matrix of the P-SV Haskell matrix,</span>
+                <span class="c1"># ?       a(ij,kl) = A|_kl^ij, ij=12,13,14,23,24,34,</span>
+                <span class="c1"># ? after dropping the 3rd row and colummn and replacing the 4th row</span>
+                <span class="c1"># ? by (2A41, 2A42, 2A44-1,2A45,2A46) (see W&amp;H, P1035).</span>
+                <span class="c1"># ? The lower-right c 2x2 is the SH part of the Haskell matrix.</span>
+                <span class="c1"># ? Input: layer parameters.</span>
+                <span class="c1"># ? Output: compound matrix a, scaled by exa*exb for the P-SV and exb for the SH.</span>
+                <span class="n">Ca</span><span class="p">,</span> <span class="n">Ya</span><span class="p">,</span> <span class="n">Xa</span><span class="p">,</span> <span class="n">exa</span> <span class="o">=</span> <span class="n">sh_ch</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">kd</span><span class="p">)</span>
+                <span class="n">Cb</span><span class="p">,</span> <span class="n">Yb</span><span class="p">,</span> <span class="n">Xb</span><span class="p">,</span> <span class="n">exb</span> <span class="o">=</span> <span class="n">sh_ch</span><span class="p">(</span><span class="n">rb</span><span class="p">,</span> <span class="n">kd</span><span class="p">)</span>
+
+                <span class="n">compoundMatrix</span><span class="p">(</span><span class="n">ccc</span><span class="p">,</span> <span class="n">Ca</span><span class="p">,</span> <span class="n">Ya</span><span class="p">,</span> <span class="n">Xa</span><span class="p">,</span> <span class="n">Cb</span><span class="p">,</span> <span class="n">Yb</span><span class="p">,</span> <span class="n">Xb</span><span class="p">,</span>
+                               <span class="n">exa</span><span class="p">,</span> <span class="n">exb</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span>  <span class="n">mu2</span><span class="p">)</span>
+                <span class="c1"># * end compoundMatrix(c)</span>
+
+                <span class="c1"># * begin propagateG(c, g)</span>
+                <span class="c1"># ? propagate g vector upward using the compound matrix</span>
+                <span class="c1"># ?       g = g*a</span>
+                <span class="n">propagateG</span><span class="p">(</span><span class="n">ggg</span><span class="p">,</span> <span class="n">ccc</span><span class="p">)</span>
+                <span class="c1"># * end propagateG(c, g)</span>
+            <span class="k">if</span> <span class="n">ilayer</span> <span class="o">==</span> <span class="n">src_layer</span><span class="p">:</span>
+                <span class="c1"># * begin separatS</span>
+                <span class="n">separatS</span><span class="p">(</span><span class="n">sss</span><span class="p">,</span> <span class="n">updn</span><span class="p">,</span> <span class="n">src_type</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">temppp</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">si</span><span class="p">)</span>
+                <span class="c1"># * end separatS</span>
+
+                <span class="c1"># * begin initialZ(ss, g, z)</span>
+                <span class="c1"># ? initialize the row-vector z at the source z(j)=s(i)*X|_ij^12</span>
+                <span class="c1"># ? for P-SV and z(j)=s(i)*X(5,i) for SH.</span>
+                <span class="c1"># ?  input:</span>
+                <span class="c1"># ?       s(3,6)  ---- source coef. for n=0,1,2</span>
+                <span class="c1"># ?       g(7)    ---- g vector used to construct matrix X|_ij^12</span>
+                <span class="c1"># ?                    |  0   g1  g2 -g3 |</span>
+                <span class="c1"># ?        X|_ij^12 =  | -g1  0   g3  g4 | for P-SV.</span>
+                <span class="c1"># ?                    | -g2 -g3  0   g5 |</span>
+                <span class="c1"># ?                    |  g3 -g4 -g5  0  |</span>
+                <span class="c1"># ?        X(5,i) = ( g6 g7 )     for SH.</span>
+                <span class="c1"># ?  output:</span>
+                <span class="c1"># ?       z(3,5)  ---- z vector for n=0,1,2</span>
+                <span class="n">initialZ</span><span class="p">(</span><span class="n">zzz</span><span class="p">,</span> <span class="n">ggg</span><span class="p">,</span> <span class="n">sss</span><span class="p">)</span>
+                <span class="c1"># * end initialZ(ss, g, z)</span>
+            <span class="k">if</span> <span class="n">ilayer</span> <span class="o">&lt;</span> <span class="n">src_layer</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ilayer</span> <span class="o">&gt;=</span> <span class="n">rcv_layer</span><span class="p">:</span>
+                    <span class="c1"># * begin haskellMatrix(a)</span>
+                    <span class="c1"># ? compute 4x4 P-SV Haskell a for the layer</span>
+                    <span class="n">haskellMatrix</span><span class="p">(</span><span class="n">aaa</span><span class="p">,</span> <span class="n">Ca</span><span class="p">,</span> <span class="n">Ya</span><span class="p">,</span> <span class="n">Xa</span><span class="p">,</span> <span class="n">Cb</span><span class="p">,</span> <span class="n">Yb</span><span class="p">,</span>
+                                  <span class="n">Xb</span><span class="p">,</span> <span class="n">exa</span><span class="p">,</span> <span class="n">exb</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">)</span>
+                    <span class="c1"># * end haskellMatrix(a)</span>
+
+                    <span class="c1"># * begin propagateZ(a, z)</span>
+                    <span class="n">propagateZ</span><span class="p">(</span><span class="n">zzz</span><span class="p">,</span> <span class="n">aaa</span><span class="p">)</span>
+                    <span class="c1"># * end propagateZ(a, z)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># * begin propagateB(c, b)</span>
+
+                    <span class="n">propagateB</span><span class="p">(</span><span class="n">bbb</span><span class="p">,</span> <span class="n">ccc</span><span class="p">)</span>
+                    <span class="c1"># * end propagateB(c, b)</span>
+        <span class="c1"># c add the top halfspace boundary condition</span>
+
+        <span class="n">rayl</span><span class="p">,</span> <span class="n">love</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+            <span class="n">rayl</span> <span class="o">=</span> <span class="n">rayl</span> <span class="o">+</span> <span class="n">ggg</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="n">eee</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+            <span class="n">love</span> <span class="o">=</span> <span class="n">love</span> <span class="o">+</span> <span class="n">ggg</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="n">eee</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">ggg</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">+</span> <span class="mf">0.</span><span class="n">j</span>
+        <span class="k">for</span> <span class="n">imat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">jmat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+                <span class="n">ggg</span><span class="p">[</span><span class="n">imat</span><span class="p">]</span> <span class="o">=</span> <span class="n">ggg</span><span class="p">[</span><span class="n">imat</span><span class="p">]</span> <span class="o">+</span> <span class="n">bbb</span><span class="p">[</span><span class="n">imat</span><span class="p">,</span> <span class="n">jmat</span><span class="p">]</span> <span class="o">*</span> <span class="n">eee</span><span class="p">[</span><span class="n">jmat</span><span class="p">]</span>
+        <span class="n">ggg</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">2.</span>
+        <span class="n">ggg</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">bbb</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="n">eee</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">bbb</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="o">*</span> <span class="n">eee</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> \
+                <span class="n">ggg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">ggg</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">if</span> <span class="n">src_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="mf">1.</span>
+
+        <span class="c1"># * set u</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">u</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">val</span> <span class="o">*</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">rayl</span>
+            <span class="n">u</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">val</span> <span class="o">*</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">rayl</span>
+            <span class="n">u</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">val</span> <span class="o">*</span> <span class="n">zzz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">/</span> <span class="n">love</span></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2021, Ziyi Xi.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
