@@ -196,12 +196,13 @@
         <span class="n">model_prem</span> <span class="o">=</span> <span class="n">SeisModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_data</span><span class="p">)</span>
         <span class="n">source_prem</span> <span class="o">=</span> <span class="n">SourceModel</span><span class="p">(</span><span class="n">sdep</span><span class="o">=</span><span class="mf">16.5</span><span class="p">)</span>
         <span class="c1"># * note, use larger distance will integrate more, the waveform of only calculating 10km and calculating to 100km will be grealy different</span>
+        <span class="c1"># ! note receiver_distance can not be 0</span>
         <span class="n">config_prem</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
             <span class="n">model</span><span class="o">=</span><span class="n">model_prem</span><span class="p">,</span>
             <span class="n">source</span><span class="o">=</span><span class="n">source_prem</span><span class="p">,</span>
             <span class="n">npt</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
             <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-            <span class="n">receiver_distance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+            <span class="n">receiver_distance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         <span class="n">gf</span> <span class="o">=</span> <span class="n">calculate_gf</span><span class="p">(</span><span class="n">config_prem</span><span class="p">)</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read_events</span><span class="p">(</span>
             <span class="n">join</span><span class="p">(</span>

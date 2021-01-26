@@ -138,7 +138,8 @@
               <div>
                 
   <h1>Source code for pyfk.gf.gf</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -465,8 +466,12 @@
         <span class="s2">&quot;sf&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
         <span class="s2">&quot;ep&quot;</span><span class="p">:</span> <span class="mi">0</span>
     <span class="p">}</span>
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">cuda</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">_waveform_integration</span><span class="p">(</span>
+
+    <span class="n">PYFK_USE_CUDA</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYFK_USE_CUDA&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">cuda</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">PYFK_USE_CUDA</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">pyfk.gf.cuda.waveform_integration_cuda</span> <span class="kn">import</span> \
+            <span class="n">_waveform_integration</span> <span class="k">as</span> <span class="n">_waveform_integration_cuda</span>
+        <span class="n">_waveform_integration_cuda</span><span class="p">(</span>
             <span class="n">nfft2</span><span class="p">,</span>
             <span class="n">dw</span><span class="p">,</span>
             <span class="n">pmin</span><span class="p">,</span>
@@ -497,8 +502,7 @@
             <span class="n">sigma</span><span class="p">,</span>
             <span class="n">sum_waveform</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">pyfk.gf.cuda.waveform_integration_cuda</span> <span class="kn">import</span> <span class="n">_waveform_integration</span> <span class="k">as</span> <span class="n">_waveform_integration_cuda</span>
-        <span class="n">_waveform_integration_cuda</span><span class="p">(</span>
+        <span class="n">_waveform_integration</span><span class="p">(</span>
             <span class="n">nfft2</span><span class="p">,</span>
             <span class="n">dw</span><span class="p">,</span>
             <span class="n">pmin</span><span class="p">,</span>

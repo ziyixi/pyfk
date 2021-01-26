@@ -141,7 +141,6 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">from</span> <span class="nn">obspy.geodetics.base</span> <span class="kn">import</span> <span class="n">degrees2kilometers</span>
-
 <span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">SeisModel</span><span class="p">,</span> <span class="n">SourceModel</span>
 <span class="kn">from</span> <span class="nn">pyfk.setting</span> <span class="kn">import</span> <span class="n">R_EARTH</span>
 <span class="kn">from</span> <span class="nn">pyfk.utils.error_message</span> <span class="kn">import</span> <span class="n">PyfkError</span><span class="p">,</span> <span class="n">PyfkWarning</span>
@@ -476,6 +475,11 @@
                 <span class="n">model</span><span class="o">=</span><span class="n">test_model</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">test_source</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span>
             <span class="n">execinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Must provide a list of receiver distance&quot;</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">PyfkError</span><span class="p">)</span> <span class="k">as</span> <span class="n">execinfo</span><span class="p">:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="n">test_model</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">test_source</span><span class="p">,</span> <span class="n">receiver_distance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="n">execinfo</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Can&#39;t set receiver distance as 0, please consider to use a small value instead&quot;</span>
         <span class="c1"># taper</span>
         <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">PyfkError</span><span class="p">)</span> <span class="k">as</span> <span class="n">execinfo</span><span class="p">:</span>
             <span class="n">_</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
