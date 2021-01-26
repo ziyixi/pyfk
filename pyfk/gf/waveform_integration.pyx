@@ -111,8 +111,8 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
         double complex w, att, atttemp, nf
     # * init some arrays
     cdef:
-        double complex[::1] kp = np.zeros(len(thickness), dtype=np.complex)
-        double complex[::1] ks = np.zeros(len(thickness), dtype=np.complex)
+        # double complex[::1] kp = np.zeros(len(thickness), dtype=np.complex)
+        # double complex[::1] ks = np.zeros(len(thickness), dtype=np.complex)
         double complex[:, ::1] u = np.zeros((3, 3), dtype=np.complex)
         double complex[:, ::1] aaa = np.zeros((5, 5), dtype=np.complex)
         double complex[:, ::1] bbb = np.zeros((7, 7), dtype=np.complex)

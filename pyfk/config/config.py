@@ -94,7 +94,7 @@ class SeisModel(object):
         :return: the thickness array
         :rtype: np.ndarray
         """
-        return self.model_values[:, 0]
+        return np.ascontiguousarray(self.model_values[:, 0])
 
     @property
     def vs(self) -> np.ndarray:
@@ -104,7 +104,7 @@ class SeisModel(object):
         :return: the vs array
         :rtype: np.ndarray
         """
-        return self.model_values[:, 1]
+        return np.ascontiguousarray(self.model_values[:, 1])
 
     @property
     def vp(self) -> np.ndarray:
@@ -114,7 +114,7 @@ class SeisModel(object):
         :return: the vp array
         :rtype: np.ndarray
         """
-        return self.model_values[:, 2]
+        return np.ascontiguousarray(self.model_values[:, 2])
 
     @property
     def rh(self) -> np.ndarray:
@@ -124,7 +124,7 @@ class SeisModel(object):
         :return: the density array
         :rtype: np.ndarray
         """
-        return self.model_values[:, 3]
+        return np.ascontiguousarray(self.model_values[:, 3])
 
     @property
     def qs(self) -> np.ndarray:
@@ -134,7 +134,7 @@ class SeisModel(object):
         :return: the attenuation qs array
         :rtype: np.ndarray
         """
-        return self.model_values[:, 4]
+        return np.ascontiguousarray(self.model_values[:, 4])
 
     @property
     def qp(self) -> np.ndarray:
@@ -144,7 +144,7 @@ class SeisModel(object):
         :return: the attenuation qp array
         :rtype: np.ndarray
         """
-        return self.model_values[:, 5]
+        return np.ascontiguousarray(self.model_values[:, 5])
 
     @property
     def flattening(self) -> bool:
