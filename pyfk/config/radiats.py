@@ -1,5 +1,5 @@
 import numpy as np
-from numpy import sin, cos
+from numpy import cos, sin
 
 # /****************************************************************
 #    compute horizontal radiation pattens for

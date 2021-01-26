@@ -1,7 +1,6 @@
 import numpy as np
 import pytest
 from obspy.geodetics.base import degrees2kilometers
-
 from pyfk.config.config import Config, SeisModel, SourceModel
 from pyfk.setting import R_EARTH
 from pyfk.utils.error_message import PyfkError, PyfkWarning
@@ -336,6 +335,11 @@ class TestClassConfig(object):
                 model=test_model, source=test_source)
         assert str(
             execinfo.value) == "Must provide a list of receiver distance"
+        with pytest.raises(PyfkError) as execinfo:
+            _ = Config(
+                model=test_model, source=test_source, receiver_distance=np.arange(10))
+        assert str(
+            execinfo.value) == "Can't set receiver distance as 0, please consider to use a small value instead"
         # taper
         with pytest.raises(PyfkError) as execinfo:
             _ = Config(

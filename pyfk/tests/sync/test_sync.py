@@ -56,12 +56,13 @@ class TestFunctionCalculateSync(object):
         model_prem = SeisModel(model=model_data)
         source_prem = SourceModel(sdep=16.5)
         # * note, use larger distance will integrate more, the waveform of only calculating 10km and calculating to 100km will be grealy different
+        # ! note receiver_distance can not be 0
         config_prem = Config(
             model=model_prem,
             source=source_prem,
             npt=512,
             dt=0.1,
-            receiver_distance=np.arange(10))
+            receiver_distance=np.arange(1, 10))
         gf = calculate_gf(config_prem)
         event = obspy.read_events(
             join(

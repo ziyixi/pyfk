@@ -1,9 +1,8 @@
-from typing import Union, Optional, List
+from typing import List, Optional, Union
 
 import numpy as np
-from obspy import Trace, Stream
-
-from pyfk.config.config import SourceModel, Config
+from obspy import Stream, Trace
+from pyfk.config.config import Config, SourceModel
 from pyfk.utils.error_message import PyfkError
 
 

@@ -6,8 +6,7 @@ import numpy as np
 from obspy.core.event.event import Event
 from obspy.core.event.source import Tensor
 from obspy.geodetics.base import degrees2kilometers
-
-from pyfk.config.radiats import dc_radiat, sf_radiat, mt_radiat
+from pyfk.config.radiats import dc_radiat, mt_radiat, sf_radiat
 from pyfk.setting import R_EARTH
 from pyfk.utils.error_message import PyfkError, PyfkWarning
 
@@ -447,6 +446,8 @@ class Config(object):
         :type updn: str, optional
         :param samples_before_first_arrival: the number of points before the first arrival, defaults to 50
         :type samples_before_first_arrival: int, optional
+        :param cuda: whether to use the cuda mode. if set PYFK_USE_CUDA=1, this flag will be ignored and will always use cuda, defaults to False
+        :type cuda: bool
         :raises PyfkError: Must provide a list of receiver distance
         :raises PyfkError: Taper must be with (0,1)
         :raises PyfkError: Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]
@@ -469,6 +470,9 @@ class Config(object):
             raise PyfkError("Must provide a list of receiver distance")
         self.receiver_distance: np.ndarray = np.array(
             receiver_distance, dtype=np.float64)
+        if 0 in self.receiver_distance:
+            raise PyfkError(
+                "Can't set receiver distance as 0, please consider to use a small value instead")
         # degrees
         if degrees:
             self.receiver_distance = np.array(

@@ -1,3 +1,4 @@
+import os
 from copy import copy
 from typing import List, Optional, Union
 
@@ -325,8 +326,12 @@ def waveform_integration(
         "sf": 1,
         "ep": 0
     }
-    if config.cuda == False:
-        _waveform_integration(
+
+    PYFK_USE_CUDA = os.getenv("PYFK_USE_CUDA", "")
+    if config.cuda == True or PYFK_USE_CUDA == "1":
+        from pyfk.gf.cuda.waveform_integration_cuda import \
+            _waveform_integration as _waveform_integration_cuda
+        _waveform_integration_cuda(
             nfft2,
             dw,
             pmin,
@@ -357,8 +362,7 @@ def waveform_integration(
             sigma,
             sum_waveform)
     else:
-        from pyfk.gf.cuda.waveform_integration_cuda import _waveform_integration as _waveform_integration_cuda
-        _waveform_integration_cuda(
+        _waveform_integration(
             nfft2,
             dw,
             pmin,

@@ -47,4 +47,3 @@ class TestFunctioncalculateGf_MPI(object):
                 if np.isnan(coef):
                     coef = 1.0
                 assert coef > 0.99
-        
