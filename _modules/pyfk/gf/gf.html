@@ -471,6 +471,7 @@
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">cuda</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">PYFK_USE_CUDA</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pyfk.gf.cuda.waveform_integration_cuda</span> <span class="kn">import</span> \
             <span class="n">_waveform_integration</span> <span class="k">as</span> <span class="n">_waveform_integration_cuda</span>
+        <span class="n">cuda_divide_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CUDA_DIVIDE_NUM&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">))</span>
         <span class="n">_waveform_integration_cuda</span><span class="p">(</span>
             <span class="n">nfft2</span><span class="p">,</span>
             <span class="n">dw</span><span class="p">,</span>
@@ -500,7 +501,8 @@
             <span class="n">updn_mapper</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">updn</span><span class="p">],</span>
             <span class="n">EPSILON</span><span class="p">,</span>
             <span class="n">sigma</span><span class="p">,</span>
-            <span class="n">sum_waveform</span><span class="p">)</span>
+            <span class="n">sum_waveform</span><span class="p">,</span>
+            <span class="n">cuda_divide_num</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">_waveform_integration</span><span class="p">(</span>
             <span class="n">nfft2</span><span class="p">,</span>
