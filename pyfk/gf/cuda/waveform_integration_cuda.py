@@ -36,7 +36,8 @@ def _waveform_integration(
         updn: int,
         epsilon: float,
         sigma: float,
-        sum_waveform: np.ndarray):
+        sum_waveform: np.ndarray,
+        cuda_divide_num: int):
     # * generate kp and ks array ((nfft2-wc1+1)*len(thickness))
     kp_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
     ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
@@ -48,55 +49,65 @@ def _waveform_integration(
                     n_list, n_list_accumulate, kp_list, ks_list)
     n_all: int = n_list_accumulate[-1]
 
-    # * generate the ik and i list representing the i wavenumber and i frequency
-    ik_list = np.zeros(n_all, dtype=np.int)
-    i_list = np.zeros(n_all, dtype=np.int)
+    for index_cuda_divide in range(cuda_divide_num):
+        # * current index_cuda_divide info
+        current_range_list = np.array_split(range(n_all), cuda_divide_num)[
+            index_cuda_divide]
+        current_n_all = len(current_range_list)
+        current_offset = current_range_list[0]
 
-    # * call fill_vals cuda kernel
-    threadsperblock = 128
-    blockspergrid = (n_all + (threadsperblock - 1)) // threadsperblock
+        # * generate the ik and i list representing the i wavenumber and i frequency
+        ik_list = np.zeros(current_n_all, dtype=np.int)
+        i_list = np.zeros(current_n_all, dtype=np.int)
 
-    ik_list_d = cuda.to_device(ik_list)
-    i_list_d = cuda.to_device(i_list)
-    fill_vals[blockspergrid, threadsperblock](
-        n_list, n_list_accumulate, ik_list_d, i_list_d, wc1, nfft2)
-    ik_list = ik_list_d.copy_to_host()
-    i_list = i_list_d.copy_to_host()
+        # * call fill_vals cuda kernel
+        threadsperblock = 128
+        blockspergrid = (current_n_all + (threadsperblock - 1)
+                         ) // threadsperblock
 
-    # * initialize the big matrix u (n_all*3*3)
-    u: np.ndarray = np.zeros((n_all, 3, 3), dtype=np.complex)
+        ik_list_d = cuda.to_device(ik_list)
+        i_list_d = cuda.to_device(i_list)
+        fill_vals[blockspergrid, threadsperblock](
+            n_list, n_list_accumulate, ik_list_d, i_list_d, wc1, nfft2, current_n_all, current_offset)
+        ik_list = ik_list_d.copy_to_host()
+        i_list = i_list_d.copy_to_host()
 
-    # * init cuda arrays
-    # u, ik_list, i_list, kp, ks, thickness, mu, si
-    u_d = cuda.to_device(u)
-    ik_list_d = cuda.to_device(ik_list)
-    i_list_d = cuda.to_device(i_list)
-    kp_list_d = cuda.to_device(kp_list)
-    ks_list_d = cuda.to_device(ks_list)
-    thickness_d = cuda.to_device(thickness)
-    mu_d = cuda.to_device(mu)
-    si_d = cuda.to_device(si)
+        # * initialize the big matrix u (current_n_all*3*3)
+        u: np.ndarray = np.zeros((current_n_all, 3, 3), dtype=np.complex)
 
-    # * run the cuda kernel function
-    parallel_kernel[blockspergrid, threadsperblock](u_d, ik_list_d, i_list_d, kp_list_d, ks_list_d, thickness_d, mu_d, si_d,
-                                                    dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1)
-    u = u_d.copy_to_host()
+        # * init cuda arrays
+        # u, ik_list, i_list, kp, ks, thickness, mu, si
+        u_d = cuda.to_device(u)
+        ik_list_d = cuda.to_device(ik_list)
+        i_list_d = cuda.to_device(i_list)
+        kp_list_d = cuda.to_device(kp_list)
+        ks_list_d = cuda.to_device(ks_list)
+        thickness_d = cuda.to_device(thickness)
+        mu_d = cuda.to_device(mu)
+        si_d = cuda.to_device(si)
 
-    # * get sum_waveform
-    flip_val = 0
-    if flip:
-        flip_val = -1.
-    else:
-        flip_val = 1.
+        # * run the cuda kernel function
+        parallel_kernel[blockspergrid, threadsperblock](u_d, ik_list_d, i_list_d, kp_list_d, ks_list_d, thickness_d, mu_d, si_d,
+                                                        dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1, current_n_all)
+        u = u_d.copy_to_host()
 
-    z_list = np.zeros((n_all, len(receiver_distance)), dtype=np.float)
-    get_z_list(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk)
-    aj0_list = cal_cujn(0, z_list)
-    aj1_list = cal_cujn(1, z_list)
-    aj2_list = cal_cujn(2, z_list)
-    # it's not appropriate to use cuda here, as it will use large atomic operation.
-    get_sum_waveform(sum_waveform, u, ik_list, receiver_distance,  flip_val,
-                     z_list, aj0_list, aj1_list, aj2_list)
+        # * get sum_waveform
+        flip_val = 0
+        if flip:
+            flip_val = -1.
+        else:
+            flip_val = 1.
+
+        z_list = np.zeros(
+            (current_n_all, len(receiver_distance)), dtype=np.float)
+        get_z_list(z_list, ik_list, i_list, receiver_distance,
+                   dw, pmin, dk, current_n_all)
+        aj0_list = cal_cujn(0, z_list)
+        aj1_list = cal_cujn(1, z_list)
+        aj2_list = cal_cujn(2, z_list)
+        # it's not appropriate to use cuda here, as it will use large atomic operation.
+        get_sum_waveform(sum_waveform, u, ik_list, receiver_distance,  flip_val,
+                         z_list, aj0_list, aj1_list, aj2_list, current_n_all)
 
     # * perform the filtering
     apply_filter(wc1, nfft2, dw, filter_const, dynamic, wc, taper, wc2,
@@ -126,57 +137,57 @@ def get_n_list_kpks(wc1: int, nfft2: int, kc: float, dw: float, pmin: float, pma
                                        (vs[idep] * (1. + att / qs[idep])))**2
 
 
-@cuda.jit("void(int64[:],int64[:],int64[:],int64[:],int64,int64)")
-def fill_vals(n_list: np.ndarray, n_list_accumulate: np.ndarray, ik_list: np.ndarray, i_list: np.ndarray, wc1: int, nfft2: int):
-    n_all = n_list_accumulate[-1]
+@cuda.jit("void(int64[:],int64[:],int64[:],int64[:],int64,int64,int64,int64)")
+def fill_vals(n_list: np.ndarray, n_list_accumulate: np.ndarray, ik_list: np.ndarray, i_list: np.ndarray, wc1: int, nfft2: int, current_n_all: int, current_offset: int):
     pos = cuda.grid(1)
-    if pos < n_all:
+    if pos < current_n_all:
+        ibool = pos+current_offset
         for isearch in range(nfft2-wc1+1):
-            if(n_list_accumulate[isearch] > pos):
+            if(n_list_accumulate[isearch] > ibool):
                 ik_list[pos] = isearch+wc1 - 1
-                i_list[pos] = pos - \
+                i_list[pos] = ibool - \
                     (n_list_accumulate[isearch]-n_list[isearch])
                 break
 
 
-@njit("void(float64[:,:],int64[:],int64[:],float64[:],float64,float64,float64)")
-def get_z_list(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk):
-    for ibool in range(len(ik_list)):
-        ik = ik_list[ibool]
-        i = i_list[ibool]
+@njit("void(float64[:,:],int64[:],int64[:],float64[:],float64,float64,float64,int64)")
+def get_z_list(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk, current_n_all):
+    for pos in range(current_n_all):
+        ik = ik_list[pos]
+        i = i_list[pos]
         omega = ik * dw
         k = omega * pmin + (0.5+i) * dk
         for irec in range(len(receiver_distance)):
-            z_list[ibool, irec] = k * receiver_distance[irec]
+            z_list[pos, irec] = k * receiver_distance[irec]
 
 
-@njit("void(complex128[:,:,:],complex128[:,:,:],int64[:],float64[:],float64,float64[:,:],float64[:,:],float64[:,:],float64[:,:])")
+@njit("void(complex128[:,:,:],complex128[:,:,:],int64[:],float64[:],float64,float64[:,:],float64[:,:],float64[:,:],float64[:,:],int64)")
 def get_sum_waveform(sum_waveform, u, ik_list, receiver_distance,  flip_val,
-                     z_list, aj0_list, aj1_list, aj2_list):
-    for ibool in range(u.shape[0]):
-        ik = ik_list[ibool]
+                     z_list, aj0_list, aj1_list, aj2_list, current_n_all):
+    for pos in range(current_n_all):
+        ik = ik_list[pos]
         for irec in range(len(receiver_distance)):
-            z = z_list[ibool, irec]
-            aj0 = aj0_list[ibool, irec]
-            aj1 = aj1_list[ibool, irec]
-            aj2 = aj2_list[ibool, irec]
+            z = z_list[pos, irec]
+            aj0 = aj0_list[pos, irec]
+            aj1 = aj1_list[pos, irec]
+            aj2 = aj2_list[pos, irec]
             # do the numerical integration here
-            sum_waveform[irec, 0, ik] += u[ibool, 0, 0] * \
+            sum_waveform[irec, 0, ik] += u[pos, 0, 0] * \
                 aj0 * flip_val
-            sum_waveform[irec, 1, ik] += -u[ibool, 0, 1] * aj1
-            sum_waveform[irec, 2, ik] += -u[ibool, 0, 2] * aj1
+            sum_waveform[irec, 1, ik] += -u[pos, 0, 1] * aj1
+            sum_waveform[irec, 2, ik] += -u[pos, 0, 2] * aj1
 
-            nf = (u[ibool, 1, 1] + u[ibool, 1, 2]) * aj1 / z
-            sum_waveform[irec, 3, ik] += u[ibool, 1, 0] * \
+            nf = (u[pos, 1, 1] + u[pos, 1, 2]) * aj1 / z
+            sum_waveform[irec, 3, ik] += u[pos, 1, 0] * \
                 aj1 * flip_val
-            sum_waveform[irec, 4, ik] += u[ibool, 1, 1] * aj0 - nf
-            sum_waveform[irec, 5, ik] += u[ibool, 1, 2] * aj0 - nf
+            sum_waveform[irec, 4, ik] += u[pos, 1, 1] * aj0 - nf
+            sum_waveform[irec, 5, ik] += u[pos, 1, 2] * aj0 - nf
 
-            nf = 2. * (u[ibool, 2, 1] + u[ibool, 2, 2]) * aj2 / z
-            sum_waveform[irec, 6, ik] += u[ibool, 2, 0] * \
+            nf = 2. * (u[pos, 2, 1] + u[pos, 2, 2]) * aj2 / z
+            sum_waveform[irec, 6, ik] += u[pos, 2, 0] * \
                 aj2 * flip_val
-            sum_waveform[irec, 7, ik] += u[ibool, 2, 1] * aj1 - nf
-            sum_waveform[irec, 8, ik] += u[ibool, 2, 2] * aj1 - nf
+            sum_waveform[irec, 7, ik] += u[pos, 2, 1] * aj1 - nf
+            sum_waveform[irec, 8, ik] += u[pos, 2, 2] * aj1 - nf
 
 
 @njit("void(int64,int64,float64,float64,boolean,int64,float64,int64,float64[:],float64[:],complex128[:,:,:])")
@@ -201,12 +212,12 @@ def apply_filter(wc1, nfft2, dw, filter_const, dynamic, wc, taper, wc2,
                              ik] = sum_waveform[irec, icom, ik]*atttemp
 
 
-@cuda.jit("void(complex128[:,:,:],int64[:],int64[:],complex128[:,:],complex128[:,:],float64[:],float64[:],float64[:,:],float64,float64,float64,int64,int64,int64,int64,float64,int64)")
+@cuda.jit("void(complex128[:,:,:],int64[:],int64[:],complex128[:,:],complex128[:,:],float64[:],float64[:],float64[:,:],float64,float64,float64,int64,int64,int64,int64,float64,int64,int64)")
 def parallel_kernel(u, ik_list, i_list, kp_list, ks_list, thickness, mu, si,
-                    dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1):
+                    dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1, current_n_all):
     # * pos for this thread
     pos = cuda.grid(1)
-    if(pos < len(ik_list)):
+    if(pos < current_n_all):
         ik = ik_list[pos]
         i = i_list[pos]
 

@@ -331,6 +331,7 @@ def waveform_integration(
     if config.cuda == True or PYFK_USE_CUDA == "1":
         from pyfk.gf.cuda.waveform_integration_cuda import \
             _waveform_integration as _waveform_integration_cuda
+        cuda_divide_num = int(os.getenv("CUDA_DIVIDE_NUM", "1"))
         _waveform_integration_cuda(
             nfft2,
             dw,
@@ -360,7 +361,8 @@ def waveform_integration(
             updn_mapper[config.updn],
             EPSILON,
             sigma,
-            sum_waveform)
+            sum_waveform,
+            cuda_divide_num)
     else:
         _waveform_integration(
             nfft2,
