@@ -60,6 +60,8 @@ def _waveform_integration(
     i_list_d = cuda.to_device(i_list)
     fill_vals[blockspergrid, threadsperblock](
         n_list, n_list_accumulate, ik_list_d, i_list_d, wc1, nfft2)
+    ik_list = ik_list_d.copy_to_host()
+    i_list = i_list_d.copy_to_host()
 
     # * initialize the big matrix u (n_all*3*3)
     u: np.ndarray = np.zeros((n_all, 3, 3), dtype=np.complex)
@@ -67,6 +69,8 @@ def _waveform_integration(
     # * init cuda arrays
     # u, ik_list, i_list, kp, ks, thickness, mu, si
     u_d = cuda.to_device(u)
+    ik_list_d = cuda.to_device(ik_list)
+    i_list_d = cuda.to_device(i_list)
     kp_list_d = cuda.to_device(kp_list)
     ks_list_d = cuda.to_device(ks_list)
     thickness_d = cuda.to_device(thickness)
