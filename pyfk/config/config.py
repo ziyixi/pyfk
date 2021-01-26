@@ -410,7 +410,8 @@ class Config(object):
                  kmax: float = 15.,
                  rdep: float = 0.,
                  updn: str = "all",
-                 samples_before_first_arrival: int = 50) -> None:
+                 samples_before_first_arrival: int = 50,
+                 cuda: bool = False) -> None:
         """
         The configuration class used in generating Green's function and the synthetic waveform.
 
@@ -528,6 +529,8 @@ class Config(object):
         if samples_before_first_arrival <= 0:
             raise PyfkError("samples_before_first_arrival should be positive")
         self.samples_before_first_arrival = samples_before_first_arrival
+        # cuda
+        self.cuda = cuda
         # source and model
         if (source is None) or (not isinstance(source, SourceModel)):
             raise PyfkError("Must provide a source")
