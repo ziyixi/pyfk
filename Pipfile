@@ -21,6 +21,7 @@ pydata-sphinx-theme = "*"
 sphinx-autoapi = "*"
 jupyter-sphinx = "*"
 pytest-mpi = "*"
+sphinx-copybutton = "*"
 
 [requires]
 python_version = "3"
