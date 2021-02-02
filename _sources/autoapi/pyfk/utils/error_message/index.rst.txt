@@ -7,14 +7,16 @@
 Module Contents
 ---------------
 
-.. py:exception:: PyfkError
+.. exception:: PyfkError
+
 
    Bases: :class:`Exception`
 
    Initialize self.  See help(type(self)) for accurate signature.
 
 
-.. py:exception:: PyfkWarning
+.. exception:: PyfkWarning
+
 
    Bases: :class:`UserWarning`
 

@@ -51,7 +51,8 @@ Functions
    pyfk.generate_source_time_function
 
 
-.. py:class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[float, float] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50, cuda: bool = False)
+.. class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[(float, float)] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50, cuda: bool = False)
+
 
    Bases: :class:`object`
 
@@ -123,7 +124,8 @@ Functions
 
 
 
-.. py:class:: SeisModel(model: np.ndarray = None, flattening: bool = False, use_kappa: bool = False)
+.. class:: SeisModel(model: numpy.ndarray = None, flattening: bool = False, use_kappa: bool = False)
+
 
    Bases: :class:`object`
 
@@ -177,7 +179,7 @@ Functions
       :rtype: bool
 
 
-   .. method:: qp(self) -> np.ndarray
+   .. method:: qp(self) -> numpy.ndarray
       :property:
 
       get the attenuation qp array
@@ -186,7 +188,7 @@ Functions
       :rtype: np.ndarray
 
 
-   .. method:: qs(self) -> np.ndarray
+   .. method:: qs(self) -> numpy.ndarray
       :property:
 
       get the attenuation qs array
@@ -200,7 +202,7 @@ Functions
       make the thickness for the first later to be 0 when the thickness is smaller than 0.
 
 
-   .. method:: rh(self) -> np.ndarray
+   .. method:: rh(self) -> numpy.ndarray
       :property:
 
       get the density array
@@ -209,7 +211,7 @@ Functions
       :rtype: np.ndarray
 
 
-   .. method:: th(self) -> np.ndarray
+   .. method:: th(self) -> numpy.ndarray
       :property:
 
       get the thickness array
@@ -218,7 +220,7 @@ Functions
       :rtype: np.ndarray
 
 
-   .. method:: vp(self) -> np.ndarray
+   .. method:: vp(self) -> numpy.ndarray
       :property:
 
       get the vp array
@@ -227,7 +229,7 @@ Functions
       :rtype: np.ndarray
 
 
-   .. method:: vs(self) -> np.ndarray
+   .. method:: vs(self) -> numpy.ndarray
       :property:
 
       get the vs array
@@ -237,7 +239,8 @@ Functions
 
 
 
-.. py:class:: SourceModel(sdep: float = 0.0, srcType: str = 'dc', source_mechanism: Optional[Union[list, np.ndarray]] = None)
+.. class:: SourceModel(sdep: float = 0.0, srcType: str = 'dc', source_mechanism: Optional[Union[list, np.ndarray]] = None)
+
 
    Bases: :class:`object`
 
@@ -294,7 +297,7 @@ Functions
       :rtype: int
 
 
-   .. method:: rad(self) -> np.ndarray
+   .. method:: rad(self) -> numpy.ndarray
       :property:
 
       get the radiation pattern
@@ -321,7 +324,7 @@ Functions
       :rtype: str
 
 
-   .. method:: update_source_mechanism(self, source_mechanism: Union[list, np.ndarray, Event])
+   .. method:: update_source_mechanism(self, source_mechanism: Union[(list, np.ndarray, Event)])
 
       update the source mechanism information after creation of the SourceModel
 
@@ -331,7 +334,7 @@ Functions
 
 
 
-.. function:: calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[Stream]]
+.. function:: calculate_gf(config: Optional[Config] = None) -> Union[(List[Stream], List[Stream])]
 
    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources
 
@@ -341,7 +344,7 @@ Functions
    :rtype: Union[List[Stream], List[Stream]]
 
 
-.. function:: calculate_sync(gf: Union[List[Stream], Stream], config: Config, az: Union[float, int] = 0, source_time_function: Optional[Trace] = None) -> List[Stream]
+.. function:: calculate_sync(gf: Union[(List[Stream], Stream)], config: pyfk.config.config.Config, az: Union[(float, int)] = 0, source_time_function: Optional[Trace] = None) -> List[Stream]
 
    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources
 
@@ -361,7 +364,7 @@ Functions
    :rtype: List[Stream]
 
 
-.. function:: generate_source_time_function(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) -> Trace
+.. function:: generate_source_time_function(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) -> obspy.Trace
 
    [summary]
 

@@ -18,7 +18,7 @@ Functions
    pyfk.gf.gf.waveform_integration
 
 
-.. function:: calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[Stream]]
+.. function:: calculate_gf(config: Optional[Config] = None) -> Union[(List[Stream], List[Stream])]
 
    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources
 
@@ -28,7 +28,7 @@ Functions
    :rtype: Union[List[Stream], List[Stream]]
 
 
-.. function:: calculate_gf_source(src_type: str, model: SeisModel, flip: bool, src_layer: int) -> np.ndarray
+.. function:: calculate_gf_source(src_type: str, model: pyfk.config.config.SeisModel, flip: bool, src_layer: int) -> numpy.ndarray
 
    calculate the source matrix used in propogational matrix operations
 
@@ -44,7 +44,7 @@ Functions
    :rtype: np.ndarray
 
 
-.. function:: waveform_integration(model: SeisModel, config: Config, src_layer: int, rcv_layer: int, taper: float, pmin: float, pmax: float, dk: float, nfft2: int, dw: float, kc: float, flip: bool, filter_const: float, dynamic: bool, wc1: int, wc2: int, t0: np.ndarray, wc: int, si: np.ndarray, sigma: float) -> np.ndarray
+.. function:: waveform_integration(model: pyfk.config.config.SeisModel, config: pyfk.config.config.Config, src_layer: int, rcv_layer: int, taper: float, pmin: float, pmax: float, dk: float, nfft2: int, dw: float, kc: float, flip: bool, filter_const: float, dynamic: bool, wc1: int, wc2: int, t0: numpy.ndarray, wc: int, si: numpy.ndarray, sigma: float) -> numpy.ndarray
 
    the main function wrapping the cython module, do the wave number integration.
 

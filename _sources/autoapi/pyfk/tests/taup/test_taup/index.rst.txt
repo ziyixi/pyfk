@@ -16,7 +16,7 @@ Classes
 
 
 
-.. py:class:: TestFunctionTaup
+.. class:: TestFunctionTaup
 
    Bases: :class:`object`
 

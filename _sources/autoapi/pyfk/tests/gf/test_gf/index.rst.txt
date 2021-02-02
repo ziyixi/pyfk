@@ -16,7 +16,7 @@ Classes
 
 
 
-.. py:class:: TestFunctioncalculateGf
+.. class:: TestFunctioncalculateGf
 
    Bases: :class:`object`
 

@@ -31,7 +31,7 @@ Functions
 
    
 
-.. function:: cal_cujn(n: int, x: np.ndarray)
+.. function:: cal_cujn(n: int, x: numpy.ndarray)
 
 
 .. function:: compoundMatrix(ccc, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)

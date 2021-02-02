@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     
   <link rel="preload" as="script" href="../../_static/js/index.d3f166471bb80abb5163.js">
 
@@ -38,6 +39,8 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -390,13 +393,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.calculate_gf" title="pyfk.calculate_gf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gf</span></code></a>(config: Optional[Config] = None) → Union[List[Stream], List[Stream]]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.calculate_gf" title="pyfk.calculate_gf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gf</span></code></a>(config: Optional[Config] = None) → Union[(List[Stream], List[Stream])]</p></td>
 <td><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.calculate_sync" title="pyfk.calculate_sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_sync</span></code></a>(gf: Union[List[Stream], Stream], config: Config, az: Union[float, int] = 0, source_time_function: Optional[Trace] = None) → List[Stream]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.calculate_sync" title="pyfk.calculate_sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_sync</span></code></a>(gf: Union[(List[Stream], Stream)], config: pyfk.config.config.Config, az: Union[(float, int)] = 0, source_time_function: Optional[Trace] = None) → List[Stream]</p></td>
 <td><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.generate_source_time_function" title="pyfk.generate_source_time_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_source_time_function</span></code></a>(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) → Trace</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.generate_source_time_function" title="pyfk.generate_source_time_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_source_time_function</span></code></a>(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) → obspy.Trace</p></td>
 <td><p>[summary]</p></td>
 </tr>
 </tbody>
@@ -473,7 +476,7 @@
 
 <dl class="py class">
 <dt id="pyfk.SeisModel">
-<em class="property">class </em><code class="sig-prename descclassname">pyfk.</code><code class="sig-name descname">SeisModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">np.ndarray</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flattening</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_kappa</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyfk/config/config.html#SeisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.SeisModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pyfk.</code><code class="sig-name descname">SeisModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">numpy.ndarray</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flattening</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_kappa</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyfk/config/config.html#SeisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.SeisModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>SeisModel stores the Earth model</p>
 <dl class="field-list simple">
@@ -548,7 +551,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.SeisModel.qp">
-<em class="property">property </em><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="headerlink" href="#pyfk.SeisModel.qp" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#pyfk.SeisModel.qp" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the attenuation qp array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -562,7 +565,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.SeisModel.qs">
-<em class="property">property </em><code class="sig-name descname">qs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="headerlink" href="#pyfk.SeisModel.qs" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">qs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#pyfk.SeisModel.qs" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the attenuation qs array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -582,7 +585,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.SeisModel.rh">
-<em class="property">property </em><code class="sig-name descname">rh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="headerlink" href="#pyfk.SeisModel.rh" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">rh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#pyfk.SeisModel.rh" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the density array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -596,7 +599,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.SeisModel.th">
-<em class="property">property </em><code class="sig-name descname">th</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="headerlink" href="#pyfk.SeisModel.th" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">th</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#pyfk.SeisModel.th" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the thickness array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -610,7 +613,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.SeisModel.vp">
-<em class="property">property </em><code class="sig-name descname">vp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="headerlink" href="#pyfk.SeisModel.vp" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">vp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#pyfk.SeisModel.vp" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the vp array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -624,7 +627,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.SeisModel.vs">
-<em class="property">property </em><code class="sig-name descname">vs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="headerlink" href="#pyfk.SeisModel.vs" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">vs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#pyfk.SeisModel.vs" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the vs array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -723,7 +726,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.SourceModel.rad">
-<em class="property">property </em><code class="sig-name descname">rad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="headerlink" href="#pyfk.SourceModel.rad" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">rad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#pyfk.SourceModel.rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the radiation pattern</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -798,7 +801,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py function">
 <dt id="pyfk.calculate_sync">
-<code class="sig-prename descclassname">pyfk.</code><code class="sig-name descname">calculate_sync</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gf</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>Stream<span class="p">]</span><span class="p">, </span>Stream<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#pyfk.Config" title="pyfk.Config">Config</a></span></em>, <em class="sig-param"><span class="n">az</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">source_time_function</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Trace<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Stream<span class="p">]</span><a class="reference internal" href="../../_modules/pyfk/sync/sync.html#calculate_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.calculate_sync" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyfk.</code><code class="sig-name descname">calculate_sync</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gf</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>Stream<span class="p">]</span><span class="p">, </span>Stream<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n"><a class="reference internal" href="config/config/index.html#pyfk.config.config.Config" title="pyfk.config.config.Config">pyfk.config.config.Config</a></span></em>, <em class="sig-param"><span class="n">az</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">source_time_function</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Trace<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Stream<span class="p">]</span><a class="reference internal" href="../../_modules/pyfk/sync/sync.html#calculate_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.calculate_sync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -828,7 +831,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py function">
 <dt id="pyfk.generate_source_time_function">
-<code class="sig-prename descclassname">pyfk.</code><code class="sig-name descname">generate_source_time_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dura</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">rise</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">delta</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.1</span></em><span class="sig-paren">)</span> &#x2192; Trace<a class="reference internal" href="../../_modules/pyfk/sync/sync.html#generate_source_time_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.generate_source_time_function" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyfk.</code><code class="sig-name descname">generate_source_time_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dura</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">rise</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">delta</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.1</span></em><span class="sig-paren">)</span> &#x2192; obspy.Trace<a class="reference internal" href="../../_modules/pyfk/sync/sync.html#generate_source_time_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.generate_source_time_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

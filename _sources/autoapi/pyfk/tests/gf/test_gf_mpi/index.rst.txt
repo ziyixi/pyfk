@@ -16,7 +16,7 @@ Classes
 
 
 
-.. py:class:: TestFunctioncalculateGf_MPI
+.. class:: TestFunctioncalculateGf_MPI
 
    Bases: :class:`object`
 

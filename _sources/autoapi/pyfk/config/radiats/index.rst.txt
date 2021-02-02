@@ -18,7 +18,7 @@ Functions
    pyfk.config.radiats.sf_radiat
 
 
-.. function:: dc_radiat(stk: float, dip: float, rak: float) -> np.ndarray
+.. function:: dc_radiat(stk: float, dip: float, rak: float) -> numpy.ndarray
 
    calculate the radiation pattern for double couple source.
 
@@ -32,7 +32,7 @@ Functions
    :rtype: np.ndarray
 
 
-.. function:: mt_radiat(az: float, m: np.ndarray) -> np.ndarray
+.. function:: mt_radiat(az: float, m: numpy.ndarray) -> numpy.ndarray
 
    calculate the radiation pattern providing a moment tensor in the order of x, y, z (NED coordinate, already converted from RTP coordinate)
    :param az: azimuthal angle
@@ -43,7 +43,7 @@ Functions
    :rtype: np.ndarray
 
 
-.. function:: sf_radiat(stk: float, dip: float) -> np.ndarray
+.. function:: sf_radiat(stk: float, dip: float) -> numpy.ndarray
 
    calculate the radiation pattern for single force source.
 

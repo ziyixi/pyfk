@@ -16,7 +16,7 @@ Classes
 
 
 
-.. py:class:: TestFunctionCalculateSync
+.. class:: TestFunctionCalculateSync
 
    Bases: :class:`object`
 

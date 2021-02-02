@@ -18,7 +18,7 @@ Classes
 
 
 
-.. py:class:: TestClassConfig
+.. class:: TestClassConfig
 
    Bases: :class:`object`
 
@@ -49,7 +49,7 @@ Classes
 
 
 
-.. py:class:: TestClassSeisModel
+.. class:: TestClassSeisModel
 
    Bases: :class:`object`
 
@@ -98,7 +98,7 @@ Classes
 
 
 
-.. py:class:: TestClassSourceModel
+.. class:: TestClassSourceModel
 
    Bases: :class:`object`
 

@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     
   <link rel="preload" as="script" href="../../../../_static/js/index.d3f166471bb80abb5163.js">
 
@@ -38,6 +39,8 @@
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/thebelab-helper.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -371,7 +374,7 @@
 
 <dl class="py class">
 <dt id="pyfk.config.config.SeisModel">
-<em class="property">class </em><code class="sig-prename descclassname">pyfk.config.config.</code><code class="sig-name descname">SeisModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">np.ndarray</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flattening</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_kappa</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pyfk.config.config.</code><code class="sig-name descname">SeisModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">numpy.ndarray</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flattening</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_kappa</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>SeisModel stores the Earth model</p>
 <dl class="field-list simple">
@@ -446,7 +449,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.config.config.SeisModel.qp">
-<em class="property">property </em><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.qp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.qp" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.qp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.qp" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the attenuation qp array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -460,7 +463,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.config.config.SeisModel.qs">
-<em class="property">property </em><code class="sig-name descname">qs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.qs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.qs" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">qs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.qs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.qs" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the attenuation qs array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -480,7 +483,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.config.config.SeisModel.rh">
-<em class="property">property </em><code class="sig-name descname">rh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.rh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.rh" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">rh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.rh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.rh" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the density array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -494,7 +497,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.config.config.SeisModel.th">
-<em class="property">property </em><code class="sig-name descname">th</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.th"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.th" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">th</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.th"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.th" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the thickness array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -508,7 +511,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.config.config.SeisModel.vp">
-<em class="property">property </em><code class="sig-name descname">vp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vp" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">vp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vp" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the vp array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -522,7 +525,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.config.config.SeisModel.vs">
-<em class="property">property </em><code class="sig-name descname">vs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vs" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">vs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SeisModel.vs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SeisModel.vs" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the vs array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -621,7 +624,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt id="pyfk.config.config.SourceModel.rad">
-<em class="property">property </em><code class="sig-name descname">rad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.rad" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">rad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/config.html#SourceModel.rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.config.SourceModel.rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the radiation pattern</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>

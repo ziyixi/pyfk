@@ -18,7 +18,8 @@ Classes
 
 
 
-.. py:class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[float, float] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50, cuda: bool = False)
+.. class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[(float, float)] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50, cuda: bool = False)
+
 
    Bases: :class:`object`
 
@@ -90,7 +91,8 @@ Classes
 
 
 
-.. py:class:: SeisModel(model: np.ndarray = None, flattening: bool = False, use_kappa: bool = False)
+.. class:: SeisModel(model: numpy.ndarray = None, flattening: bool = False, use_kappa: bool = False)
+
 
    Bases: :class:`object`
 
@@ -144,7 +146,7 @@ Classes
       :rtype: bool
 
 
-   .. method:: qp(self) -> np.ndarray
+   .. method:: qp(self) -> numpy.ndarray
       :property:
 
       get the attenuation qp array
@@ -153,7 +155,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: qs(self) -> np.ndarray
+   .. method:: qs(self) -> numpy.ndarray
       :property:
 
       get the attenuation qs array
@@ -167,7 +169,7 @@ Classes
       make the thickness for the first later to be 0 when the thickness is smaller than 0.
 
 
-   .. method:: rh(self) -> np.ndarray
+   .. method:: rh(self) -> numpy.ndarray
       :property:
 
       get the density array
@@ -176,7 +178,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: th(self) -> np.ndarray
+   .. method:: th(self) -> numpy.ndarray
       :property:
 
       get the thickness array
@@ -185,7 +187,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: vp(self) -> np.ndarray
+   .. method:: vp(self) -> numpy.ndarray
       :property:
 
       get the vp array
@@ -194,7 +196,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: vs(self) -> np.ndarray
+   .. method:: vs(self) -> numpy.ndarray
       :property:
 
       get the vs array
@@ -204,7 +206,8 @@ Classes
 
 
 
-.. py:class:: SourceModel(sdep: float = 0.0, srcType: str = 'dc', source_mechanism: Optional[Union[list, np.ndarray]] = None)
+.. class:: SourceModel(sdep: float = 0.0, srcType: str = 'dc', source_mechanism: Optional[Union[list, np.ndarray]] = None)
+
 
    Bases: :class:`object`
 
@@ -261,7 +264,7 @@ Classes
       :rtype: int
 
 
-   .. method:: rad(self) -> np.ndarray
+   .. method:: rad(self) -> numpy.ndarray
       :property:
 
       get the radiation pattern
@@ -288,7 +291,7 @@ Classes
       :rtype: str
 
 
-   .. method:: update_source_mechanism(self, source_mechanism: Union[list, np.ndarray, Event])
+   .. method:: update_source_mechanism(self, source_mechanism: Union[(list, np.ndarray, Event)])
 
       update the source mechanism information after creation of the SourceModel
 

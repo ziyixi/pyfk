@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     
   <link rel="preload" as="script" href="../../../../_static/js/index.d3f166471bb80abb5163.js">
 
@@ -38,6 +39,8 @@
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/thebelab-helper.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -186,20 +189,20 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.config.radiats.dc_radiat" title="pyfk.config.radiats.dc_radiat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_radiat</span></code></a>(stk: float, dip: float, rak: float) → np.ndarray</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.config.radiats.dc_radiat" title="pyfk.config.radiats.dc_radiat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dc_radiat</span></code></a>(stk: float, dip: float, rak: float) → numpy.ndarray</p></td>
 <td><p>calculate the radiation pattern for double couple source.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.config.radiats.mt_radiat" title="pyfk.config.radiats.mt_radiat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mt_radiat</span></code></a>(az: float, m: np.ndarray) → np.ndarray</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.config.radiats.mt_radiat" title="pyfk.config.radiats.mt_radiat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mt_radiat</span></code></a>(az: float, m: numpy.ndarray) → numpy.ndarray</p></td>
 <td><p>calculate the radiation pattern providing a moment tensor in the order of x, y, z (NED coordinate, already converted from RTP coordinate)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.config.radiats.sf_radiat" title="pyfk.config.radiats.sf_radiat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sf_radiat</span></code></a>(stk: float, dip: float) → np.ndarray</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.config.radiats.sf_radiat" title="pyfk.config.radiats.sf_radiat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sf_radiat</span></code></a>(stk: float, dip: float) → numpy.ndarray</p></td>
 <td><p>calculate the radiation pattern for single force source.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt id="pyfk.config.radiats.dc_radiat">
-<code class="sig-prename descclassname">pyfk.config.radiats.</code><code class="sig-name descname">dc_radiat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stk</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">dip</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">rak</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/radiats.html#dc_radiat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.radiats.dc_radiat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyfk.config.radiats.</code><code class="sig-name descname">dc_radiat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stk</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">dip</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">rak</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/radiats.html#dc_radiat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.radiats.dc_radiat" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculate the radiation pattern for double couple source.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -220,7 +223,7 @@
 
 <dl class="py function">
 <dt id="pyfk.config.radiats.mt_radiat">
-<code class="sig-prename descclassname">pyfk.config.radiats.</code><code class="sig-name descname">mt_radiat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">az</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">m</span><span class="p">:</span> <span class="n">np.ndarray</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/radiats.html#mt_radiat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.radiats.mt_radiat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyfk.config.radiats.</code><code class="sig-name descname">mt_radiat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">az</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">m</span><span class="p">:</span> <span class="n">numpy.ndarray</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/radiats.html#mt_radiat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.radiats.mt_radiat" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculate the radiation pattern providing a moment tensor in the order of x, y, z (NED coordinate, already converted from RTP coordinate)
 :param az: azimuthal angle
 :type az: float
@@ -232,7 +235,7 @@
 
 <dl class="py function">
 <dt id="pyfk.config.radiats.sf_radiat">
-<code class="sig-prename descclassname">pyfk.config.radiats.</code><code class="sig-name descname">sf_radiat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stk</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">dip</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; np.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/radiats.html#sf_radiat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.radiats.sf_radiat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyfk.config.radiats.</code><code class="sig-name descname">sf_radiat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stk</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">dip</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../../../_modules/pyfk/config/radiats.html#sf_radiat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyfk.config.radiats.sf_radiat" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculate the radiation pattern for single force source.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
