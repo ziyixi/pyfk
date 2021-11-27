@@ -8,9 +8,13 @@ import inspect
 import os
 import sys
 
+from setuptools import Extension, dist, find_packages, setup
+
+# install the required packages
+dist.Distribution().fetch_build_eggs(['numpy',"obspy", "cython", "scipy", "cysignals"])
+
 import numpy as np
 from Cython.Build import cythonize
-from setuptools import Extension, find_packages, setup
 
 DOCSTRING = __doc__.strip().split("\n")
 root_dir = os.path.join(
