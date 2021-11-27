@@ -33,12 +33,14 @@ jobs:
           which python
           python -m pip install --upgrade pip
           pip install pipenv
+          which pip
+          which python
 
       - name: Install pipenv packages
         run: |
           which python
-          pipenv graph
           pipenv install -d --skip-lock
+          pipenv graph
 
       - name: Generate coverage report
         run: |
