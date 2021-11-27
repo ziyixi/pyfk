@@ -39,8 +39,8 @@ def _waveform_integration(
         sum_waveform: np.ndarray,
         cuda_divide_num: int):
     # * generate kp and ks array ((nfft2-wc1+1)*len(thickness))
-    kp_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
-    ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
+    kp_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=complex)
+    ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=complex)
 
     # * get the n list, kp and ks
     n_list: np.ndarray = np.zeros(nfft2-wc1+1, dtype=np.int)
@@ -73,7 +73,7 @@ def _waveform_integration(
         i_list = i_list_d.copy_to_host()
 
         # * initialize the big matrix u (current_n_all*3*3)
-        u: np.ndarray = np.zeros((current_n_all, 3, 3), dtype=np.complex)
+        u: np.ndarray = np.zeros((current_n_all, 3, 3), dtype=complex)
 
         # * init cuda arrays
         # u, ik_list, i_list, kp, ks, thickness, mu, si
@@ -99,7 +99,7 @@ def _waveform_integration(
             flip_val = 1.
 
         z_list = np.zeros(
-            (current_n_all, len(receiver_distance)), dtype=np.float)
+            (current_n_all, len(receiver_distance)), dtype=float)
         get_z_list(z_list, ik_list, i_list, receiver_distance,
                    dw, pmin, dk, current_n_all)
         aj0_list = cal_cujn(0, z_list)

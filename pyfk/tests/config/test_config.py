@@ -39,7 +39,7 @@ class TestClassSeisModel(object):
             use_kappa=False)
         r = R_EARTH
         fl = np.ones(
-            TestClassSeisModel.test_model_6column.shape[0], dtype=np.float)
+            TestClassSeisModel.test_model_6column.shape[0], dtype=float)
         for irow in range(TestClassSeisModel.test_model_6column.shape[0]):
             r = r - TestClassSeisModel.test_model_6column[irow, 0]
             fl[irow] = R_EARTH / \
@@ -58,7 +58,7 @@ class TestClassSeisModel(object):
             to_test, flattening=True, use_kappa=True)
         r = R_EARTH
         fl = np.ones(
-            TestClassSeisModel.test_model_6column.shape[0], dtype=np.float)
+            TestClassSeisModel.test_model_6column.shape[0], dtype=float)
         for irow in range(TestClassSeisModel.test_model_6column.shape[0]):
             r = r - TestClassSeisModel.test_model_6column[irow, 0]
             fl[irow] = R_EARTH / \

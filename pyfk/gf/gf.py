@@ -45,7 +45,7 @@ def calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[St
     t0 = t0_vp
     # calculate the ray angle at the source
     dn, pa, sa = [np.zeros(len(config.receiver_distance),
-                           dtype=np.float) for index in range(3)]
+                           dtype=float) for index in range(3)]
     # for each receiver, see calculate pa and sa
     for irec in range(len(config.receiver_distance)):
         if t0_vp[irec] < td_vp[irec] and p0_vp[irec] < 1. / 7:
@@ -168,7 +168,7 @@ def calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[St
         stream_irec = Stream()
         for icom in range(nCom):
             waveform_freqdomain = np.hstack([sum_waveform[irec, icom, :], np.zeros(
-                int(nfft_smth / 2) - nfft2, dtype=np.complex)])
+                int(nfft_smth / 2) - nfft2, dtype=complex)])
             gf_data = irfft(waveform_freqdomain, nfft_smth) / dt_smth
             # now we apply the frequency correction
             fac_icom = fac * np.exp(sigma * t0[irec])
@@ -220,7 +220,7 @@ def calculate_gf_source(
     :return: the source matrix
     :rtype: np.ndarray
     """
-    s: np.ndarray = np.zeros((3, 6), dtype=np.float)
+    s: np.ndarray = np.zeros((3, 6), dtype=float)
     mu = model.rh * model.vs * model.vs
     xi = (model.vs ** 2) / (model.vp ** 2)
     if flip:
@@ -315,7 +315,7 @@ def waveform_integration(
     mu = model.rh * model.vs * model.vs
     # nust be c contiguous as we are using MPI
     sum_waveform = np.zeros(
-        (len(config.receiver_distance), 9, int(nfft2)), dtype=np.complex)
+        (len(config.receiver_distance), 9, int(nfft2)), dtype=complex)
     updn_mapper = {
         "all": 0,
         "up": 1,

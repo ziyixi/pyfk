@@ -111,33 +111,33 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
         double complex w, att, atttemp, nf
     # * init some arrays
     cdef:
-        # double complex[::1] kp = np.zeros(len(thickness), dtype=np.complex)
-        # double complex[::1] ks = np.zeros(len(thickness), dtype=np.complex)
-        double complex[:, ::1] u = np.zeros((3, 3), dtype=np.complex)
-        double complex[:, ::1] aaa = np.zeros((5, 5), dtype=np.complex)
-        double complex[:, ::1] bbb = np.zeros((7, 7), dtype=np.complex)
-        double complex[:, ::1] ccc = np.zeros((7, 7), dtype=np.complex)
-        double complex[::1] eee = np.zeros(7, dtype=np.complex)
-        double complex[::1] ggg = np.zeros(7, dtype=np.complex)
-        double complex[:, ::1] zzz = np.zeros((3, 5), dtype=np.complex)
-        double complex[:, ::1] sss = np.zeros((3, 6), dtype=np.complex)
-        double complex[:, ::1] temppp = np.zeros((4, 4), dtype=np.complex)
+        # double complex[::1] kp = np.zeros(len(thickness), dtype=complex)
+        # double complex[::1] ks = np.zeros(len(thickness), dtype=complex)
+        double complex[:, ::1] u = np.zeros((3, 3), dtype=complex)
+        double complex[:, ::1] aaa = np.zeros((5, 5), dtype=complex)
+        double complex[:, ::1] bbb = np.zeros((7, 7), dtype=complex)
+        double complex[:, ::1] ccc = np.zeros((7, 7), dtype=complex)
+        double complex[::1] eee = np.zeros(7, dtype=complex)
+        double complex[::1] ggg = np.zeros(7, dtype=complex)
+        double complex[:, ::1] zzz = np.zeros((3, 5), dtype=complex)
+        double complex[:, ::1] sss = np.zeros((3, 6), dtype=complex)
+        double complex[:, ::1] temppp = np.zeros((4, 4), dtype=complex)
 
-        double complex[::1] ggg_temp = np.zeros(7, dtype=np.complex)
-        double complex[:, ::1] zzz_temp = np.zeros((3, 5), dtype=np.complex)
-        double complex[:, ::1] bbb_temp = np.zeros((7, 7), dtype=np.complex)
+        double complex[::1] ggg_temp = np.zeros(7, dtype=complex)
+        double complex[:, ::1] zzz_temp = np.zeros((3, 5), dtype=complex)
+        double complex[:, ::1] bbb_temp = np.zeros((7, 7), dtype=complex)
 
     # * get the n list
     cdef:
         int[::1] n_list = np.zeros(nfft2-wc1+1, dtype=np.intc), n_list_accumulate = np.zeros(nfft2-wc1+1, dtype=np.intc)
         int n_total = 0
         # some ik determined value
-        double complex[:, ::1] kp_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
-        double complex[:, ::1] ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
+        double complex[:, ::1] kp_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=complex)
+        double complex[:, ::1] ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=complex)
         int[::1] flip_val_list = np.zeros(nfft2-wc1+1, dtype=np.intc)
         # work for mpi each rank
-        double complex[:, ::1] kp_list_each_rank = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
-        double complex[:, ::1] ks_list_each_rank = np.zeros((nfft2-wc1+1, len(thickness)), dtype=np.complex)
+        double complex[:, ::1] kp_list_each_rank = np.zeros((nfft2-wc1+1, len(thickness)), dtype=complex)
+        double complex[:, ::1] ks_list_each_rank = np.zeros((nfft2-wc1+1, len(thickness)), dtype=complex)
         int[::1] n_list_each_rank = np.zeros(nfft2-wc1+1, dtype=np.intc)
 
     if flip:
@@ -246,7 +246,7 @@ cdef void _waveform_integration_sigin(int nfft2, double dw, double pmin, double 
 
     # * we need to gather sum_waveform together and sum them together
     cdef double complex[:, :, :] sum_waveform_all = np.zeros(
-        (len(receiver_distance), 9, nfft2), dtype=np.complex)
+        (len(receiver_distance), 9, nfft2), dtype=complex)
 
     # mpi.MPI_Reduce(& sum_waveform[0, 0, 0], & sum_waveform_all[0, 0, 0], len(receiver_distance)*9*nfft2, mpi.MPI_C_DOUBLE_COMPLEX,
     #                 mpi.MPI_SUM, 0, comm)

@@ -14,7 +14,7 @@ class TestFunctionTaup(object):
         model_data_raw = np.loadtxt(model_path)
         # generate the model file used for taup
         len_interface = np.shape(model_data_raw)[0]
-        model_data = np.zeros((len_interface - 1, 6), dtype=np.float)
+        model_data = np.zeros((len_interface - 1, 6), dtype=float)
         for index in range(len_interface - 1):
             model_data[index, 0] = model_data_raw[index + 1, 0] - \
                 model_data_raw[index, 0]

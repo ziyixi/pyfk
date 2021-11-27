@@ -96,7 +96,7 @@ def sync_calculate_gf(gf: List[Stream], source: SourceModel) -> List[Stream]:
         result.append(Stream())
         for icom in range(3):
             thetrace = Trace(
-                header=gf[irec][0].stats, data=np.zeros(npts, dtype=np.float))
+                header=gf[irec][0].stats, data=np.zeros(npts, dtype=float))
             result[-1] += thetrace
 
     # * now we convert the gf to result
@@ -129,7 +129,7 @@ def generate_source_time_function(
     ns = int(dura / delta)
     if ns < 2:
         ns = 2
-    result_data = np.zeros(ns + 1, dtype=np.float)
+    result_data = np.zeros(ns + 1, dtype=float)
     nr = int(rise * ns)
     if nr < 1:
         nr = 1
