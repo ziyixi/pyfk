@@ -22,7 +22,6 @@ sphinx-autoapi = "*"
 jupyter-sphinx = "*"
 pytest-mpi = "*"
 sphinx-copybutton = "*"
-pylint = "*"
 
 [requires]
 python_version = "3"
