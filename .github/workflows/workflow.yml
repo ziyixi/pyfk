@@ -34,7 +34,8 @@ jobs:
 
       - name: Install pipenv packages
         run: |
-          pipenv --python=`which python` install -d
+          pipenv --python=`which python` install -d --skip-lock
+          pipenv graph
 
       - name: Generate coverage report
         run: |
