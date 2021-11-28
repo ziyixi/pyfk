@@ -11,11 +11,11 @@ scipy = "*"
 cysignals = "*"
 
 [dev-packages]
+docutils = "0.17"
 autopep8 = "*"
 coverage = "*"
 pytest = "*"
 sphinx = "*"
-docutils = "*"
 rstcheck = "*"
 pydata-sphinx-theme = "*"
 sphinx-autoapi = "*"
