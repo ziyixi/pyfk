@@ -30,17 +30,11 @@ jobs:
 
       - name: Install pipenv
         run: |
-          which python
-          python -m pip install --upgrade pip
           pip install pipenv
-          which pip
-          which python
 
       - name: Install pipenv packages
         run: |
-          which python
-          pipenv --python=`which python` install -d --skip-lock
-          pipenv graph
+          pipenv --python=`which python` install -d
 
       - name: Generate coverage report
         run: |
@@ -65,7 +59,7 @@ jobs:
         run: |
           export PYFK_USE_MPI=1
           pipenv run pip uninstall pyfk -y
-          pipenv run pipenv install mpi4py
+          pipenv run pip install mpi4py
           pipenv run pip install .
           cd coverage_test
           pipenv run mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
