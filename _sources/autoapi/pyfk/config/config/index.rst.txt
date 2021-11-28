@@ -1,5 +1,5 @@
-:mod:`pyfk.config.config`
-=========================
+:py:mod:`pyfk.config.config`
+============================
 
 .. py:module:: pyfk.config.config
 
@@ -18,10 +18,10 @@ Classes
 
 
 
-.. class:: Config(model: Optional[SeisModel] = None, source: Optional[SourceModel] = None, receiver_distance: Optional[Union[list, np.ndarray]] = None, degrees: bool = False, taper: float = 0.3, filter: Tuple[(float, float)] = (0, 0), npt: int = 256, dt: float = 1.0, dk: float = 0.3, smth: float = 1.0, pmin: float = 0.0, pmax: float = 1.0, kmax: float = 15.0, rdep: float = 0.0, updn: str = 'all', samples_before_first_arrival: int = 50, cuda: bool = False)
 
+.. py:class:: Config(model = None, source = None, receiver_distance = None, degrees = False, taper = 0.3, filter = (0, 0), npt = 256, dt = 1.0, dk = 0.3, smth = 1.0, pmin = 0.0, pmax = 1.0, kmax = 15.0, rdep = 0.0, updn = 'all', samples_before_first_arrival = 50, cuda = False)
 
-   Bases: :class:`object`
+   Bases: :py:obj:`object`
 
    The configuration class used in generating Green's function and the synthetic waveform.
 
@@ -75,26 +75,25 @@ Classes
    :raises PyfkError: Must provide a source
    :raises PyfkError: Must provide a seisModel
 
-   .. method:: __repr__(self) -> str
+   .. py:method:: __repr__(self)
 
       Return repr(self).
 
 
-   .. method:: _couple_model_and_source(self) -> None
+   .. py:method:: _couple_model_and_source(self)
 
 
-   .. method:: _flattening_func(depth: float) -> float
+   .. py:method:: _flattening_func(depth)
       :staticmethod:
 
 
-   .. method:: _insert_intf(self, depth: float) -> int
+   .. py:method:: _insert_intf(self, depth)
 
 
 
-.. class:: SeisModel(model: numpy.ndarray = None, flattening: bool = False, use_kappa: bool = False)
+.. py:class:: SeisModel(model = None, flattening = False, use_kappa = False)
 
-
-   Bases: :class:`object`
+   Bases: :py:obj:`object`
 
    SeisModel stores the Earth model
 
@@ -114,7 +113,7 @@ Classes
    :raises PyfkError: Earth Model must be a 2D numpy array
    :raises PyfkError: Must provide at least three columns for the model
 
-   .. method:: __copy__(self)
+   .. py:method:: __copy__(self)
 
       make a copy of the current model, and the model numpy file will not be influenced
 
@@ -122,12 +121,12 @@ Classes
       :rtype: SeisModel
 
 
-   .. method:: __repr__(self) -> str
+   .. py:method:: __repr__(self)
 
       Return repr(self).
 
 
-   .. method:: add_layer(self, dd: float, idep: int) -> None
+   .. py:method:: add_layer(self, dd, idep)
 
       insert a layer so that the source/receiver will be located at the interface of the layers
 
@@ -137,7 +136,7 @@ Classes
       :type idep: int
 
 
-   .. method:: flattening(self) -> bool
+   .. py:method:: flattening(self)
       :property:
 
       get the flatten status of the model
@@ -146,7 +145,7 @@ Classes
       :rtype: bool
 
 
-   .. method:: qp(self) -> numpy.ndarray
+   .. py:method:: qp(self)
       :property:
 
       get the attenuation qp array
@@ -155,7 +154,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: qs(self) -> numpy.ndarray
+   .. py:method:: qs(self)
       :property:
 
       get the attenuation qs array
@@ -164,12 +163,12 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: remove_topo(self) -> None
+   .. py:method:: remove_topo(self)
 
       make the thickness for the first later to be 0 when the thickness is smaller than 0.
 
 
-   .. method:: rh(self) -> numpy.ndarray
+   .. py:method:: rh(self)
       :property:
 
       get the density array
@@ -178,7 +177,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: th(self) -> numpy.ndarray
+   .. py:method:: th(self)
       :property:
 
       get the thickness array
@@ -187,7 +186,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: vp(self) -> numpy.ndarray
+   .. py:method:: vp(self)
       :property:
 
       get the vp array
@@ -196,7 +195,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: vs(self) -> numpy.ndarray
+   .. py:method:: vs(self)
       :property:
 
       get the vs array
@@ -206,10 +205,9 @@ Classes
 
 
 
-.. class:: SourceModel(sdep: float = 0.0, srcType: str = 'dc', source_mechanism: Optional[Union[list, np.ndarray]] = None)
+.. py:class:: SourceModel(sdep = 0.0, srcType = 'dc', source_mechanism = None)
 
-
-   Bases: :class:`object`
+   Bases: :py:obj:`object`
 
    the information about the the source used in the FK
 
@@ -221,12 +219,12 @@ Classes
    :type source_mechanism: Optional[Union[list, np.ndarray]], optional
    :raises PyfkError: [description]
 
-   .. method:: __repr__(self) -> str
+   .. py:method:: __repr__(self)
 
       Return repr(self).
 
 
-   .. method:: _update_source_mechanism(self, source_mechanism: Optional[Union[list, np.ndarray]])
+   .. py:method:: _update_source_mechanism(self, source_mechanism)
 
       the internal function to update the source mechanism information
 
@@ -237,7 +235,7 @@ Classes
       :raises PyfkError: source_mechanism must be None, a list or numpy.ndarray
 
 
-   .. method:: calculate_radiation_pattern(self, az: float) -> None
+   .. py:method:: calculate_radiation_pattern(self, az)
 
       calculate the radiation pattern 3*3 array
 
@@ -246,7 +244,7 @@ Classes
       :raises PyfkError: length of source_mechanism must be 1, 3, 4, 7
 
 
-   .. method:: m0(self) -> float
+   .. py:method:: m0(self)
       :property:
 
       get the value associated with the magnitude in FK
@@ -255,7 +253,7 @@ Classes
       :rtype: float
 
 
-   .. method:: nn(self) -> int
+   .. py:method:: nn(self)
       :property:
 
       get the value associated with the source type
@@ -264,7 +262,7 @@ Classes
       :rtype: int
 
 
-   .. method:: rad(self) -> numpy.ndarray
+   .. py:method:: rad(self)
       :property:
 
       get the radiation pattern
@@ -273,7 +271,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. method:: sdep(self) -> float
+   .. py:method:: sdep(self)
       :property:
 
       get the source depth in km
@@ -282,7 +280,7 @@ Classes
       :rtype: float
 
 
-   .. method:: srcType(self) -> str
+   .. py:method:: srcType(self)
       :property:
 
       get the source type (ep, sf or dc)
@@ -291,7 +289,7 @@ Classes
       :rtype: str
 
 
-   .. method:: update_source_mechanism(self, source_mechanism: Union[(list, np.ndarray, Event)])
+   .. py:method:: update_source_mechanism(self, source_mechanism)
 
       update the source mechanism information after creation of the SourceModel
 

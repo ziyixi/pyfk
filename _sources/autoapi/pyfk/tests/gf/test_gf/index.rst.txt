@@ -1,5 +1,5 @@
-:mod:`pyfk.tests.gf.test_gf`
-============================
+:py:mod:`pyfk.tests.gf.test_gf`
+===============================
 
 .. py:module:: pyfk.tests.gf.test_gf
 
@@ -16,33 +16,34 @@ Classes
 
 
 
-.. class:: TestFunctioncalculateGf
 
-   Bases: :class:`object`
+.. py:class:: TestFunctioncalculateGf
 
-   .. method:: test_big_array(self)
+   Bases: :py:obj:`object`
 
-
-   .. method:: test_filter(self)
+   .. py:method:: test_big_array(self)
 
 
-   .. method:: test_hk()
+   .. py:method:: test_filter(self)
+
+
+   .. py:method:: test_hk()
       :staticmethod:
 
 
-   .. method:: test_prem_ep(self)
+   .. py:method:: test_prem_ep(self)
 
 
-   .. method:: test_prem_sf(self)
+   .. py:method:: test_prem_sf(self)
 
 
-   .. method:: test_receiver_deeper(self)
+   .. py:method:: test_receiver_deeper(self)
 
 
-   .. method:: test_smth(self)
+   .. py:method:: test_smth(self)
 
 
-   .. method:: test_static_source(self)
+   .. py:method:: test_static_source(self)
 
 
 

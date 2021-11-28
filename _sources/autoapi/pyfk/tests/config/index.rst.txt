@@ -1,5 +1,5 @@
-:mod:`pyfk.tests.config`
-========================
+:py:mod:`pyfk.tests.config`
+===========================
 
 .. py:module:: pyfk.tests.config
 

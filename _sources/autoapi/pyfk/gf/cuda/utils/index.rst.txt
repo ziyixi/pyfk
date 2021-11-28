@@ -1,5 +1,5 @@
-:mod:`pyfk.gf.cuda.utils`
-=========================
+:py:mod:`pyfk.gf.cuda.utils`
+============================
 
 .. py:module:: pyfk.gf.cuda.utils
 
@@ -26,41 +26,50 @@ Functions
    pyfk.gf.cuda.utils.sh_ch
 
 
-.. data:: cujn
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   pyfk.gf.cuda.utils.cujn
+
+
+.. py:data:: cujn
    
 
    
 
-.. function:: cal_cujn(n: int, x: numpy.ndarray)
+.. py:function:: cal_cujn(n, x)
 
 
-.. function:: compoundMatrix(ccc, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)
+.. py:function:: compoundMatrix(ccc, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)
 
 
-.. function:: eVector(eee, ra, rb, r1, mu2)
+.. py:function:: eVector(eee, ra, rb, r1, mu2)
 
 
-.. function:: haskellMatrix(aaa, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)
+.. py:function:: haskellMatrix(aaa, Ca, Ya, Xa, Cb, Yb, Xb, exa, exb, r, r1, mu2)
 
 
-.. function:: initialG(ggg, r, ra, rb, r1, mu2)
+.. py:function:: initialG(ggg, r, ra, rb, r1, mu2)
 
 
-.. function:: initialZ(zzz, ggg, sss)
+.. py:function:: initialZ(zzz, ggg, sss)
 
 
-.. function:: propagateB(bbb, ccc)
+.. py:function:: propagateB(bbb, ccc)
 
 
-.. function:: propagateG(ggg, ccc)
+.. py:function:: propagateG(ggg, ccc)
 
 
-.. function:: propagateZ(zzz, aaa)
+.. py:function:: propagateZ(zzz, aaa)
 
 
-.. function:: separatS(sss, updn, src_type, ra, rb, r, mu2, temppp, r1, si)
+.. py:function:: separatS(sss, updn, src_type, ra, rb, r, mu2, temppp, r1, si)
 
 
-.. function:: sh_ch(a, kd)
+.. py:function:: sh_ch(a, kd)
 
 

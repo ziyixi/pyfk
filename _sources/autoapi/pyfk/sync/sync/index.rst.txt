@@ -1,5 +1,5 @@
-:mod:`pyfk.sync.sync`
-=====================
+:py:mod:`pyfk.sync.sync`
+========================
 
 .. py:module:: pyfk.sync.sync
 
@@ -18,7 +18,8 @@ Functions
    pyfk.sync.sync.sync_calculate_gf
 
 
-.. function:: calculate_sync(gf: Union[(List[Stream], Stream)], config: pyfk.config.config.Config, az: Union[(float, int)] = 0, source_time_function: Optional[Trace] = None) -> List[Stream]
+
+.. py:function:: calculate_sync(gf, config, az = 0, source_time_function = None)
 
    Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources
 
@@ -38,7 +39,7 @@ Functions
    :rtype: List[Stream]
 
 
-.. function:: generate_source_time_function(dura: float = 0.0, rise: float = 0.5, delta: float = 0.1) -> obspy.Trace
+.. py:function:: generate_source_time_function(dura = 0.0, rise = 0.5, delta = 0.1)
 
    [summary]
 
@@ -52,7 +53,7 @@ Functions
    :rtype: Trace
 
 
-.. function:: sync_calculate_gf(gf: List[Stream], source: pyfk.config.config.SourceModel) -> List[Stream]
+.. py:function:: sync_calculate_gf(gf, source)
 
    stack three the GF into three components based on the radiation pattern
 

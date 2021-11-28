@@ -1,5 +1,5 @@
-:mod:`pyfk.utils.error_message`
-===============================
+:py:mod:`pyfk.utils.error_message`
+==================================
 
 .. py:module:: pyfk.utils.error_message
 
@@ -7,18 +7,16 @@
 Module Contents
 ---------------
 
-.. exception:: PyfkError
+.. py:exception:: PyfkError
 
-
-   Bases: :class:`Exception`
+   Bases: :py:obj:`Exception`
 
    Initialize self.  See help(type(self)) for accurate signature.
 
 
-.. exception:: PyfkWarning
+.. py:exception:: PyfkWarning
 
-
-   Bases: :class:`UserWarning`
+   Bases: :py:obj:`UserWarning`
 
    Initialize self.  See help(type(self)) for accurate signature.
 

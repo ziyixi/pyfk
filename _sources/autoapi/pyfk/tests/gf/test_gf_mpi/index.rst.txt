@@ -1,5 +1,5 @@
-:mod:`pyfk.tests.gf.test_gf_mpi`
-================================
+:py:mod:`pyfk.tests.gf.test_gf_mpi`
+===================================
 
 .. py:module:: pyfk.tests.gf.test_gf_mpi
 
@@ -16,14 +16,15 @@ Classes
 
 
 
-.. class:: TestFunctioncalculateGf_MPI
 
-   Bases: :class:`object`
+.. py:class:: TestFunctioncalculateGf_MPI
 
-   .. method:: test_mpi_info(self)
+   Bases: :py:obj:`object`
+
+   .. py:method:: test_mpi_info(self)
 
 
-   .. method:: test_val_correct(self)
+   .. py:method:: test_val_correct(self)
 
 
 

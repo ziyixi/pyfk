@@ -1,5 +1,5 @@
-:mod:`pyfk.tests.taup.test_taup`
-================================
+:py:mod:`pyfk.tests.taup.test_taup`
+===================================
 
 .. py:module:: pyfk.tests.taup.test_taup
 
@@ -16,15 +16,16 @@ Classes
 
 
 
-.. class:: TestFunctionTaup
 
-   Bases: :class:`object`
+.. py:class:: TestFunctionTaup
 
-   .. method:: gen_test_model(model_name)
+   Bases: :py:obj:`object`
+
+   .. py:method:: gen_test_model(model_name)
       :staticmethod:
 
 
-   .. method:: test_earth_models(self)
+   .. py:method:: test_earth_models(self)
 
 
 

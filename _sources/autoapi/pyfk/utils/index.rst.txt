@@ -1,5 +1,5 @@
-:mod:`pyfk.utils`
-=================
+:py:mod:`pyfk.utils`
+====================
 
 .. py:module:: pyfk.utils
 

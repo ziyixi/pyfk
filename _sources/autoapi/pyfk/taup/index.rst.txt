@@ -1,5 +1,5 @@
-:mod:`pyfk.taup`
-================
+:py:mod:`pyfk.taup`
+===================
 
 .. py:module:: pyfk.taup
 

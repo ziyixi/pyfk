@@ -1,5 +1,5 @@
-:mod:`pyfk.tests.sync`
-======================
+:py:mod:`pyfk.tests.sync`
+=========================
 
 .. py:module:: pyfk.tests.sync
 

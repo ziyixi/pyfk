@@ -1,5 +1,5 @@
-:mod:`pyfk.sync`
-================
+:py:mod:`pyfk.sync`
+===================
 
 .. py:module:: pyfk.sync
 

@@ -1,5 +1,5 @@
-:mod:`pyfk.gf.cuda`
-===================
+:py:mod:`pyfk.gf.cuda`
+======================
 
 .. py:module:: pyfk.gf.cuda
 

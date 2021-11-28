@@ -1,5 +1,5 @@
-:mod:`pyfk.setting`
-===================
+:py:mod:`pyfk.setting`
+======================
 
 .. py:module:: pyfk.setting
 
@@ -7,17 +7,17 @@
 Module Contents
 ---------------
 
-.. data:: EPSILON
+.. py:data:: EPSILON
    :annotation: :float = 0.0001
 
    
 
-.. data:: R_EARTH
+.. py:data:: R_EARTH
    :annotation: :float = 6371.0
 
    
 
-.. data:: SIGMA
+.. py:data:: SIGMA
    :annotation: :float = 2.0
 
    

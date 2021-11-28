@@ -1,5 +1,5 @@
-:mod:`pyfk.gf.cuda.waveform_integration_cuda`
-=============================================
+:py:mod:`pyfk.gf.cuda.waveform_integration_cuda`
+================================================
 
 .. py:module:: pyfk.gf.cuda.waveform_integration_cuda
 
@@ -22,24 +22,25 @@ Functions
    pyfk.gf.cuda.waveform_integration_cuda.parallel_kernel
 
 
-.. function:: _waveform_integration(nfft2: int, dw: float, pmin: float, dk: float, kc: float, pmax: float, receiver_distance: numpy.ndarray, wc1: int, vs: numpy.ndarray, vp: numpy.ndarray, qs: numpy.ndarray, qp: numpy.ndarray, flip: bool, filter_const: float, dynamic: bool, wc2: int, t0: int, src_type: int, taper: float, wc: int, mu: numpy.ndarray, thickness: numpy.ndarray, si: numpy.ndarray, src_layer: int, rcv_layer: int, updn: int, epsilon: float, sigma: float, sum_waveform: numpy.ndarray, cuda_divide_num: int)
+
+.. py:function:: _waveform_integration(nfft2, dw, pmin, dk, kc, pmax, receiver_distance, wc1, vs, vp, qs, qp, flip, filter_const, dynamic, wc2, t0, src_type, taper, wc, mu, thickness, si, src_layer, rcv_layer, updn, epsilon, sigma, sum_waveform, cuda_divide_num)
 
 
-.. function:: apply_filter(wc1, nfft2, dw, filter_const, dynamic, wc, taper, wc2, receiver_distance, t0, sum_waveform)
+.. py:function:: apply_filter(wc1, nfft2, dw, filter_const, dynamic, wc, taper, wc2, receiver_distance, t0, sum_waveform)
 
 
-.. function:: fill_vals(n_list: numpy.ndarray, n_list_accumulate: numpy.ndarray, ik_list: numpy.ndarray, i_list: numpy.ndarray, wc1: int, nfft2: int, current_n_all: int, current_offset: int)
+.. py:function:: fill_vals(n_list, n_list_accumulate, ik_list, i_list, wc1, nfft2, current_n_all, current_offset)
 
 
-.. function:: get_n_list_kpks(wc1: int, nfft2: int, kc: float, dw: float, pmin: float, pmax: float, dk: float, sigma: float, thickness: numpy.ndarray, vp: numpy.ndarray, vs: numpy.ndarray, qp: numpy.ndarray, qs: numpy.ndarray, n_list: numpy.ndarray, n_list_accumulate: numpy.ndarray, kp_list: numpy.ndarray, ks_list: numpy.ndarray)
+.. py:function:: get_n_list_kpks(wc1, nfft2, kc, dw, pmin, pmax, dk, sigma, thickness, vp, vs, qp, qs, n_list, n_list_accumulate, kp_list, ks_list)
 
 
-.. function:: get_sum_waveform(sum_waveform, u, ik_list, receiver_distance, flip_val, z_list, aj0_list, aj1_list, aj2_list, current_n_all)
+.. py:function:: get_sum_waveform(sum_waveform, u, ik_list, receiver_distance, flip_val, z_list, aj0_list, aj1_list, aj2_list, current_n_all)
 
 
-.. function:: get_z_list(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk, current_n_all)
+.. py:function:: get_z_list(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk, current_n_all)
 
 
-.. function:: parallel_kernel(u, ik_list, i_list, kp_list, ks_list, thickness, mu, si, dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1, current_n_all)
+.. py:function:: parallel_kernel(u, ik_list, i_list, kp_list, ks_list, thickness, mu, si, dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1, current_n_all)
 
 

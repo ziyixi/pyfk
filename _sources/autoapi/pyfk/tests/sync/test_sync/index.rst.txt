@@ -1,5 +1,5 @@
-:mod:`pyfk.tests.sync.test_sync`
-================================
+:py:mod:`pyfk.tests.sync.test_sync`
+===================================
 
 .. py:module:: pyfk.tests.sync.test_sync
 
@@ -16,18 +16,19 @@ Classes
 
 
 
-.. class:: TestFunctionCalculateSync
 
-   Bases: :class:`object`
+.. py:class:: TestFunctionCalculateSync
 
-   .. method:: get_sample_gcmt_file_path()
+   Bases: :py:obj:`object`
+
+   .. py:method:: get_sample_gcmt_file_path()
       :staticmethod:
 
 
-   .. method:: test_exceptions(self)
+   .. py:method:: test_exceptions(self)
 
 
-   .. method:: test_prem(self)
+   .. py:method:: test_prem(self)
 
 
 

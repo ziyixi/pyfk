@@ -1,5 +1,5 @@
-:mod:`pyfk.gf`
-==============
+:py:mod:`pyfk.gf`
+=================
 
 .. py:module:: pyfk.gf
 
