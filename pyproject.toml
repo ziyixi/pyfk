@@ -1,3 +1,0 @@
-[build-system]
-requires = ["setuptools","numpy","obspy","Cython","scipy","cysignals"]
-build-backend = "setuptools.build_meta"
