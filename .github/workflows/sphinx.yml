@@ -15,9 +15,9 @@ jobs:
         run: |
           pip install pipenv
           pipenv --python=`which python` install -d
-          pipenv run pip install .
           export VENV_HOME_DIR=$(pipenv --venv)
           source $VENV_HOME_DIR/bin/activate
+          pipenv install .
           cd docs
           make html
           cd ..

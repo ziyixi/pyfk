@@ -32,14 +32,16 @@ jobs:
         run: |
           pip install pipenv
           pipenv --python=`which python` install -d
+          export VENV_HOME_DIR=$(pipenv --venv)
+          source $VENV_HOME_DIR/bin/activate
 
       - name: Generate coverage report
         run: |
-          pipenv run pip install .
+          pipenv install .
           mkdir coverage_test
           cd coverage_test
-          pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
-          pipenv run coverage xml
+          coverage run --source=pyfk -m pytest --pyargs pyfk
+          coverage xml
           cd ..
           mv coverage_test/coverage.xml .
 
@@ -55,10 +57,10 @@ jobs:
       - name: Test MPI run
         run: |
           export PYFK_USE_MPI=1
-          pipenv run pip uninstall pyfk -y
-          pipenv run pip install mpi4py
-          pipenv run pip install .
+          pipenv uninstall pyfk
+          pipenv install mpi4py
+          pipenv install .
           cd coverage_test
-          pipenv run mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
-          pipenv run mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
+          mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
+          mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
           cd ..
