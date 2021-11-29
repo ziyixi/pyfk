@@ -55,7 +55,7 @@ jobs:
           export PYFK_USE_MPI=1
           pip uninstall pyfk -y
           pip install mpi4py
-          pip install .
+          python setup.py install
           cd coverage_test
           mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
           mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
