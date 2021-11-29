@@ -37,7 +37,7 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          pipenv install .
+          pip install .
           mkdir coverage_test
           cd coverage_test
           coverage run --source=pyfk -m pytest --pyargs pyfk
@@ -57,9 +57,9 @@ jobs:
       - name: Test MPI run
         run: |
           export PYFK_USE_MPI=1
-          pipenv uninstall pyfk
-          pipenv install mpi4py
-          pipenv install .
+          pip uninstall pyfk -y
+          pip install mpi4py
+          pip install .
           cd coverage_test
           mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
           mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
