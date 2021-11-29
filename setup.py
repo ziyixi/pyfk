@@ -27,10 +27,16 @@ compile_time_env = {
 }
 PYFK_USE_MPI = os.getenv("PYFK_USE_MPI", "0")
 mpi_link_args=[]
+mpi_include_dirs=[np.get_include()]
 if PYFK_USE_MPI == "1":
     os.environ["CC"] = "mpicc"
     compile_time_env["PYFK_USE_MPI"]="1"
     mpi_link_args=["-lmpi"]
+    try:
+        import mpi4py
+    except:
+        raise Exception("please install mpi4py first!")
+    mpi_include_dirs.append(mpi4py.get_include())
 
 # * only for debug purpose
 CYTHON_TRACE = 0
@@ -50,7 +56,7 @@ extensions = [
     Extension(
         "pyfk.gf.waveform_integration",
         [os.path.join(root_dir, "gf/waveform_integration.pyx")],
-        include_dirs=[np.get_include()],
+        include_dirs=mpi_include_dirs,
         define_macros=[("CYTHON_TRACE", str(CYTHON_TRACE))],
         language="c",
         extra_link_args=mpi_link_args

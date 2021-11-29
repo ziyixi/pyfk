@@ -15,7 +15,7 @@ jobs:
       - name: run doc
         run: |
           pip install .
-          pip install sphinx pydata-sphinx-theme sphinx-autoapi jupyter-sphinx sphinx-copybutton
+          pip install sphinx pydata-sphinx-theme sphinx-autoapi jupyter-sphinx sphinx-copybutton pytest
           cd docs
           make html
           cd ..
