@@ -8,9 +8,9 @@ import inspect
 import os
 import sys
 
-from setuptools import Extension, dist, find_packages, setup
+from setuptools import Extension, find_packages, setup
 
-dist.Distribution().fetch_build_eggs(['numpy',"obspy", "cython", "scipy", "cysignals"])
+# dist.Distribution().fetch_build_eggs(['numpy',"obspy", "cython", "scipy", "cysignals"])
 
 import numpy as np
 from Cython.Build import cythonize
