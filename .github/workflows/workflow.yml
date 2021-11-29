@@ -27,6 +27,8 @@ jobs:
 
       - name: Install pipenv and packages
         uses: palewire/install-python-pipenv-pipfile@v2
+        with:
+          python-version: ${{ matrix.python }}
 
       - name: Generate coverage report
         run: |
