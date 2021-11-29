@@ -25,18 +25,19 @@ jobs:
         run: |
           sudo apt install openmpi-bin libopenmpi-dev -y
 
-      - name: Install pipenv and packages
-        uses: palewire/install-python-pipenv-pipfile@v2
+      - name: Set up python
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
 
       - name: Generate coverage report
         run: |
-          pipenv run python -m pip install .
+          pip install .
+          pip install coverage pytest pytest-mpi
           mkdir coverage_test
           cd coverage_test
-          pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
-          pipenv run coverage xml
+          coverage run --source=pyfk -m pytest --pyargs pyfk
+          coverage xml
           cd ..
           mv coverage_test/coverage.xml .
 
@@ -52,10 +53,10 @@ jobs:
       - name: Test MPI run
         run: |
           export PYFK_USE_MPI=1
-          pipenv run python -m pip uninstall pyfk -y
-          pipenv run python -m pip install mpi4py
-          pipenv run python -m pip install .
+          pip uninstall pyfk -y
+          pip install mpi4py
+          pip install .
           cd coverage_test
-          pipenv run mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
-          pipenv run mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
+          mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
+          mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
           cd ..

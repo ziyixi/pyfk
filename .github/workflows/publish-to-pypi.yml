@@ -7,13 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install pipenv and packages
-        uses: palewire/install-python-pipenv-pipfile@v2
+      - name: Set up python
+        uses: actions/setup-python@v2
         with:
           python-version: 3.7
       - name: generate dist
         run: |
-          pipenv run python setup.py sdist
+          pip install .
+          python setup.py sdist
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
