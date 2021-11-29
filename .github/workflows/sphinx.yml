@@ -14,8 +14,8 @@ jobs:
       - name: Install pipenv and run doc
         run: |
           pip install pipenv
-          pipenv --python=`which python` install -d --skip-lock
-          pipenv run python setup.py develop
+          pipenv --python=`which python` install -d
+          pipenv run pip install .
           export VENV_HOME_DIR=$(pipenv --venv)
           source $VENV_HOME_DIR/bin/activate
           cd docs

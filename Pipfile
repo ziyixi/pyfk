@@ -11,11 +11,9 @@ scipy = "*"
 cysignals = "*"
 
 [dev-packages]
-autopep8 = "*"
 coverage = "*"
 pytest = "*"
 sphinx = "*"
-rstcheck = "*"
 pydata-sphinx-theme = "*"
 sphinx-autoapi = "*"
 jupyter-sphinx = "*"
@@ -23,4 +21,4 @@ pytest-mpi = "*"
 sphinx-copybutton = "*"
 
 [requires]
-python_version = "3"
+python_version = ">=3.6,<3.9"

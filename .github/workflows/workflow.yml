@@ -28,13 +28,10 @@ jobs:
         run: |
           sudo apt install openmpi-bin libopenmpi-dev -y
 
-      - name: Install pipenv
+      - name: Install pipenv and packages
         run: |
           pip install pipenv
-
-      - name: Install pipenv packages
-        run: |
-          pipenv --python=`which python` install -d --skip-lock
+          pipenv --python=`which python` install -d
 
       - name: Generate coverage report
         run: |

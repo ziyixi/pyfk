@@ -23,7 +23,6 @@ profile_pyfk/*
 docs/_build/*
 docs/_static/*
 docs/_template/*
-Pipfile.lock
 dist/*
 
 token
