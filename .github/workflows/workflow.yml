@@ -14,9 +14,6 @@ jobs:
       OS: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
 
       - name: Install openmp on mac
         if: matrix.os == 'macos-latest'
@@ -29,19 +26,15 @@ jobs:
           sudo apt install openmpi-bin libopenmpi-dev -y
 
       - name: Install pipenv and packages
-        run: |
-          pip install pipenv
-          pipenv --python=`which python` install -d
-          export VENV_HOME_DIR=$(pipenv --venv)
-          source $VENV_HOME_DIR/bin/activate
+        uses: palewire/install-python-pipenv-pipfile@v2
 
       - name: Generate coverage report
         run: |
-          pip install .
+          pipenv run python -m pip install .
           mkdir coverage_test
           cd coverage_test
-          coverage run --source=pyfk -m pytest --pyargs pyfk
-          coverage xml
+          pipenv run coverage run --source=pyfk -m pytest --pyargs pyfk
+          pipenv run coverage xml
           cd ..
           mv coverage_test/coverage.xml .
 
@@ -57,10 +50,10 @@ jobs:
       - name: Test MPI run
         run: |
           export PYFK_USE_MPI=1
-          pip uninstall pyfk -y
-          pip install mpi4py
-          pip install .
+          pipenv run python -m pip uninstall pyfk -y
+          pipenv run python -m pip install mpi4py
+          pipenv run python -m pip install .
           cd coverage_test
-          mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
-          mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
+          pipenv run mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
+          pipenv run mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
           cd ..
