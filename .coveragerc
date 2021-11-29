@@ -1,2 +1,6 @@
 [run]
 plugins = Cython.Coverage
+omit =
+    pyfk/gf/cuda/utils.py
+    pyfk/gf/cuda/waveform_integration_cuda.py
+    pyfk/tests/gf/test_gf_mpi.py
