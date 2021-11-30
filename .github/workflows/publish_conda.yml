@@ -6,12 +6,7 @@ on:
 
 jobs:
   publish:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    env:
-      OS: ${{ matrix.os }}
+    runs-on: 'ubuntu-latest'
     steps:
     - uses: actions/checkout@v2
     - name: publish-to-conda
@@ -19,4 +14,4 @@ jobs:
       with:
         subdir: 'conda'
         anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
-        platforms: ${{ matrix.os }}
+        platforms: 'ubuntu-latest'
