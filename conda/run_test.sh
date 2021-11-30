@@ -1,0 +1,1 @@
+${PYTHON} -m pytest --pyargs pyfk

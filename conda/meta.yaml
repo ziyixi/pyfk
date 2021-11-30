@@ -1,0 +1,47 @@
+{% set data = load_setup_py_data() %}
+
+package:
+  name: pyfk
+  version: "0.2.0"
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script: ${PYTHON} setup.py install
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - python
+    - numpy
+    - scipy
+    - obspy
+    - cysignals
+    - cython
+  host:
+    - python
+    - numpy
+    - scipy
+    - obspy
+    - cysignals
+    - cython
+  run:
+    - python
+    - numpy
+    - scipy
+    - obspy
+    - cysignals
+    - cython
+test:
+  requires:
+    - pytest
+    - pytest-mpi
+  imports:
+    - pyfk
+
+about:
+  home: {{ data['url'] }}
+  license: {{ data['license'] }}
+summary: {{ data['description'] }}
