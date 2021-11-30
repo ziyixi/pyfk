@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>pyfk &#8212; pyfk 0.2.0-beta.4 documentation</title>
+    <title>PyFK &#8212; pyfk 0.2.0-beta.5 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -150,13 +150,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installation">
+   Installation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#license">
    License
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#acknowledgement">
-   Acknowledgement
+  <a class="reference internal nav-link" href="#acknowledgment">
+   Acknowledgment
   </a>
   <ul class="nav section-nav flex-column">
   </ul>
@@ -183,44 +188,57 @@
               <div>
                 
   <section id="pyfk">
-<h1>pyfk<a class="headerlink" href="#pyfk" title="Permalink to this headline">¶</a></h1>
-<p>The package pyfk is the python version of <a class="reference external" href="http://www.eas.slu.edu/People/LZhu/home.html">FK</a>.</p>
-<p>The frequency-Wavenumber (FK) is a synthetic seismogram package
-used to calculate the Green’s function and the synthetic waveforms of the 1D Earth model. The first version of FK is developed by Prof. Lupei Zhu in
-1996, and the code is written in Fortran, C and a Perl interface.</p>
-<p>Nowadays, it’s usually efficient to do the seismological research based on a python’s workflow,
+<h1>PyFK<a class="headerlink" href="#pyfk" title="Permalink to this headline">¶</a></h1>
+<p>PyFK is the python port of <a class="reference external" href="http://www.eas.slu.edu/People/LZhu/home.html">FK</a>.</p>
+<p>The Frequency-Wavenumber (FK) is a synthetic seismogram package
+used to calculate the Green’s function and the synthetic waveforms of the 1D Earth model. The first version of FK was developed by Prof. Lupei Zhu in
+1996, and the code was written in Fortran, C, and Perl.</p>
+<p>Nowadays, it’s usually more efficient to do seismological research based on a python’s workflow,
 with the help of widely used packages such as <a class="reference external" href="http://www.eas.slu.edu/People/LZhu/home.html">Obspy</a>, <a class="reference external" href="https://numpy.org/">Numpy</a> and <a class="reference external" href="https://www.scipy.org/">Scipy</a>.
-Python is also easy to integrate with parallel computing packages such as <a class="reference external" href="https://github.com/mpi4py/mpi4py">mpi4py</a> to do multiple simulations at the same time.</p>
+Python is also easy to integrate with parallel computing packages either in CPU or GPU to improve the computational speed,</p>
 <section id="about">
 <h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
-<p>🚨 <strong>This package is still undergoing rapid development.</strong> 🚨</p>
-<p>Pyfk is the python version of <a class="reference external" href="http://www.eas.slu.edu/People/LZhu/home.html">FK</a> used to calculate the Green’s function and the synthetic waveforms for the 1D Earth model.</p>
-<p>Pyfk has mainly provided functions as:</p>
+<p>PyFK is the python port of <a class="reference external" href="http://www.eas.slu.edu/People/LZhu/home.html">FK</a> used to calculate the Green’s function and the synthetic waveforms for the 1D Earth model.</p>
+<p>The main features of this package are:</p>
 <ul class="simple">
-<li><p>compute the Green’s function for the explosion, single force, and double couple source using the frequency-wavenumber method.</p></li>
-<li><p>compute the static displacements and corresponding Green’s function.</p></li>
-<li><p>compute the synthetic waveforms by convolving the Green’s function with the seismic source.</p></li>
-<li><p>have a close integration with Obspy, and is naturally to process the waveforms using this package.</p></li>
+<li><p>Compute the Green’s function for the explosion, single force, and double couple source using the frequency-wavenumber method.</p></li>
+<li><p>Compute the static displacements and corresponding Green’s function.</p></li>
+<li><p>Compute the synthetic waveforms by convolving Green’s function with the seismic source.</p></li>
+<li><p>Use the seismic data format of Obspy, which is easy to perform the signal processing.</p></li>
 </ul>
-<p>and it has the features as:</p>
+<p>And the package is unique as:</p>
 <ul class="simple">
-<li><p>all the code is written in pure python, and it’s compatible with Linux and Mac at the moment. The Windows is not supported, as i am
-using the complex number in Cython, which will use the C99 standard of “complex.h” that has not been supported by the Visual Studio compiler.</p></li>
+<li><p>all the code is written in pure python, and it’s compatible with Unix-like systems including Mac and Linux. The Windows is not supported, as the package uses the complex number in Cython, which uses the C99 standard of “complex.h” that has not been supported by the Visual Studio compiler.</p></li>
 <li><p>it uses Cython to speed up the computationally expensive part (mainly the wavenumber integration).</p></li>
-<li><p>a complete test has been performed to ensure pyfk has the same result as FK.</p></li>
+<li><dl class="simple">
+<dt>The package has also provided three modes:</dt><dd><ul>
+<li><p>Serial version: the serial version simply implements the FK in Python.</p></li>
+<li><p>Parallel version on CPU: the wavenumber integration can be paralleled by MPI.</p></li>
+<li><p>Parallel version on GPU: the wavenumber integration can also be paralleled by CUDA on GPU.</p></li>
 </ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The serial version and the parallel version on GPU can be simply installed using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pyfk
+</pre></div>
+</div>
+<p>Extra packages will be required to enable the GPU mode. For the MPI mode, it’s suggested to directly compile from the source. For more details about the Installation, you can refer to <a class="reference internal" href="introduction/install.html#installing"><span class="std std-ref">Installing</span></a>.</p>
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<p>Pyfk is a free software: you can redistribute it and/or modify it under the terms of
+<p>PyFK is a free software: you can redistribute it and modify it under the terms of
 the <strong>MIT License</strong>. A copy of this license is provided in
 <a class="reference external" href="https://github.com/ziyixi/pyfk/blob/master/LICENSE">LICENSE</a>.</p>
 </section>
-<section id="acknowledgement">
-<h2>Acknowledgement<a class="headerlink" href="#acknowledgement" title="Permalink to this headline">¶</a></h2>
-<p>The development of pyfk was initially my undergraduate thesis project in USTC, and I would thank Prof. Daoyuan Sun in USTC for mentoring me of this project. I am using
-the time of AGU 2020 to refactor my previous work as it’s much slower than FK, since I’m simply using numba to speed up the code. And I would also thank my
-Ph.D. advisor Prof. Min Chen for supporting my study and research in the US so I can have the time and energy to finish this project.</p>
+<section id="acknowledgment">
+<h2>Acknowledgment<a class="headerlink" href="#acknowledgment" title="Permalink to this headline">¶</a></h2>
+<p>PyFK was initially my undergraduate thesis project in USTC, so I would thank Prof. Daoyuan Sun in USTC for mentoring me on this project. I would also thank my
+Ph.D. advisors Prof. Min Chen and Prof. Songqiao Shawn Wei for supporting my study and research in the United States, so I can have the time and energy to finish this project.</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">

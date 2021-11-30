@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Installing &#8212; pyfk 0.2.0-beta.4 documentation</title>
+    <title>Installing &#8212; pyfk 0.2.0-beta.5 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tutorial" href="tutorial.html" />
-    <link rel="prev" title="pyfk" href="../index.html" />
+    <link rel="prev" title="PyFK" href="../index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -146,13 +146,8 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-environments">
-   The environments
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#test-your-installing">
-   Test your installing
+  <a class="reference internal nav-link" href="#the-python-environment">
+   The Python Environment
   </a>
  </li>
 </ul>
@@ -178,47 +173,9 @@
                 
   <section id="installing">
 <span id="install"></span><h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
-<section id="the-environments">
-<h2>The environments<a class="headerlink" href="#the-environments" title="Permalink to this headline">¶</a></h2>
-<p>The package pyfk runs on Unix-like systems including Mac and Linux and you will need <strong>Python 3.6 or greater</strong>. Python 3.9 is not supported yet as it’s having problems to run Cython at the moment.</p>
-<p>It’s recommended to use anaconda as your python environment:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">cython</span> <span class="n">scipy</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cysignals</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span>
-</pre></div>
-</div>
-<p>You can also use pipenv to install the package:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">OL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ziyixi</span><span class="o">/</span><span class="n">pyfk</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">Pipfile</span>
-<span class="n">pipenv</span> <span class="p">[</span><span class="o">--</span><span class="n">python</span><span class="o">=&lt;</span><span class="n">your</span> <span class="n">desired</span> <span class="n">python</span> <span class="n">interpreter</span> <span class="p">(</span><span class="k">if</span> <span class="n">omitted</span><span class="p">,</span> <span class="n">will</span> <span class="n">use</span> <span class="n">the</span> <span class="n">default</span> <span class="n">one</span><span class="p">)</span><span class="o">&gt;</span><span class="p">]</span> <span class="n">install</span>
-<span class="n">pipenv</span> <span class="n">install</span> <span class="n">pyfk</span>
-</pre></div>
-</div>
-<p>Or directly use pip:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">cython</span> <span class="n">scipy</span> <span class="n">cysignals</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span>
-</pre></div>
-</div>
-<p>This will allow you to use pyfk from python.</p>
-</section>
-<section id="test-your-installing">
-<h2>Test your installing<a class="headerlink" href="#test-your-installing" title="Permalink to this headline">¶</a></h2>
-<p>Pyfk ships with a full test suite. You can run the tests after you install it but you will need a few extra dependencies as well, if you are using pipenv:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="n">pytest</span>
-</pre></div>
-</div>
-<p>Or conda:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">pytest</span>
-</pre></div>
-</div>
-<p>Or pip:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pytest</span>
-</pre></div>
-</div>
-<p>And now you can run the tests (remember to activate the virtual environment such as <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code> or <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">&lt;your</span> <span class="pre">virtual</span> <span class="pre">env</span> <span class="pre">name&gt;</span></code> first):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="o">--</span><span class="n">pyargs</span> <span class="n">pyfk</span>
-</pre></div>
-</div>
-<p>You may ignore the warnings as they are not essentially important.</p>
+<section id="the-python-environment">
+<h2>The Python Environment<a class="headerlink" href="#the-python-environment" title="Permalink to this headline">¶</a></h2>
+<p>The supported Python versions include 3.6, 3.7, and 3.8. Python 2 is not supported. Versions prior (include) 3.5 are not supported as f-string is widely used in the package configuration. Versions after (include) 3.9 are not supported as the Cython compatible issue.</p>
 </section>
 </section>
 
@@ -232,7 +189,7 @@
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">pyfk</p>
+            <p class="prev-next-title">PyFK</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="tutorial.html" title="next page">
