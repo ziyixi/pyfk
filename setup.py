@@ -38,6 +38,12 @@ if PYFK_USE_MPI == "1":
         raise Exception("please install mpi4py first!")
     mpi_include_dirs.append(mpi4py.get_include())
 
+# * cysignals
+def get_include_cysignals():
+    import cysignals
+    return os.path.join(os.path.dirname(cysignals.__file__), 'include')
+mpi_include_dirs.append(get_include_cysignals())
+
 # * only for debug purpose
 CYTHON_TRACE = 0
 if "--CYTHON_TRACE" in sys.argv:
