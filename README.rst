@@ -45,7 +45,7 @@ The serial version and the parallel version on GPU can be simply installed using
 
     pip install pyfk
 
-Extra packages will be required to enable the GPU mode. For the MPI mode, it's suggested to directly compile from the source. For more details about the Installation, you can refer to :ref:`Installing`.
+Extra packages will be required to enable the GPU mode. For the MPI mode, it's suggested to directly compile from the source. For more details about the Installation, you can refer to the Installing part of the document.
 
 License
 -------
