@@ -15,7 +15,8 @@ class SeisModel(object):
     def __init__(self,
                  model: np.ndarray = None,
                  flattening: bool = False,
-                 use_kappa: bool = False) -> None:
+                 use_kappa: bool = False,
+                 r_planet: Optional[float] = None) -> None:
         """
         SeisModel stores the Earth model
 
@@ -32,8 +33,12 @@ class SeisModel(object):
         :type flattening: bool, optional
         :param use_kappa: if the third column of the model file is vp/vs ratio, defaults to False
         :type use_kappa: bool, optional
+        :param r_planet: the optional defined planet radius in KM. If not defined, the value will be None and the Earth radius = 6371.0 km will be used
+        :type r_planet: float, optional
         :raises PyfkError: Earth Model must be a 2D numpy array
         :raises PyfkError: Must provide at least three columns for the model
+        :raises PyfkError: r_planet should be a float or integer number
+        :raises PyfkError: r_planet must be a positive value
         """
         if not isinstance(model, np.ndarray):
             raise PyfkError("Earth Model must be a 2D numpy array.")
@@ -49,13 +54,24 @@ class SeisModel(object):
             raise PyfkError(
                 "Must provide at least three columns for the model")
         self.model_values: np.ndarray = np.zeros((row, 6), dtype=float)
+        # * ensure the planet radius before flattening
+        # r_planet
+        self.r_planet = None
+        if r_planet != None:
+            if not (isinstance(r_planet, float) or isinstance(r_planet, int)):
+                raise PyfkError("r_planet should be a float or integer number")
+            if r_planet<=0:
+                raise PyfkError("r_planet must be a positive value")
+            self.r_planet=r_planet
+        if self.r_planet == None:
+            self.r_planet = R_EARTH
         # * read model values and apply flattening
         fl: np.ndarray = np.ones(row, dtype=float)
         if self._flattening:
-            r = R_EARTH
+            r = self.r_planet
             for irow in range(row):
                 r = r - model[irow, 0]
-                fl[irow] = R_EARTH / (r + 0.5 * model[irow, 0])
+                fl[irow] = self.r_planet / (r + 0.5 * model[irow, 0])
         self.model_values[:, 0] = model[:, 0] * fl
         # set the thickness for the last row as 0
         self.model_values[-1, 0] = 0.
@@ -568,9 +584,8 @@ class Config(object):
                 self.model.vs[self.src_layer] != self.model.vs[self.src_layer - 1]):
             raise PyfkError("The source is located at a real interface.")
 
-    @staticmethod
-    def _flattening_func(depth: float) -> float:
-        return R_EARTH * np.log(R_EARTH / (R_EARTH - depth))
+    def _flattening_func(self, depth: float) -> float:
+        return self.model.r_planet * np.log(self.model.r_planet / (self.model.r_planet - depth))
 
     def _insert_intf(self, depth: float) -> int:
         ndep = len(self.model.th)

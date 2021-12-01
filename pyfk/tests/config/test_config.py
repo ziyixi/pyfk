@@ -158,6 +158,18 @@ class TestClassSeisModel(object):
         assert str(
             execinfo.value) == 'Earth Model must be a 2D numpy array.'
 
+        with pytest.raises(PyfkError) as execinfo:
+            _ = SeisModel(
+                TestClassSeisModel.test_model_6column, flattening=False, use_kappa=False, r_planet="test")
+        assert str(
+            execinfo.value) == 'r_planet should be a float or integer number'
+
+        with pytest.raises(PyfkError) as execinfo:
+            _ = SeisModel(
+                TestClassSeisModel.test_model_6column, flattening=False, use_kappa=False, r_planet=-6)
+        assert str(
+            execinfo.value) == 'r_planet must be a positive value'
+
     def test_copy(self):
         from copy import copy
         test_model = SeisModel(
