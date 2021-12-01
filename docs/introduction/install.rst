@@ -33,23 +33,24 @@ Firstly we need download the package::
 
 Some dependencies should be installed before compiling PyFK::
 
-    conda install -c conda-forge cython numpy obspy scipy cysignals
+    conda install -c conda-forge cython numpy obspy scipy cysignals mpi4py
 
 Or from PyPi::
 
-    pip install cython numpy obspy scipy cysignals
+    pip install cython numpy obspy scipy cysignals mpi4py
 
 And now we can compile PyFK as::
 
     PYFK_USE_MPI=1 python setup.py install
+
+Note that the installation of the mpi4py might need attention if using the cluster. Some clusters might need to specify the MPI lib location to compile the compatible mpi4py.
 
 GPU mode
 ^^^^^^^^^^^^^^^^^^^^^
 
 Apart from the general Installation, there are some other packages that need to be installed. It's suggested to use Anaconda to download these packages to better incorporate with the CUDA toolkits::
 
-    conda install -c conda-forge cupy
-    conda install numba
+    conda install -c conda-forge cupy numba
 
 Using PyPi is also possible, you can refer to the document of `CuPy <https://docs.cupy.dev/en/stable/install.html>`__ and `Numba <https://numba.pydata.org/numba-doc/latest/user/installing.html#installing-using-pip-on-x86-x86-64-platforms>`__. Note these two packages should be installed with the CUDA support.
 

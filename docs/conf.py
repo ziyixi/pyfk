@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'pyfk'
+project = 'PyFK'
 year = datetime.date.today().year
 copyright = f'2020-{year}, Ziyi Xi'
 author = 'Ziyi Xi'
