@@ -32,9 +32,10 @@ And the package is unique as:
 * all the code is written in pure python, and it's compatible with Unix-like systems including Mac and Linux. The Windows is not supported, as the package uses the complex number in Cython, which uses the C99 standard of "complex.h" that has not been supported by the Visual Studio compiler.
 * it uses Cython to speed up the computationally expensive part (mainly the wavenumber integration).
 * The package has also provided three modes:
-    * Serial version: the serial version simply implements the FK in Python.
-    * Parallel version on CPU: the wavenumber integration can be paralleled by MPI. 
-    * Parallel version on GPU: the wavenumber integration can also be paralleled by CUDA on GPU.
+  
+    * Serial mode: the serial version implements the FK algorithm in Python.
+    * Parallel mode on CPU: the wavenumber integration can be paralleled by MPI. 
+    * Parallel mode on GPU: the wavenumber integration can also be paralleled by CUDA on GPU.
 
 Installation
 -------------

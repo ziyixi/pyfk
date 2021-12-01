@@ -38,6 +38,27 @@ Ph.D. advisors Prof. Min Chen and Prof. Songqiao Shawn Wei for supporting my stu
 .. toctree::
     :maxdepth: 2
     :hidden:
+    :caption: Parallelization
+
+    parallel/parallel.rst
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: Benchmark
+
+    benchmark/benchmark.rst
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: Gallery
+
+    gallery/gallery.rst
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
     :caption: API
 
     autoapi/index.rst

@@ -24,6 +24,7 @@ docs/_build/*
 docs/_static/*
 docs/_template/*
 dist/*
+docs/autoapi/*
 
 token
 profile_pyfk/*

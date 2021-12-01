@@ -52,7 +52,7 @@ autoapi_dirs = ['../pyfk']
 autodoc_typehints = 'description'
 autoapi_python_class_content = "init"
 autoapi_member_order = "groupwise"
-autoapi_keep_files = False
+autoapi_keep_files = True
 autosectionlabel_maxdepth = 4
 
 # Add any paths that contain templates here, relative to this directory.
