@@ -17,6 +17,7 @@ PyFK
     :target: https://anaconda.org/ziyixi/pyfk
 
 .. image:: https://anaconda.org/ziyixi/pyfk/badges/platforms.svg
+    :target: https://github.com/ziyixi/pyfk
 
 .. image:: https://anaconda.org/ziyixi/pyfk/badges/license.svg
     :target: https://github.com/ziyixi/pyfk/blob/master/LICENSE
