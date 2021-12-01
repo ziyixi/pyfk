@@ -83,15 +83,14 @@ Classes
    .. py:method:: _couple_model_and_source(self)
 
 
-   .. py:method:: _flattening_func(depth)
-      :staticmethod:
+   .. py:method:: _flattening_func(self, depth)
 
 
    .. py:method:: _insert_intf(self, depth)
 
 
 
-.. py:class:: SeisModel(model = None, flattening = False, use_kappa = False)
+.. py:class:: SeisModel(model = None, flattening = False, use_kappa = False, r_planet = None)
 
    Bases: :py:obj:`object`
 
@@ -110,8 +109,12 @@ Classes
    :type flattening: bool, optional
    :param use_kappa: if the third column of the model file is vp/vs ratio, defaults to False
    :type use_kappa: bool, optional
+   :param r_planet: the optional defined planet radius in KM. If not defined, the value will be None and the Earth radius = 6371.0 km will be used
+   :type r_planet: float, optional
    :raises PyfkError: Earth Model must be a 2D numpy array
    :raises PyfkError: Must provide at least three columns for the model
+   :raises PyfkError: r_planet should be a float or integer number
+   :raises PyfkError: r_planet must be a positive value
 
    .. py:method:: __copy__(self)
 
