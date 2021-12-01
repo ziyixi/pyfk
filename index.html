@@ -91,6 +91,24 @@
 </li>
 
 <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="parallel/parallel.html">
+  Parallelization
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="benchmark/benchmark.html">
+  Benchmark
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="gallery/gallery.html">
+  Gallery
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="autoapi/index.html">
   API Reference
  </a>
@@ -207,17 +225,17 @@ Python is also easy to integrate with parallel computing packages either in CPU 
 <li><p>Use the seismic data format of Obspy, which is easy to perform the signal processing.</p></li>
 </ul>
 <p>And the package is unique as:</p>
-<ul class="simple">
+<ul>
 <li><p>all the code is written in pure python, and it’s compatible with Unix-like systems including Mac and Linux. The Windows is not supported, as the package uses the complex number in Cython, which uses the C99 standard of “complex.h” that has not been supported by the Visual Studio compiler.</p></li>
 <li><p>it uses Cython to speed up the computationally expensive part (mainly the wavenumber integration).</p></li>
-<li><dl class="simple">
-<dt>The package has also provided three modes:</dt><dd><ul>
-<li><p>Serial version: the serial version simply implements the FK in Python.</p></li>
-<li><p>Parallel version on CPU: the wavenumber integration can be paralleled by MPI.</p></li>
-<li><p>Parallel version on GPU: the wavenumber integration can also be paralleled by CUDA on GPU.</p></li>
+<li><p>The package has also provided three modes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Serial mode: the serial version implements the FK algorithm in Python.</p></li>
+<li><p>Parallel mode on CPU: the wavenumber integration can be paralleled by MPI.</p></li>
+<li><p>Parallel mode on GPU: the wavenumber integration can also be paralleled by CUDA on GPU.</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </li>
 </ul>
 </section>
@@ -239,6 +257,12 @@ the <strong>MIT License</strong>. A copy of this license is provided in
 <h2>Acknowledgment<a class="headerlink" href="#acknowledgment" title="Permalink to this headline">¶</a></h2>
 <p>PyFK was initially my undergraduate thesis project in USTC, so I would thank Prof. Daoyuan Sun in USTC for mentoring me on this project. I would also thank my
 Ph.D. advisors Prof. Min Chen and Prof. Songqiao Shawn Wei for supporting my study and research in the United States, so I can have the time and energy to finish this project.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
