@@ -13,6 +13,15 @@ PyFK
 .. image:: https://badge.fury.io/py/pyfk.svg
     :target: https://badge.fury.io/py/pyfk
 
+.. image:: https://anaconda.org/ziyixi/pyfk/badges/version.svg
+    :target: https://anaconda.org/ziyixi/pyfk
+
+.. image:: https://anaconda.org/ziyixi/pyfk/badges/version.svg
+    :target: https://anaconda.org/ziyixi/pyfk
+
+.. image:: https://anaconda.org/ziyixi/pyfk/badges/license.svg
+    :target: https://github.com/ziyixi/pyfk/blob/master/LICENSE
+
 .. placeholder-for-doc-index
 
 About
