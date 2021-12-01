@@ -17,6 +17,7 @@ cython_debug/*
 test_fk/*
 profile/*
 profile_pyfk/*
+benchmark/*
 !pyfk/tests/data/*
 
 # docs

@@ -5,6 +5,7 @@ from numba import complex128, cuda, njit
 from pyfk.gf.cuda.utils import (cal_cujn, compoundMatrix, eVector,
                                 haskellMatrix, initialG, initialZ, propagateB,
                                 propagateG, propagateZ, separatS, sh_ch)
+from pyfk.utils.error_message import PyfkError
 
 
 def _waveform_integration(
@@ -77,14 +78,21 @@ def _waveform_integration(
 
         # * init cuda arrays
         # u, ik_list, i_list, kp, ks, thickness, mu, si
-        u_d = cuda.to_device(u)
-        ik_list_d = cuda.to_device(ik_list)
-        i_list_d = cuda.to_device(i_list)
-        kp_list_d = cuda.to_device(kp_list)
-        ks_list_d = cuda.to_device(ks_list)
-        thickness_d = cuda.to_device(thickness)
-        mu_d = cuda.to_device(mu)
-        si_d = cuda.to_device(si)
+        try:
+            u_d = cuda.to_device(u)
+            ik_list_d = cuda.to_device(ik_list)
+            i_list_d = cuda.to_device(i_list)
+            kp_list_d = cuda.to_device(kp_list)
+            ks_list_d = cuda.to_device(ks_list)
+            thickness_d = cuda.to_device(thickness)
+            mu_d = cuda.to_device(mu)
+            si_d = cuda.to_device(si)
+        except cuda.cudadrv.driver.CudaAPIError:
+            from sys import getsizeof
+            total_size = getsizeof(u)+getsizeof(ik_list)+getsizeof(i_list)+getsizeof(
+                kp_list)+getsizeof(ks_list)+getsizeof(thickness)+getsizeof(mu)+getsizeof(si)
+            raise PyfkError(
+                f"You are creating {total_size} MB data, try to make CUDA_DIVIDE_NUM larger!")
 
         # * run the cuda kernel function
         parallel_kernel[blockspergrid, threadsperblock](u_d, ik_list_d, i_list_d, kp_list_d, ks_list_d, thickness_d, mu_d, si_d,

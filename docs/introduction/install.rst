@@ -78,3 +78,7 @@ After installing the packages, you can run the following command::
     pytest --pyargs pyfk
 
 Several warnings can be omitted, such as dividing a zero, which is only related to cross-correlate two waveforms with all values as 0.
+
+To test the GPU mode, you can run::
+
+    PYFK_USE_CUDA=1 pytest --pyargs pyfk
