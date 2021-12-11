@@ -54,6 +54,8 @@ There might have a problem that the GPU memory is not big enough. It's possible 
 
 The bottleneck of the GPU calculation is the data moving. Currently, there is no better way to solve this problem; using thread is not the way to go as the actual calculation on GPU is pretty fast. So it's not surprising if you look at the system monitor, and the GPU efficiency is only 0%, although we know it's running on GPU and it's fast. Look at the GPU memory usage, and you will get that we are using GPU.
 
+Usage tips
+^^^^^^^^^^^^^^^^
 There is also the possibility that the cluster has multiple GPUs installed, try to use ``nvidia-smi`` to find the free GPU that doesn't have much memory allocated, and at the start of your simulation script, put::
 
     from numba import cuda
@@ -61,3 +63,5 @@ There is also the possibility that the cluster has multiple GPUs installed, try 
     cuda.select_device(1)
 
 It will use the second GPU instead of the first one.
+
+Since PyFK uses numba to compile CUDA kernel with JIT, it also might be slower when running the code for the first time. Please be aware of that when performing the benchmark.

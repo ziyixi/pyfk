@@ -61,7 +61,7 @@ Based on the ``SourceModel`` and ``SeisModel``, we can now initialize the ``Conf
             receiver_distance=np.arange(10, 40, 10))
     print(config_prem)
 
-For this example, we are using the ``model_prem`` and ``source_prem`` defined previously. And our output should be 512 points with 0.1 s interval. The receiver distances are 10km, 20km, and 30km. If you are planning to use degrees instead, simply set ``degrees=True``, and the ``receiver_distance`` will be automatically converted to the corresponding distance in km. The default values are set to be the same as ``FK``. One thing to note is that ``model_prem``, ``source_prem`` are deep copied into ``config_prem``, so you can reuse it in the future without wondering influencing ``config_prem``.
+For this example, we are using the ``model_prem`` and ``source_prem`` defined previously. And our output should be 512 points with 0.1 s interval. The receiver distances are 10km, 20km, and 30km. If you are planning to use degrees instead, simply set ``degrees=True``, and the ``receiver_distance`` will be automatically converted to the corresponding distance in km. The default values are set to be the same as ``FK``. One thing to note is that ``model_prem``, is deep copied into ``config_prem``, so you can reuse it in the future without wondering influencing ``config_prem``. However, ``source_prem`` is shared with ``config_prem``.
 
 Calculate Green's function
 ---------------------------

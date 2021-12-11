@@ -61,6 +61,10 @@ Or conda::
 
 Extra packages will be required to enable the GPU mode. For the MPI mode, it's suggested to directly compile from the source. For more details about the Installation, you can refer to the Installing part of the document.
 
+Todo
+------------------
+The current bugs to fix or features to provide are listed in `TODO <https://github.com/ziyixi/pyfk/issues/5>`__.
+
 License
 -------
 
