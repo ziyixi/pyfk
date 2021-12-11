@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Installing &#8212; pyfk 0.2.0-beta.6 documentation</title>
+    <title>Installing &#8212; PyFK 0.2.0 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -63,7 +63,7 @@
     
     
 <a class="navbar-brand" href="../index.html">
-<p class="title">pyfk</p>
+<p class="title">PyFK</p>
 </a>
 
     
@@ -237,23 +237,23 @@
 </pre></div>
 </div>
 <p>Some dependencies should be installed before compiling PyFK:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cython</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">scipy</span> <span class="n">cysignals</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cython</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">scipy</span> <span class="n">cysignals</span> <span class="n">mpi4py</span>
 </pre></div>
 </div>
 <p>Or from PyPi:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">scipy</span> <span class="n">cysignals</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">scipy</span> <span class="n">cysignals</span> <span class="n">mpi4py</span>
 </pre></div>
 </div>
 <p>And now we can compile PyFK as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PYFK_USE_MPI</span><span class="o">=</span><span class="mi">1</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
+<p>Note that the installation of the mpi4py might need attention if using the cluster. Some clusters might need to specify the MPI lib location to compile the compatible mpi4py.</p>
 </section>
 <section id="gpu-mode">
 <h3>GPU mode<a class="headerlink" href="#gpu-mode" title="Permalink to this headline">¶</a></h3>
 <p>Apart from the general Installation, there are some other packages that need to be installed. It’s suggested to use Anaconda to download these packages to better incorporate with the CUDA toolkits:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cupy</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="n">numba</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cupy</span> <span class="n">numba</span>
 </pre></div>
 </div>
 <p>Using PyPi is also possible, you can refer to the document of <a class="reference external" href="https://docs.cupy.dev/en/stable/install.html">CuPy</a> and <a class="reference external" href="https://numba.pydata.org/numba-doc/latest/user/installing.html#installing-using-pip-on-x86-x86-64-platforms">Numba</a>. Note these two packages should be installed with the CUDA support.</p>
@@ -280,6 +280,10 @@
 </pre></div>
 </div>
 <p>Several warnings can be omitted, such as dividing a zero, which is only related to cross-correlate two waveforms with all values as 0.</p>
+<p>To test the GPU mode, you can run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PYFK_USE_CUDA</span><span class="o">=</span><span class="mi">1</span> <span class="n">pytest</span> <span class="o">--</span><span class="n">pyargs</span> <span class="n">pyfk</span>
+</pre></div>
+</div>
 </section>
 </section>
 

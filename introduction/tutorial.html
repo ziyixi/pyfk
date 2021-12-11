@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Tutorial &#8212; pyfk 0.2.0-beta.6 documentation</title>
+    <title>Tutorial &#8212; PyFK 0.2.0 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -64,7 +64,7 @@
     
     
 <a class="navbar-brand" href="../index.html">
-<p class="title">pyfk</p>
+<p class="title">PyFK</p>
 </a>
 
     
@@ -295,7 +295,7 @@
 </div>
 </div>
 </div>
-<p>For this example, we are using the <code class="docutils literal notranslate"><span class="pre">model_prem</span></code> and <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> defined previously. And our output should be 512 points with 0.1 s interval. The receiver distances are 10km, 20km, and 30km. If you are planning to use degrees instead, simply set <code class="docutils literal notranslate"><span class="pre">degrees=True</span></code>, and the <code class="docutils literal notranslate"><span class="pre">receiver_distance</span></code> will be automatically converted to the corresponding distance in km. The default values are set to be the same as <code class="docutils literal notranslate"><span class="pre">FK</span></code>. One thing to note is that <code class="docutils literal notranslate"><span class="pre">model_prem</span></code>, <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> are deep copied into <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>, so you can reuse it in the future without wondering influencing <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>.</p>
+<p>For this example, we are using the <code class="docutils literal notranslate"><span class="pre">model_prem</span></code> and <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> defined previously. And our output should be 512 points with 0.1 s interval. The receiver distances are 10km, 20km, and 30km. If you are planning to use degrees instead, simply set <code class="docutils literal notranslate"><span class="pre">degrees=True</span></code>, and the <code class="docutils literal notranslate"><span class="pre">receiver_distance</span></code> will be automatically converted to the corresponding distance in km. The default values are set to be the same as <code class="docutils literal notranslate"><span class="pre">FK</span></code>. One thing to note is that <code class="docutils literal notranslate"><span class="pre">model_prem</span></code>, is deep copied into <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>, so you can reuse it in the future without wondering influencing <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>. However, <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> is shared with <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>.</p>
 </section>
 <section id="calculate-green-s-function">
 <h2>Calculate Green’s function<a class="headerlink" href="#calculate-green-s-function" title="Permalink to this headline">¶</a></h2>
@@ -310,7 +310,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;obspy.core.stream.Stream object at 0x7f48d8a72a90&gt;, &lt;obspy.core.stream.Stream object at 0x7f491481b810&gt;, &lt;obspy.core.stream.Stream object at 0x7f48d8a77f10&gt;]
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;obspy.core.stream.Stream object at 0x7f5658778d10&gt;, &lt;obspy.core.stream.Stream object at 0x7f564cc8fd90&gt;, &lt;obspy.core.stream.Stream object at 0x7f564ca8ed50&gt;]
 </pre></div>
 </div>
 </div>

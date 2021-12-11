@@ -52,4 +52,16 @@ For consistency, you don't have to make any additional modifications to the exis
 
 There might have a problem that the GPU memory is not big enough. It's possible as we first generate all the information before performing the two-loop integration, then move all the info to GPU. A workaround to this problem is to divide the large memory information into small subsets; after one subset has finished calculation, we move another one. ``PyFK`` has provided a system environment variable named ``CUDA_DIVIDE_NUM``. If this environment has not been set, its value will be one, which means there will only be one subset. Try to make this value larger when there is not enough GPU memory.
 
-The bottleneck of the GPU calculation is the data moving. Currently, there is no better way to solve this problem; using thread is not the way to go as the actual calculation on GPU is pretty fast. So it's not surprising if you look at the system monitor, and the GPU efficiency is only 0%, although we know it's running on GPU and it's fast. Look at the GPU memory usage and you will get it that we are using GPU.
+The bottleneck of the GPU calculation is the data moving. Currently, there is no better way to solve this problem; using thread is not the way to go as the actual calculation on GPU is pretty fast. So it's not surprising if you look at the system monitor, and the GPU efficiency is only 0%, although we know it's running on GPU and it's fast. Look at the GPU memory usage, and you will get that we are using GPU.
+
+Usage tips
+^^^^^^^^^^^^^^^^
+There is also the possibility that the cluster has multiple GPUs installed, try to use ``nvidia-smi`` to find the free GPU that doesn't have much memory allocated, and at the start of your simulation script, put::
+
+    from numba import cuda
+    # select the second GPU for example (start from 0)
+    cuda.select_device(1)
+
+It will use the second GPU instead of the first one.
+
+Since PyFK uses numba to compile CUDA kernel with JIT, it also might be slower when running the code for the first time. Please be aware of that when performing the benchmark.

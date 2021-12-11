@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Parallelization &#8212; pyfk 0.2.0-beta.6 documentation</title>
+    <title>Parallelization &#8212; PyFK 0.2.0 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -63,7 +63,7 @@
     
     
 <a class="navbar-brand" href="../index.html">
-<p class="title">pyfk</p>
+<p class="title">PyFK</p>
 </a>
 
     
@@ -172,6 +172,13 @@
   <a class="reference internal nav-link" href="#gpu-mode">
    GPU mode
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#usage-tips">
+     Usage tips
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -233,7 +240,18 @@
 <p>For future versions, these dependencies might be removed by directly using CUDA.</p>
 <p>For consistency, you don’t have to make any additional modifications to the existing code. As long as the GPU mode is enabled, the calculation of Green’s function will be automatically on GPU. It’s suggested to perform benchmark before migrating to GPU, as smaller jobs might not be worthy.</p>
 <p>There might have a problem that the GPU memory is not big enough. It’s possible as we first generate all the information before performing the two-loop integration, then move all the info to GPU. A workaround to this problem is to divide the large memory information into small subsets; after one subset has finished calculation, we move another one. <code class="docutils literal notranslate"><span class="pre">PyFK</span></code> has provided a system environment variable named <code class="docutils literal notranslate"><span class="pre">CUDA_DIVIDE_NUM</span></code>. If this environment has not been set, its value will be one, which means there will only be one subset. Try to make this value larger when there is not enough GPU memory.</p>
-<p>The bottleneck of the GPU calculation is the data moving. Currently, there is no better way to solve this problem; using thread is not the way to go as the actual calculation on GPU is pretty fast. So it’s not surprising if you look at the system monitor, and the GPU efficiency is only 0%, although we know it’s running on GPU and it’s fast. Look at the GPU memory usage and you will get it that we are using GPU.</p>
+<p>The bottleneck of the GPU calculation is the data moving. Currently, there is no better way to solve this problem; using thread is not the way to go as the actual calculation on GPU is pretty fast. So it’s not surprising if you look at the system monitor, and the GPU efficiency is only 0%, although we know it’s running on GPU and it’s fast. Look at the GPU memory usage, and you will get that we are using GPU.</p>
+<section id="usage-tips">
+<h3>Usage tips<a class="headerlink" href="#usage-tips" title="Permalink to this headline">¶</a></h3>
+<p>There is also the possibility that the cluster has multiple GPUs installed, try to use <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> to find the free GPU that doesn’t have much memory allocated, and at the start of your simulation script, put:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">cuda</span>
+<span class="c1"># select the second GPU for example (start from 0)</span>
+<span class="n">cuda</span><span class="o">.</span><span class="n">select_device</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It will use the second GPU instead of the first one.</p>
+<p>Since PyFK uses numba to compile CUDA kernel with JIT, it also might be slower when running the code for the first time. Please be aware of that when performing the benchmark.</p>
+</section>
 </section>
 </section>
 
