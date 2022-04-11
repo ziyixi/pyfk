@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fziyixi%2Fpyfk.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fziyixi%2Fpyfk?ref=badge_shield)
+
 PyFK
 ==========
 
@@ -71,3 +73,6 @@ License
 PyFK is a free software: you can redistribute it and modify it under the terms of
 the **MIT License**. A copy of this license is provided in
 `LICENSE <https://github.com/ziyixi/pyfk/blob/master/LICENSE>`__.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fziyixi%2Fpyfk.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fziyixi%2Fpyfk?ref=badge_large)
