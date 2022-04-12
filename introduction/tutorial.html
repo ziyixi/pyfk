@@ -8,8 +8,9 @@
 
     <title>Tutorial &#8212; PyFK 0.2.0 documentation</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -19,18 +20,14 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -40,7 +37,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -53,7 +50,7 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -140,7 +137,8 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -148,6 +146,9 @@
     
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -158,7 +159,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -201,10 +202,10 @@
               <div>
                 
   <section id="tutorial">
-<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">#</a></h1>
 <p>In this tutorial, I will introduce the primary usage of <code class="docutils literal notranslate"><span class="pre">PyFK</span></code>. The package can be divided into the configuration part, the Green’s function calculation part, and the synthetic waveform generation part.</p>
 <section id="configurations">
-<h2>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h2>
+<h2>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">#</a></h2>
 <p>First, we should generate three instances from the configuration classes, including <code class="docutils literal notranslate"><span class="pre">SourceModel</span></code>, <code class="docutils literal notranslate"><span class="pre">SeisModel</span></code>, and <code class="docutils literal notranslate"><span class="pre">Config</span></code>. <code class="docutils literal notranslate"><span class="pre">SourceModel</span></code> specifies the source information, such as the source type and the source depth. <code class="docutils literal notranslate"><span class="pre">SeisModel</span></code> specifies the 1D layered Earth model. <code class="docutils literal notranslate"><span class="pre">Config</span></code> defines the simulation details, such as the number of points and the epicenter distance. For more detail about the three classes, you can refer to <a class="reference internal" href="../autoapi/pyfk/config/config/index.html#module-pyfk.config.config" title="pyfk.config.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.config.config</span></code></a>.Note the three classes have already been imported into the upper-most level of the package, so you can directly import them as</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -245,16 +246,16 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([[   15.     ,     3.2    ,     5.8    ,     2.6    ,   600.     ,
-         1456.     ],
-       [    9.4    ,     3.9    ,     6.8    ,     2.9    ,   600.     ,
-         1350.     ],
-       [   15.6    ,     4.49094,     8.11061,     3.38076,   600.     ,
-         1446.     ],
-       [   20.     ,     4.48486,     8.10119,     3.37906,   600.     ,
-         1446.     ],
-       [   20.     ,     4.47715,     8.08907,     3.37688,   600.     ,
-         1447.     ]])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([[  15.     ,    3.2    ,    5.8    ,    2.6    ,  600.     ,
+        1456.     ],
+       [   9.4    ,    3.9    ,    6.8    ,    2.9    ,  600.     ,
+        1350.     ],
+       [  15.6    ,    4.49094,    8.11061,    3.38076,  600.     ,
+        1446.     ],
+       [  20.     ,    4.48486,    8.10119,    3.37906,  600.     ,
+        1446.     ],
+       [  20.     ,    4.47715,    8.08907,    3.37688,  600.     ,
+        1447.     ]])
 </pre></div>
 </div>
 </div>
@@ -290,7 +291,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Config(model=SeisModel(layers=45, flattening=False), source=SourceModel(sdep=16.5, srcType=dc, source_mechanism=None), receiver_distance=[ 10.  20.  30.], taper=0.3, filter=(0, 0), npt=512, dt=0.1, dk=0.3, smth=1.0, pmin=0.0, pmax=1.0, kmax=15.0, rdep=0.0, updn=all, samples_before_first_arrival=50)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Config(model=SeisModel(layers=45, flattening=False), source=SourceModel(sdep=16.5, srcType=dc, source_mechanism=None), receiver_distance=[10. 20. 30.], taper=0.3, filter=(0, 0), npt=512, dt=0.1, dk=0.3, smth=1.0, pmin=0.0, pmax=1.0, kmax=15.0, rdep=0.0, updn=all, samples_before_first_arrival=50)
 </pre></div>
 </div>
 </div>
@@ -298,7 +299,7 @@
 <p>For this example, we are using the <code class="docutils literal notranslate"><span class="pre">model_prem</span></code> and <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> defined previously. And our output should be 512 points with 0.1 s interval. The receiver distances are 10km, 20km, and 30km. If you are planning to use degrees instead, simply set <code class="docutils literal notranslate"><span class="pre">degrees=True</span></code>, and the <code class="docutils literal notranslate"><span class="pre">receiver_distance</span></code> will be automatically converted to the corresponding distance in km. The default values are set to be the same as <code class="docutils literal notranslate"><span class="pre">FK</span></code>. One thing to note is that <code class="docutils literal notranslate"><span class="pre">model_prem</span></code>, is deep copied into <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>, so you can reuse it in the future without wondering influencing <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>. However, <code class="docutils literal notranslate"><span class="pre">source_prem</span></code> is shared with <code class="docutils literal notranslate"><span class="pre">config_prem</span></code>.</p>
 </section>
 <section id="calculate-green-s-function">
-<h2>Calculate Green’s function<a class="headerlink" href="#calculate-green-s-function" title="Permalink to this headline">¶</a></h2>
+<h2>Calculate Green’s function<a class="headerlink" href="#calculate-green-s-function" title="Permalink to this headline">#</a></h2>
 <p>After the configuration part, you can simply call <code class="docutils literal notranslate"><span class="pre">pyfk.calculate_gf</span></code> to calculate the Green’s function.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -310,7 +311,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;obspy.core.stream.Stream object at 0x7f5658778d10&gt;, &lt;obspy.core.stream.Stream object at 0x7f564cc8fd90&gt;, &lt;obspy.core.stream.Stream object at 0x7f564ca8ed50&gt;]
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;obspy.core.stream.Stream object at 0x7fa767f07c10&gt;, &lt;obspy.core.stream.Stream object at 0x7fa7a07b6f50&gt;, &lt;obspy.core.stream.Stream object at 0x7fa769591b90&gt;]
 </pre></div>
 </div>
 </div>
@@ -334,7 +335,7 @@
            delta: 0.1
             npts: 512
            calib: 1.0
-             sac: AttribDict({&#39;delta&#39;: 0.1, &#39;b&#39;: -1.7192882278141499, &#39;e&#39;: 49.480711772185856, &#39;o&#39;: 0.0, &#39;dist&#39;: 10.0, &#39;t1&#39;: 3.2807117721858501, &#39;t2&#39;: 5.9271516805655189, &#39;user1&#39;: 143.31697531118135, &#39;user2&#39;: 141.84277884684661, &#39;npts&#39;: 512})
+             sac: AttribDict({&#39;delta&#39;: 0.1, &#39;b&#39;: -1.71928822781415, &#39;e&#39;: 49.480711772185856, &#39;o&#39;: 0.0, &#39;dist&#39;: 10.0, &#39;t1&#39;: 3.28071177218585, &#39;t2&#39;: 5.927151680565519, &#39;user1&#39;: 143.31697531118135, &#39;user2&#39;: 141.8427788468466, &#39;npts&#39;: 512})
 </pre></div>
 </div>
 </div>
@@ -355,9 +356,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1.82673702e-05   1.17737927e-05   0.00000000e+00   1.15497936e-05
-   8.98594656e-06  -1.35277715e-06  -3.14703318e-06  -3.09000029e-06
-   9.47091370e-07]
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 1.82673702e-05  1.17737927e-05  0.00000000e+00  1.15497936e-05
+  8.98594656e-06 -1.35277715e-06 -3.14703318e-06 -3.09000029e-06
+  9.47091370e-07]
 </pre></div>
 </div>
 </div>
@@ -376,7 +377,7 @@
 </div>
 </section>
 <section id="generate-synthetic-waveform">
-<h2>Generate synthetic waveform<a class="headerlink" href="#generate-synthetic-waveform" title="Permalink to this headline">¶</a></h2>
+<h2>Generate synthetic waveform<a class="headerlink" href="#generate-synthetic-waveform" title="Permalink to this headline">#</a></h2>
 <p>By convolving the Green’s function with the source time function, and also consideing the possible azimuth angle influence, we can generate the synthetic waveform. There are mainly two ways to set up the source time function. The first way is similar to <code class="docutils literal notranslate"><span class="pre">FK</span></code> to create a trapezoid-shaped source time function. The second way is to provide a user-defined <code class="docutils literal notranslate"><span class="pre">Trace</span></code> containing the source information (only the data attribute is needed at the moment). Note the  sampling rate of the Green’s function and the source time function should be identical. As <code class="docutils literal notranslate"><span class="pre">PyFK</span></code> will not automatically convert the <code class="docutils literal notranslate"><span class="pre">dt</span></code> in the source time function to be the same as the Green’s function.</p>
 <p>In this example, we simply call <code class="docutils literal notranslate"><span class="pre">pyfk.generate_source_time_function</span></code> to generate a trapezoid shaped source:</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -486,7 +487,7 @@ difference might be mainly due to that we are using <code class="docutils litera
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="install.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -509,19 +510,20 @@ difference might be mainly due to that we are using <code class="docutils litera
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2020-2021, Ziyi Xi.<br>
+    &copy; Copyright 2020-2022, Ziyi Xi.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     
