@@ -69,5 +69,5 @@ License
 -------
 
 PyFK is a free software: you can redistribute it and modify it under the terms of
-the **MIT License**. A copy of this license is provided in
+the **Apache License**. A copy of this license is provided in
 `LICENSE <https://github.com/ziyixi/pyfk/blob/master/LICENSE>`__.
