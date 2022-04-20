@@ -267,8 +267,28 @@ class TestClassConfig(object):
                 30],
             rdep=16,
             degrees=True)
-        receiver_distance_km = [degrees2kilometers(
-            10), degrees2kilometers(20), degrees2kilometers(30)]
+        receiver_distance_km = [
+            degrees2kilometers(10, radius=test_config.planet_radius),
+            degrees2kilometers(20, radius=test_config.planet_radius),
+            degrees2kilometers(30, radius=test_config.planet_radius)
+        ]
+        assert np.allclose(test_config.receiver_distance, receiver_distance_km)
+
+        test_config = Config(
+            model=test_model,
+            source=test_source,
+            receiver_distance=[
+                10,
+                20,
+                30],
+            rdep=16,
+            planet_radius=4100,
+            degrees=True)
+        receiver_distance_km = [
+            degrees2kilometers(10, radius=4100),
+            degrees2kilometers(20, radius=4100),
+            degrees2kilometers(30, radius=4100)
+        ]
         assert np.allclose(test_config.receiver_distance, receiver_distance_km)
 
         test_config = Config(
@@ -352,6 +372,12 @@ class TestClassConfig(object):
                 model=test_model, source=test_source, receiver_distance=np.arange(10))
         assert str(
             execinfo.value) == "Can't set receiver distance as 0, please consider to use a small value instead"
+        # planet_radius
+        with pytest.raises(PyfkError) as execinfo:
+            _ = Config(
+                model=test_model, source=test_source, receiver_distance=np.arange(1, 10), planet_radius=-40)
+        assert str(
+            execinfo.value) == "planet_radius should be positive"
         # taper
         with pytest.raises(PyfkError) as execinfo:
             _ = Config(
@@ -485,6 +511,19 @@ class TestClassConfig(object):
                 12)
         assert str(
             execinfo.value) == "samples_before_first_arrival should be positive"
+        # suppression_sigma
+        with pytest.raises(PyfkError) as execinfo:
+            _ = Config(
+                model=test_model,
+                source=test_source,
+                receiver_distance=[
+                    10,
+                    20,
+                    30],
+                suppression_sigma=-
+                2)
+        assert str(
+            execinfo.value) == "suppression_sigma should be positive"
         # source and receiver
         with pytest.raises(PyfkError) as execinfo:
             _ = Config(

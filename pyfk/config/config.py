@@ -60,9 +60,9 @@ class SeisModel(object):
         if r_planet != None:
             if not (isinstance(r_planet, float) or isinstance(r_planet, int)):
                 raise PyfkError("r_planet should be a float or integer number")
-            if r_planet<=0:
+            if r_planet <= 0:
                 raise PyfkError("r_planet must be a positive value")
-            self.r_planet=r_planet
+            self.r_planet = r_planet
         if self.r_planet == None:
             self.r_planet = R_EARTH
         # * read model values and apply flattening
@@ -411,6 +411,7 @@ class Config(object):
                  source: Optional[SourceModel] = None,
                  receiver_distance: Optional[Union[list,
                                                    np.ndarray]] = None,
+                 planet_radius: float = 6371.,
                  degrees: bool = False,
                  taper: float = 0.3,
                  filter: Tuple[float,
@@ -426,6 +427,7 @@ class Config(object):
                  rdep: float = 0.,
                  updn: str = "all",
                  samples_before_first_arrival: int = 50,
+                 suppression_sigma: float = 2.,
                  cuda: bool = False) -> None:
         """
         The configuration class used in generating Green's function and the synthetic waveform.
@@ -438,6 +440,8 @@ class Config(object):
         :type receiver_distance: Optional[Union[list, np.ndarray]]
         :param degrees: use degrees instead of km, defaults to False
         :type degrees: bool, optional
+        :param planet_radius: the radius of the planet in km, default to 6371.
+        :type planet_radius: float, optional
         :param taper: taper applies a low-pass cosine filter at fc=(1-taper)*f_Niquest, defaults to 0.3
         :type taper: float, optional
         :param filter: apply a high-pass filter with a cosine transition zone between freq. f1 and f2 in Hz, defaults to (0, 0)
@@ -462,9 +466,13 @@ class Config(object):
         :type updn: str, optional
         :param samples_before_first_arrival: the number of points before the first arrival, defaults to 50
         :type samples_before_first_arrival: int, optional
+        :param suppression_sigma: the suppression factor of the numerical noise, defaults to 2
+        :type suppression_sigma: float, optional
         :param cuda: whether to use the cuda mode. if set PYFK_USE_CUDA=1, this flag will be ignored and will always use cuda, defaults to False
         :type cuda: bool
         :raises PyfkError: Must provide a list of receiver distance
+        :raises PyfkError: Can't set receiver distance as 0, please consider to use a small value instead
+        :raises PyfkError: planet_radius should be positive
         :raises PyfkError: Taper must be with (0,1)
         :raises PyfkError: Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]
         :raises PyfkError: npt should be positive.
@@ -477,6 +485,7 @@ class Config(object):
         :raises PyfkError: kmax should be larger or equal to 10
         :raises PyfkError: the selection of phases should be either 'up', 'down' or 'all'
         :raises PyfkError: samples_before_first_arrival should be positive
+        :raises PyfkError: suppression_sigma should be positive
         :raises PyfkError: Must provide a source
         :raises PyfkError: Must provide a seisModel
         """
@@ -489,10 +498,14 @@ class Config(object):
         if 0 in self.receiver_distance:
             raise PyfkError(
                 "Can't set receiver distance as 0, please consider to use a small value instead")
+        # planet_radius
+        if planet_radius <= 0:
+            raise PyfkError("planet_radius should be positive")
+        self.planet_radius = planet_radius
         # degrees
         if degrees:
             self.receiver_distance = np.array(
-                list(map(degrees2kilometers, self.receiver_distance)))
+                list(map(lambda dis: degrees2kilometers(dis, radius=self.planet_radius), self.receiver_distance)))
         # taper
         if taper <= 0 or taper > 1:
             raise PyfkError("Taper must be with (0,1)")
@@ -549,6 +562,10 @@ class Config(object):
         if samples_before_first_arrival <= 0:
             raise PyfkError("samples_before_first_arrival should be positive")
         self.samples_before_first_arrival = samples_before_first_arrival
+        # suppression_sigma
+        if suppression_sigma <= 0:
+            raise PyfkError("suppression_sigma should be positive")
+        self.suppression_sigma = suppression_sigma
         # cuda
         self.cuda = cuda
         # source and model
@@ -607,4 +624,4 @@ class Config(object):
         return idep + 1
 
     def __repr__(self) -> str:
-        return f"Config(model={self.model.__repr__()}, source={self.source.__repr__()}, receiver_distance={self.receiver_distance}, taper={self.taper}, filter={self.filter}, npt={self.npt}, dt={self.dt}, dk={self.dk}, smth={self.smth}, pmin={self.pmin}, pmax={self.pmax}, kmax={self.kmax}, rdep={self.rdep}, updn={self.updn}, samples_before_first_arrival={self.samples_before_first_arrival})"
+        return f"Config(model={self.model.__repr__()}, source={self.source.__repr__()}, receiver_distance={self.receiver_distance}, taper={self.taper}, filter={self.filter}, npt={self.npt}, dt={self.dt}, dk={self.dk}, smth={self.smth}, pmin={self.pmin}, pmax={self.pmax}, kmax={self.kmax}, rdep={self.rdep}, updn={self.updn}, samples_before_first_arrival={self.samples_before_first_arrival}, suppression_sigma={self.suppression_sigma})"

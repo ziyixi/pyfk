@@ -8,7 +8,7 @@ from obspy.core.stream import Stream
 from obspy.core.trace import Trace
 from pyfk.config.config import Config, SeisModel
 from pyfk.gf.waveform_integration import _waveform_integration
-from pyfk.setting import EPSILON, SIGMA
+from pyfk.setting import EPSILON
 from pyfk.taup.taup import taup
 
 
@@ -105,7 +105,7 @@ def calculate_gf(config: Optional[Config] = None) -> Union[List[Stream], List[St
         nfft2 = 1
         wc1 = 1
     dw = np.pi * 2 / (config.npt * config.dt)
-    sigma = SIGMA * dw / (np.pi * 2)
+    sigma = config.suppression_sigma * dw / (np.pi * 2)
     wc = nfft2 * (1. - config.taper)
     if wc < 1:
         wc = 1
