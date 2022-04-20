@@ -44,8 +44,8 @@ def _waveform_integration(
     ks_list = np.zeros((nfft2-wc1+1, len(thickness)), dtype=complex)
 
     # * get the n list, kp and ks
-    n_list: np.ndarray = np.zeros(nfft2-wc1+1, dtype=np.int)
-    n_list_accumulate: np.ndarray = np.zeros(nfft2-wc1+1, dtype=np.int)
+    n_list: np.ndarray = np.zeros(nfft2-wc1+1, dtype=int)
+    n_list_accumulate: np.ndarray = np.zeros(nfft2-wc1+1, dtype=int)
     get_n_list_kpks(wc1, nfft2, kc, dw, pmin, pmax, dk, sigma, thickness, vp, vs, qp, qs,
                     n_list, n_list_accumulate, kp_list, ks_list)
     n_all: int = n_list_accumulate[-1]
@@ -58,8 +58,8 @@ def _waveform_integration(
         current_offset = current_range_list[0]
 
         # * generate the ik and i list representing the i wavenumber and i frequency
-        ik_list = np.zeros(current_n_all, dtype=np.int)
-        i_list = np.zeros(current_n_all, dtype=np.int)
+        ik_list = np.zeros(current_n_all, dtype=int)
+        i_list = np.zeros(current_n_all, dtype=int)
 
         # * call fill_vals cuda kernel
         threadsperblock = 128
