@@ -1,39 +1,29 @@
-{% set data = load_setup_py_data() %}
-
 package:
   name: pyfk
-  version: "0.2.0"
+  version: "0.3.0"
 
 source:
   path: ..
 
 build:
   number: 0
-  script: ${PYTHON} setup.py install
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - python
-    - numpy
-    - scipy
-    - obspy
-    - cysignals
-    - cython
   host:
-    - python
-    - numpy
-    - scipy
-    - obspy
-    - cysignals
-    - cython
+    - python {{ python }}
+    - numpy >=1.21
+    - scipy >=1.7
+    - obspy >=1.3
+    - cysignals >=1.11.2
+    - cython >=0.29.28
   run:
-    - python
-    - numpy
-    - scipy
-    - obspy
-    - cysignals
-    - cython
+    - python >=3.7,<3.10
+    - numpy >=1.21
+    - scipy >=1.7
+    - obspy >=1.3
+    - cysignals >=1.11.2
 test:
   requires:
     - pytest
@@ -42,6 +32,7 @@ test:
     - pyfk
 
 about:
-  home: {{ data['url'] }}
-  license: {{ data['license'] }}
-summary: {{ data['description'] }}
+  home: https://github.com/ziyixi/pyfk
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: Pyfk is the python version of FK used to calculate the Green's function and the synthetic waveforms for the 1D Earth model.
