@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyfk"
-version = "0.3.0b1"
+version = "0.3.0b2"
 description = "Pyfk is the python version of FK used to calculate the Green's function and the synthetic waveforms for the 1D Earth model."
 authors = ["Ziyi Xi <xiziyi2015@gmail.com>"]
 license = "Apache-2.0"
