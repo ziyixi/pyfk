@@ -52,7 +52,7 @@ Functions
 
 
 
-.. py:class:: Config(model = None, source = None, receiver_distance = None, degrees = False, taper = 0.3, filter = (0, 0), npt = 256, dt = 1.0, dk = 0.3, smth = 1.0, pmin = 0.0, pmax = 1.0, kmax = 15.0, rdep = 0.0, updn = 'all', samples_before_first_arrival = 50, cuda = False)
+.. py:class:: Config(model = None, source = None, receiver_distance = None, planet_radius = 6371.0, degrees = False, taper = 0.3, filter = (0, 0), npt = 256, dt = 1.0, dk = 0.3, smth = 1.0, pmin = 0.0, pmax = 1.0, kmax = 15.0, rdep = 0.0, updn = 'all', samples_before_first_arrival = 50, suppression_sigma = 2.0, cuda = False)
 
    Bases: :py:obj:`object`
 
@@ -66,6 +66,8 @@ Functions
    :type receiver_distance: Optional[Union[list, np.ndarray]]
    :param degrees: use degrees instead of km, defaults to False
    :type degrees: bool, optional
+   :param planet_radius: the radius of the planet in km, default to 6371.
+   :type planet_radius: float, optional
    :param taper: taper applies a low-pass cosine filter at fc=(1-taper)*f_Niquest, defaults to 0.3
    :type taper: float, optional
    :param filter: apply a high-pass filter with a cosine transition zone between freq. f1 and f2 in Hz, defaults to (0, 0)
@@ -90,9 +92,13 @@ Functions
    :type updn: str, optional
    :param samples_before_first_arrival: the number of points before the first arrival, defaults to 50
    :type samples_before_first_arrival: int, optional
+   :param suppression_sigma: the suppression factor of the numerical noise, defaults to 2
+   :type suppression_sigma: float, optional
    :param cuda: whether to use the cuda mode. if set PYFK_USE_CUDA=1, this flag will be ignored and will always use cuda, defaults to False
    :type cuda: bool
    :raises PyfkError: Must provide a list of receiver distance
+   :raises PyfkError: Can't set receiver distance as 0, please consider to use a small value instead
+   :raises PyfkError: planet_radius should be positive
    :raises PyfkError: Taper must be with (0,1)
    :raises PyfkError: Filter must be a tuple (f1,f2), f1 and f2 should be within [0,1]
    :raises PyfkError: npt should be positive.
@@ -105,6 +111,7 @@ Functions
    :raises PyfkError: kmax should be larger or equal to 10
    :raises PyfkError: the selection of phases should be either 'up', 'down' or 'all'
    :raises PyfkError: samples_before_first_arrival should be positive
+   :raises PyfkError: suppression_sigma should be positive
    :raises PyfkError: Must provide a source
    :raises PyfkError: Must provide a seisModel
 

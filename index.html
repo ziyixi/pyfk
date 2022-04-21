@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>PyFK &#8212; PyFK 0.2.0 documentation</title>
+    <title>PyFK &#8212; PyFK 0.3.0b1 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -255,7 +255,11 @@ Python is also easy to integrate with parallel computing packages either in CPU 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">ziyixi</span> <span class="n">pyfk</span>
 </pre></div>
 </div>
-<p>Extra packages will be required to enable the GPU mode. For the MPI mode, it’s suggested to directly compile from the source. For more details about the Installation, you can refer to the Installing part of the document.</p>
+<p>It’s also easy to install the MPI enabled version:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PYFK_USE_MPI</span><span class="o">=</span><span class="mi">1</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span><span class="p">[</span><span class="n">mpi</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Extra packages including <a class="reference external" href="https://numba.readthedocs.io/en/stable/user/installing.html">numba</a> and <a class="reference external" href="https://docs.cupy.dev/en/stable/install.html">cupy</a> will be required to enable the GPU mode. For more details about the Installation, you can refer to the Installing part of the document.</p>
 </section>
 <section id="todo">
 <h2>Todo<a class="headerlink" href="#todo" title="Permalink to this headline">#</a></h2>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Installing &#8212; PyFK 0.2.0 documentation</title>
+    <title>Installing &#8212; PyFK 0.3.0b1 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -216,12 +216,19 @@
 <span id="install"></span><h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">#</a></h1>
 <section id="install-the-pyfk-package">
 <h2>Install the PyFK package<a class="headerlink" href="#install-the-pyfk-package" title="Permalink to this headline">#</a></h2>
-<p>The supported Python versions include 3.6, 3.7, and 3.8. Python 2 is not supported. Versions prior (include) 3.5 are not supported as f-string is widely used in the package configuration. Versions after (include) 3.9 are not supported as the Cython compatible issue.</p>
+<p>The supported Python versions include 3.7, 3.8, and 3.9. Python 2 is not supported. Versions prior (include) 3.6 are not supported. Versions after (include) 3.10 are not supported as the Cython compatible issue.</p>
 <p>Currently, the package is only supported on Unix-like systems, including Mac and Linux. Windows is not supported as VS compiler doesn’t support the C99 standard of “complex.h”, which is used in the package. Other platforms such as Mac OS with M1 chip might be supported through installing from PyPi or the source, but it has not been tested.</p>
 <section id="general-installation">
 <h3>General Installation<a class="headerlink" href="#general-installation" title="Permalink to this headline">#</a></h3>
 <p>To install the package on serial mode and the GPU parallel mode, you can install from PyPi:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span>
+</pre></div>
+</div>
+<p>Note this command might fail in some rare cases if mpi4py can not be installed in the local system. You may have to install openmpi or mpich, or try:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">poetry</span><span class="o">-</span><span class="n">core</span><span class="nd">@https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">python</span><span class="o">-</span><span class="n">poetry</span><span class="o">/</span><span class="n">poetry</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">refs</span><span class="o">/</span><span class="n">tags</span><span class="o">/</span><span class="mf">1.1.0</span><span class="n">a7</span><span class="o">.</span><span class="n">zip</span>
+<span class="c1"># or any version later than 1.1.0a7, or just poetry-core when poetry 1.1.0 has been released</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">cython</span> <span class="n">scipy</span> <span class="n">cysignals</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span>
 </pre></div>
 </div>
 <p>Anaconda environment is also supported:</p>
@@ -231,25 +238,13 @@
 </section>
 <section id="mpi-mode">
 <h3>MPI Mode<a class="headerlink" href="#mpi-mode" title="Permalink to this headline">#</a></h3>
-<p>It’s required to compile from the source directly to install the MPI mode.</p>
-<p>Firstly we need download the package:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ziyixi</span><span class="o">/</span><span class="n">pyfk</span>
-<span class="n">cd</span> <span class="n">pyfk</span>
+<p>To install the package with the MPI mode, you can install it from PyPi:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PYFK_USE_MPI</span><span class="o">=</span><span class="mi">1</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span><span class="p">[</span><span class="n">mpi</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Some dependencies should be installed before compiling PyFK:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cython</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">scipy</span> <span class="n">cysignals</span> <span class="n">mpi4py</span>
-</pre></div>
-</div>
-<p>Or from PyPi:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span> <span class="n">numpy</span> <span class="n">obspy</span> <span class="n">scipy</span> <span class="n">cysignals</span> <span class="n">mpi4py</span>
-</pre></div>
-</div>
-<p>And now we can compile PyFK as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PYFK_USE_MPI</span><span class="o">=</span><span class="mi">1</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
-</pre></div>
-</div>
-<p>Note that the installation of the mpi4py might need attention if using the cluster. Some clusters might need to specify the MPI lib location to compile the compatible mpi4py.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">PYFK_USE_MPI</span></code> is a environment variable that should be set to 1 to enable the MPI mode. This environment is only required in installation. The package with the MPI supporting can fully replace the package in normal mode by providing extra features in running the code in parallel (with mpirun).</p>
+<p>Note a working MPI C compile is required for compilation. Conda is not supported for MPI mode, as the MPI is system dependent, especially for the case in the super computers.</p>
+<p>If you have installed mpi4py using conda before, it is advised to reinstall it using PyPi or uninstall it. Conda will attempt to install its own version of MPI, which usually works fine for a single node. But in the case of super computers, it might conflict with commands like “srun” or “ibrun”.</p>
 </section>
 <section id="gpu-mode">
 <h3>GPU mode<a class="headerlink" href="#gpu-mode" title="Permalink to this headline">#</a></h3>
@@ -257,7 +252,16 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cupy</span> <span class="n">numba</span>
 </pre></div>
 </div>
-<p>Using PyPi is also possible, you can refer to the document of <a class="reference external" href="https://docs.cupy.dev/en/stable/install.html">CuPy</a> and <a class="reference external" href="https://numba.pydata.org/numba-doc/latest/user/installing.html#installing-using-pip-on-x86-x86-64-platforms">Numba</a>. Note these two packages should be installed with the CUDA support.</p>
+<p>Special note to check the GPU driver version and the CUDA version using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nvidia</span><span class="o">-</span><span class="n">smi</span>
+</pre></div>
+</div>
+<p>As the version for cudatoolkit should be equal or smaller than the driver’s supported version. Higher versions might have the risk of the CUDA runtime error. For example, on the local cluster on MSU ICER, the supported CUDA version is 11.5, while using the above conda command will install the CUDA 11.6 toolkit at the time of April 2022. So instead, for this case, we can use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cupy</span> <span class="n">numba</span> <span class="n">cudatoolkit</span><span class="o">=</span><span class="mf">11.5</span>
+</pre></div>
+</div>
+<p>Using PyPi to install these two packages is also possible, you can refer to the document of <a class="reference external" href="https://docs.cupy.dev/en/stable/install.html">CuPy</a> and <a class="reference external" href="https://numba.pydata.org/numba-doc/latest/user/installing.html#installing-using-pip-on-x86-x86-64-platforms">Numba</a>. Note these two packages should be installed with the CUDA support.</p>
+<p>These two packages can be installed before or after installation PyFK, either in the normal mode or the MPI mode. There is nothing special for installing PyFK in the GPU mode.</p>
 </section>
 </section>
 <section id="test-the-installation">
@@ -285,6 +289,11 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PYFK_USE_CUDA</span><span class="o">=</span><span class="mi">1</span> <span class="n">pytest</span> <span class="o">--</span><span class="n">pyargs</span> <span class="n">pyfk</span>
 </pre></div>
 </div>
+<p>To test the MPU version, you can run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpirun</span> <span class="o">-</span><span class="n">np</span> <span class="mi">3</span> <span class="n">pytest</span> <span class="o">--</span><span class="k">with</span><span class="o">-</span><span class="n">mpi</span> <span class="o">--</span><span class="n">pyargs</span> <span class="n">pyfk</span>
+</pre></div>
+</div>
+<p>for three processes’ parallation.</p>
 </section>
 </section>
 

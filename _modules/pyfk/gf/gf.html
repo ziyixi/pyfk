@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyfk.gf.gf &#8212; PyFK 0.2.0 documentation</title>
+    <title>pyfk.gf.gf &#8212; PyFK 0.3.0b1 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -174,7 +174,7 @@
 <span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Trace</span>
 <span class="kn">from</span> <span class="nn">pyfk.config.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">SeisModel</span>
 <span class="kn">from</span> <span class="nn">pyfk.gf.waveform_integration</span> <span class="kn">import</span> <span class="n">_waveform_integration</span>
-<span class="kn">from</span> <span class="nn">pyfk.setting</span> <span class="kn">import</span> <span class="n">EPSILON</span><span class="p">,</span> <span class="n">SIGMA</span>
+<span class="kn">from</span> <span class="nn">pyfk.setting</span> <span class="kn">import</span> <span class="n">EPSILON</span>
 <span class="kn">from</span> <span class="nn">pyfk.taup.taup</span> <span class="kn">import</span> <span class="n">taup</span>
 
 
@@ -271,7 +271,7 @@
         <span class="n">nfft2</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">wc1</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">dw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">npt</span> <span class="o">*</span> <span class="n">config</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
-    <span class="n">sigma</span> <span class="o">=</span> <span class="n">SIGMA</span> <span class="o">*</span> <span class="n">dw</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">suppression_sigma</span> <span class="o">*</span> <span class="n">dw</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">wc</span> <span class="o">=</span> <span class="n">nfft2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">config</span><span class="o">.</span><span class="n">taper</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">wc</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">wc</span> <span class="o">=</span> <span class="mi">1</span>
