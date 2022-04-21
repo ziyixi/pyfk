@@ -31,5 +31,5 @@ jobs:
       - name: build and publish
         run: |
           poetry build -f sdist
-          poetry config http-basic.pypi xiziyi ${{ secrets.pypi_password }}
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
           poetry publish
