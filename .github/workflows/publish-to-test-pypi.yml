@@ -1,8 +1,8 @@
 name: Publish Python 🐍 distributions 📦 to Test PyPI
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:    
+      - 'test/**'
 jobs:
   testpypi:
     runs-on: ubuntu-latest
