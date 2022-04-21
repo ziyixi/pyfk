@@ -41,6 +41,10 @@ Note a working MPI C compile is required for compilation. Conda is not supported
 
 If you have installed mpi4py using conda before, it is advised to reinstall it using PyPi or uninstall it. Conda will attempt to install its own version of MPI, which usually works fine for a single node. But in the case of super computers, it might conflict with commands like "srun" or "ibrun".
 
+If you install the MPI mode after installing the normal mode, you need to reinstall the package without any cached wheels using::
+
+    PYFK_USE_MPI=1 pip install pyfk[mpi] --no-cache-dir
+
 GPU mode
 ^^^^^^^^^^^^^^^^^^^^^
 
