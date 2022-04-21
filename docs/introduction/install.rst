@@ -17,6 +17,13 @@ To install the package on serial mode and the GPU parallel mode, you can install
 
     pip install pyfk
 
+Note this command might fail in some rare cases if mpi4py can not be installed in the local system. You may have to install openmpi or mpich, or try::
+    
+    pip install poetry-core@https://github.com/python-poetry/poetry-core/archive/refs/tags/1.1.0a7.zip
+    # or any version later than 1.1.0a7, or just poetry-core when poetry 1.1.0 has been released
+    pip install numpy obspy cython scipy cysignals
+    pip install pyfk --no-build-isolation
+
 Anaconda environment is also supported::
 
     conda install -c ziyixi pyfk

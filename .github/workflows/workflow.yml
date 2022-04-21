@@ -1,15 +1,15 @@
-name: pyfk
+name: test
 on:
   push:
     branches:
       - master
 jobs:
-  run:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python: ["3.6", "3.7", "3.8"]
+        python: ["3.7", "3.8", "3.9"]
     env:
       OS: ${{ matrix.os }}
     steps:
@@ -23,6 +23,7 @@ jobs:
       - name: Install openmp on ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
+          sudo apt update
           sudo apt install openmpi-bin libopenmpi-dev -y
 
       - name: Set up python
@@ -42,6 +43,7 @@ jobs:
           mv coverage_test/coverage.xml .
 
       - name: Upload coverage to Codecov
+        if: ${{ !env.ACT }}
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -52,11 +54,11 @@ jobs:
 
       - name: Test MPI run
         run: |
-          export PYFK_USE_MPI=1
           pip uninstall pyfk -y
-          pip install mpi4py
-          python setup.py install
+          PYFK_USE_MPI=1 pip install ".[mpi]"
           cd coverage_test
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
           mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
           mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
           cd ..

@@ -56,7 +56,11 @@ Or conda::
 
     conda install -c ziyixi pyfk
 
-Extra packages will be required to enable the GPU mode. For the MPI mode, it's suggested to directly compile from the source. For more details about the Installation, you can refer to the Installing part of the document.
+It's also easy to install the MPI enabled version::
+
+    PYFK_USE_MPI=1 pip install pyfk[mpi]
+
+Extra packages including `numba <https://numba.readthedocs.io/en/stable/user/installing.html>`__ and `cupy <https://docs.cupy.dev/en/stable/install.html>`__ will be required to enable the GPU mode. For more details about the Installation, you can refer to the Installing part of the document.
 
 Todo
 ------------------

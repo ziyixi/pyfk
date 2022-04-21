@@ -4,22 +4,26 @@ on:
     branches:
       - master
 jobs:
-  run:
+  sphinx:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: run doc
         run: |
-          pip install .
+          pip install poetry-core@https://github.com/python-poetry/poetry-core/archive/refs/tags/1.1.0a7.zip
+          pip install numpy obspy cython scipy cysignals
+          pip install . --no-build-isolation
           pip install sphinx pydata-sphinx-theme sphinx-autoapi jupyter-sphinx sphinx-copybutton pytest
           cd docs
           make html
           cd ..
-      - uses: peaceiris/actions-gh-pages@v3
+      - name: push to github page
+        if: ${{ !env.ACT }}
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/_build/html
