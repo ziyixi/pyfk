@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Installing &#8212; PyFK 0.3.0b2 documentation</title>
+    <title>Installing &#8212; PyFK 0.3.0 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -245,6 +245,10 @@
 <p><code class="code docutils literal notranslate"><span class="pre">PYFK_USE_MPI</span></code> is a environment variable that should be set to 1 to enable the MPI mode. This environment is only required in installation. The package with the MPI supporting can fully replace the package in normal mode by providing extra features in running the code in parallel (with mpirun).</p>
 <p>Note a working MPI C compile is required for compilation. Conda is not supported for MPI mode, as the MPI is system dependent, especially for the case in the super computers.</p>
 <p>If you have installed mpi4py using conda before, it is advised to reinstall it using PyPi or uninstall it. Conda will attempt to install its own version of MPI, which usually works fine for a single node. But in the case of super computers, it might conflict with commands like “srun” or “ibrun”.</p>
+<p>If you install the MPI mode after installing the normal mode, you need to reinstall the package without any cached wheels using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PYFK_USE_MPI</span><span class="o">=</span><span class="mi">1</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pyfk</span><span class="p">[</span><span class="n">mpi</span><span class="p">]</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">cache</span><span class="o">-</span><span class="nb">dir</span>
+</pre></div>
+</div>
 </section>
 <section id="gpu-mode">
 <h3>GPU mode<a class="headerlink" href="#gpu-mode" title="Permalink to this headline">#</a></h3>
