@@ -21,10 +21,10 @@ Classes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: test_mpi_info(self)
+   .. py:method:: test_mpi_info()
 
 
-   .. py:method:: test_val_correct(self)
+   .. py:method:: test_val_correct()
 
 
 

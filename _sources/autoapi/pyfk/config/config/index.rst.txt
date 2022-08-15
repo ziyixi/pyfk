@@ -82,18 +82,18 @@ Classes
    :raises PyfkError: Must provide a source
    :raises PyfkError: Must provide a seisModel
 
-   .. py:method:: __repr__(self)
+   .. py:method:: __repr__()
 
       Return repr(self).
 
 
-   .. py:method:: _couple_model_and_source(self)
+   .. py:method:: _couple_model_and_source()
 
 
-   .. py:method:: _flattening_func(self, depth)
+   .. py:method:: _flattening_func(depth)
 
 
-   .. py:method:: _insert_intf(self, depth)
+   .. py:method:: _insert_intf(depth)
 
 
 
@@ -123,7 +123,7 @@ Classes
    :raises PyfkError: r_planet should be a float or integer number
    :raises PyfkError: r_planet must be a positive value
 
-   .. py:method:: __copy__(self)
+   .. py:method:: __copy__()
 
       make a copy of the current model, and the model numpy file will not be influenced
 
@@ -131,12 +131,12 @@ Classes
       :rtype: SeisModel
 
 
-   .. py:method:: __repr__(self)
+   .. py:method:: __repr__()
 
       Return repr(self).
 
 
-   .. py:method:: add_layer(self, dd, idep)
+   .. py:method:: add_layer(dd, idep)
 
       insert a layer so that the source/receiver will be located at the interface of the layers
 
@@ -146,7 +146,7 @@ Classes
       :type idep: int
 
 
-   .. py:method:: flattening(self)
+   .. py:method:: flattening()
       :property:
 
       get the flatten status of the model
@@ -155,7 +155,7 @@ Classes
       :rtype: bool
 
 
-   .. py:method:: qp(self)
+   .. py:method:: qp()
       :property:
 
       get the attenuation qp array
@@ -164,7 +164,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. py:method:: qs(self)
+   .. py:method:: qs()
       :property:
 
       get the attenuation qs array
@@ -173,12 +173,12 @@ Classes
       :rtype: np.ndarray
 
 
-   .. py:method:: remove_topo(self)
+   .. py:method:: remove_topo()
 
       make the thickness for the first later to be 0 when the thickness is smaller than 0.
 
 
-   .. py:method:: rh(self)
+   .. py:method:: rh()
       :property:
 
       get the density array
@@ -187,7 +187,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. py:method:: th(self)
+   .. py:method:: th()
       :property:
 
       get the thickness array
@@ -196,7 +196,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. py:method:: vp(self)
+   .. py:method:: vp()
       :property:
 
       get the vp array
@@ -205,7 +205,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. py:method:: vs(self)
+   .. py:method:: vs()
       :property:
 
       get the vs array
@@ -229,12 +229,12 @@ Classes
    :type source_mechanism: Optional[Union[list, np.ndarray]], optional
    :raises PyfkError: [description]
 
-   .. py:method:: __repr__(self)
+   .. py:method:: __repr__()
 
       Return repr(self).
 
 
-   .. py:method:: _update_source_mechanism(self, source_mechanism)
+   .. py:method:: _update_source_mechanism(source_mechanism)
 
       the internal function to update the source mechanism information
 
@@ -245,7 +245,7 @@ Classes
       :raises PyfkError: source_mechanism must be None, a list or numpy.ndarray
 
 
-   .. py:method:: calculate_radiation_pattern(self, az)
+   .. py:method:: calculate_radiation_pattern(az)
 
       calculate the radiation pattern 3*3 array
 
@@ -254,7 +254,7 @@ Classes
       :raises PyfkError: length of source_mechanism must be 1, 3, 4, 7
 
 
-   .. py:method:: m0(self)
+   .. py:method:: m0()
       :property:
 
       get the value associated with the magnitude in FK
@@ -263,7 +263,7 @@ Classes
       :rtype: float
 
 
-   .. py:method:: nn(self)
+   .. py:method:: nn()
       :property:
 
       get the value associated with the source type
@@ -272,7 +272,7 @@ Classes
       :rtype: int
 
 
-   .. py:method:: rad(self)
+   .. py:method:: rad()
       :property:
 
       get the radiation pattern
@@ -281,7 +281,7 @@ Classes
       :rtype: np.ndarray
 
 
-   .. py:method:: sdep(self)
+   .. py:method:: sdep()
       :property:
 
       get the source depth in km
@@ -290,7 +290,7 @@ Classes
       :rtype: float
 
 
-   .. py:method:: srcType(self)
+   .. py:method:: srcType()
       :property:
 
       get the source type (ep, sf or dc)
@@ -299,7 +299,7 @@ Classes
       :rtype: str
 
 
-   .. py:method:: update_source_mechanism(self, source_mechanism)
+   .. py:method:: update_source_mechanism(source_mechanism)
 
       update the source mechanism information after creation of the SourceModel
 

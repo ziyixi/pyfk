@@ -21,29 +21,29 @@ Classes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: test_big_array(self)
+   .. py:method:: test_big_array()
 
 
-   .. py:method:: test_filter(self)
+   .. py:method:: test_filter()
 
 
    .. py:method:: test_hk()
       :staticmethod:
 
 
-   .. py:method:: test_prem_ep(self)
+   .. py:method:: test_prem_ep()
 
 
-   .. py:method:: test_prem_sf(self)
+   .. py:method:: test_prem_sf()
 
 
-   .. py:method:: test_receiver_deeper(self)
+   .. py:method:: test_receiver_deeper()
 
 
-   .. py:method:: test_smth(self)
+   .. py:method:: test_smth()
 
 
-   .. py:method:: test_static_source(self)
+   .. py:method:: test_static_source()
 
 
 

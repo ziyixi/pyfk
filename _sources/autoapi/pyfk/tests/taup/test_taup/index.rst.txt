@@ -25,7 +25,7 @@ Classes
       :staticmethod:
 
 
-   .. py:method:: test_earth_models(self)
+   .. py:method:: test_earth_models()
 
 
 

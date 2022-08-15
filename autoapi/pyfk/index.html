@@ -1,18 +1,22 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pyfk &#8212; PyFK 0.3.0 documentation</title>
-    
+    <title>pyfk &#8212; PyFK 0.3.1 documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
 
-    
+
   <link rel="stylesheet"
     href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
@@ -25,13 +29,14 @@
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    
+
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
@@ -42,32 +47,40 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pyfk.config" href="config/index.html" />
     <link rel="prev" title="API Reference" href="../index.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
 
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
 
   <div id="navbar-start">
     
     
-<a class="navbar-brand" href="../../index.html">
-<p class="title">PyFK</p>
-</a>
+  
 
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">PyFK 0.3.1 documentation</p>
+  
+</a>
     
   </div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="fas fa-bars"></span>
   </button>
 
   
@@ -121,6 +134,14 @@
     <div id="navbar-end">
       
       <div class="navbar-end-item">
+        <span id="theme-switch" class="btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
       </ul>
       </div>
@@ -131,13 +152,13 @@
     </nav>
     
 
-    <div class="container-xl">
-      <div class="row">
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -449,19 +470,20 @@
 
   </div>
 </nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
-            </div>
-            
-          
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
 
           
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
 <div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
@@ -656,28 +678,26 @@
 </ul>
 
 </nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
-            
-          </div>
-          
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
 
           
           
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+          <div class="bd-content col-12 col-md-9 col-xl-7">
               
-              <div>
+              <article class="bd-article" role="main">
                 
   <section id="module-pyfk">
-<span id="pyfk"></span><h1><a class="reference internal" href="#module-pyfk" title="pyfk"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk</span></code></a><a class="headerlink" href="#module-pyfk" title="Permalink to this headline">#</a></h1>
+<span id="pyfk"></span><h1><a class="reference internal" href="#module-pyfk" title="pyfk"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk</span></code></a><a class="headerlink" href="#module-pyfk" title="Permalink to this heading">#</a></h1>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">#</a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.config</span></code></a><ul>
@@ -727,7 +747,7 @@
 </div>
 </section>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="setting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.setting</span></code></a></li>
@@ -735,14 +755,10 @@
 </div>
 </section>
 <section id="package-contents">
-<h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this headline">#</a></h2>
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.Config" title="pyfk.Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config</span></code></a></p></td>
 <td><p>The configuration class used in generating Green's function and the synthetic waveform.</p></td>
@@ -757,20 +773,16 @@
 </table>
 </section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.calculate_gf" title="pyfk.calculate_gf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gf</span></code></a>(config = None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.calculate_gf" title="pyfk.calculate_gf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gf</span></code></a>([config])</p></td>
 <td><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.calculate_sync" title="pyfk.calculate_sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_sync</span></code></a>(gf, config, az = 0, source_time_function = None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.calculate_sync" title="pyfk.calculate_sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_sync</span></code></a>(gf, config[, az, source_time_function])</p></td>
 <td><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.generate_source_time_function" title="pyfk.generate_source_time_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_source_time_function</span></code></a>(dura = 0.0, rise = 0.5, delta = 0.1)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.generate_source_time_function" title="pyfk.generate_source_time_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_source_time_function</span></code></a>([dura, rise, delta])</p></td>
 <td><p>[summary]</p></td>
 </tr>
 </tbody>
@@ -781,7 +793,7 @@
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>The configuration class used in generating Green’s function and the synthetic waveform.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.SeisModel" title="pyfk.SeisModel"><em>SeisModel</em></a><em>]</em>) – the Earth model used in calculation, defaults to None</p></li>
 <li><p><strong>source</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.SourceModel" title="pyfk.SourceModel"><em>SourceModel</em></a><em>]</em>) – the source model used in calculation, defaults to None</p></li>
@@ -804,7 +816,7 @@
 <li><p><strong>cuda</strong> (<em>bool</em>) – whether to use the cuda mode. if set PYFK_USE_CUDA=1, this flag will be ignored and will always use cuda, defaults to False</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Must provide a list of receiver distance</p></li>
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Can’t set receiver distance as 0, please consider to use a small value instead</p></li>
@@ -829,10 +841,10 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.Config.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config.__repr__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config.__repr__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return repr(self).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -840,9 +852,9 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.Config._couple_model_and_source">
-<span class="sig-name descname"><span class="pre">_couple_model_and_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config._couple_model_and_source" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">_couple_model_and_source</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config._couple_model_and_source" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -850,12 +862,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.Config._flattening_func">
-<span class="sig-name descname"><span class="pre">_flattening_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config._flattening_func" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">_flattening_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">depth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config._flattening_func" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>depth</strong> (<em>float</em>) – </p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -863,12 +875,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.Config._insert_intf">
-<span class="sig-name descname"><span class="pre">_insert_intf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config._insert_intf" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">_insert_intf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">depth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.Config._insert_intf" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>depth</strong> (<em>float</em>) – </p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -882,7 +894,7 @@
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>SeisModel stores the Earth model</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<em>np.ndarray</em>) – numpy.ndarray model: a 2D numpy array storing the information of the 1D earth model, with the same format as FK.
 model has the following format (in units of km, km/s, g/cm3, each column):
@@ -897,7 +909,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <li><p><strong>r_planet</strong> (<em>float</em><em>, </em><em>optional</em>) – the optional defined planet radius in KM. If not defined, the value will be None and the Earth radius = 6371.0 km will be used</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Earth Model must be a 2D numpy array</p></li>
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – Must provide at least three columns for the model</p></li>
@@ -908,13 +920,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.__copy__">
-<span class="sig-name descname"><span class="pre">__copy__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.__copy__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__copy__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.__copy__" title="Permalink to this definition">#</a></dt>
 <dd><p>make a copy of the current model, and the model numpy file will not be influenced</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the copied SeisModel</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#pyfk.SeisModel" title="pyfk.SeisModel">SeisModel</a></p>
 </dd>
 </dl>
@@ -922,10 +934,10 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.__repr__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.__repr__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return repr(self).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -933,16 +945,16 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.add_layer">
-<span class="sig-name descname"><span class="pre">add_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.add_layer" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.add_layer" title="Permalink to this definition">#</a></dt>
 <dd><p>insert a layer so that the source/receiver will be located at the interface of the layers</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dd</strong> (<em>float</em>) – the distance(km) to the bottom of the later where the source/receiver is located</p></li>
 <li><p><strong>idep</strong> (<em>int</em>) – the layer (top most layer as index 0) where the source/receiver is located</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -950,13 +962,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.flattening">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flattening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.flattening" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flattening</span></span><a class="headerlink" href="#pyfk.SeisModel.flattening" title="Permalink to this definition">#</a></dt>
 <dd><p>get the flatten status of the model</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the flatten status of the model</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -964,13 +976,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.qp">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">qp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.qp" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">qp</span></span><a class="headerlink" href="#pyfk.SeisModel.qp" title="Permalink to this definition">#</a></dt>
 <dd><p>get the attenuation qp array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the attenuation qp array</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -978,13 +990,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.qs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">qs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.qs" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">qs</span></span><a class="headerlink" href="#pyfk.SeisModel.qs" title="Permalink to this definition">#</a></dt>
 <dd><p>get the attenuation qs array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the attenuation qs array</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -992,10 +1004,10 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.remove_topo">
-<span class="sig-name descname"><span class="pre">remove_topo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.remove_topo" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">remove_topo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.remove_topo" title="Permalink to this definition">#</a></dt>
 <dd><p>make the thickness for the first later to be 0 when the thickness is smaller than 0.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -1003,13 +1015,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.rh">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.rh" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rh</span></span><a class="headerlink" href="#pyfk.SeisModel.rh" title="Permalink to this definition">#</a></dt>
 <dd><p>get the density array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the density array</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -1017,13 +1029,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.th">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">th</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.th" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">th</span></span><a class="headerlink" href="#pyfk.SeisModel.th" title="Permalink to this definition">#</a></dt>
 <dd><p>get the thickness array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the thickness array</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -1031,13 +1043,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.vp">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.vp" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vp</span></span><a class="headerlink" href="#pyfk.SeisModel.vp" title="Permalink to this definition">#</a></dt>
 <dd><p>get the vp array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the vp array</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -1045,13 +1057,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SeisModel.vs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SeisModel.vs" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vs</span></span><a class="headerlink" href="#pyfk.SeisModel.vs" title="Permalink to this definition">#</a></dt>
 <dd><p>get the vs array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the vs array</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -1065,23 +1077,23 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>the information about the the source used in the FK</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sdep</strong> (<em>float</em>) – the depth of the source (km), and it should not be located between the interfaces of the Earth model, defaults to 0</p></li>
 <li><p><strong>srcType</strong> (<em>str</em><em>, </em><em>optional</em>) – the source type, can be ep (explosion), sf (single force) or dc (double couple), defaults to “dc”</p></li>
 <li><p><strong>source_mechanism</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events), defaults to None</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – [description]</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.__repr__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.__repr__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return repr(self).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -1089,13 +1101,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel._update_source_mechanism">
-<span class="sig-name descname"><span class="pre">_update_source_mechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_mechanism</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel._update_source_mechanism" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">_update_source_mechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_mechanism</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel._update_source_mechanism" title="Permalink to this definition">#</a></dt>
 <dd><p>the internal function to update the source mechanism information</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source_mechanism</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – source_mechanism should be a 1D array</p></li>
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – length of source_mechanism is not correct</p></li>
@@ -1107,16 +1119,16 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.calculate_radiation_pattern">
-<span class="sig-name descname"><span class="pre">calculate_radiation_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">az</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.calculate_radiation_pattern" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_radiation_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">az</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.calculate_radiation_pattern" title="Permalink to this definition">#</a></dt>
 <dd><p>calculate the radiation pattern 3*3 array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>az</strong> (<em>float</em>) – station azimuth in degree measured from the North (clockwise)</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – length of source_mechanism must be 1, 3, 4, 7</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -1124,13 +1136,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.m0">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">m0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.m0" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">m0</span></span><a class="headerlink" href="#pyfk.SourceModel.m0" title="Permalink to this definition">#</a></dt>
 <dd><p>get the value associated with the magnitude in FK</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the value associated with the magnitude in FK</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -1138,13 +1150,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.nn">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.nn" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nn</span></span><a class="headerlink" href="#pyfk.SourceModel.nn" title="Permalink to this definition">#</a></dt>
 <dd><p>get the value associated with the source type</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the value associated with the source type</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -1152,13 +1164,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.rad">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.rad" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rad</span></span><a class="headerlink" href="#pyfk.SourceModel.rad" title="Permalink to this definition">#</a></dt>
 <dd><p>get the radiation pattern</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the radiation pattern</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -1166,13 +1178,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.sdep">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sdep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.sdep" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sdep</span></span><a class="headerlink" href="#pyfk.SourceModel.sdep" title="Permalink to this definition">#</a></dt>
 <dd><p>get the source depth in km</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the source depth in km</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -1180,13 +1192,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.srcType">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">srcType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.srcType" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">srcType</span></span><a class="headerlink" href="#pyfk.SourceModel.srcType" title="Permalink to this definition">#</a></dt>
 <dd><p>get the source type (ep, sf or dc)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the source type (ep, sf or dc)</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -1194,13 +1206,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyfk.SourceModel.update_source_mechanism">
-<span class="sig-name descname"><span class="pre">update_source_mechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_mechanism</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.update_source_mechanism" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">update_source_mechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_mechanism</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyfk.SourceModel.update_source_mechanism" title="Permalink to this definition">#</a></dt>
 <dd><p>update the source mechanism information after creation of the SourceModel</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source_mechanism</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>np.ndarray</em><em>, </em><em>Event</em><em>]</em>) – a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events)</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – source mechanism couldn’t be None</p>
 </dd>
 </dl>
@@ -1213,13 +1225,13 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <span class="sig-prename descclassname"><span class="pre">pyfk.</span></span><span class="sig-name descname"><span class="pre">calculate_gf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyfk/gf/gf.html#calculate_gf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyfk.calculate_gf" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#pyfk.Config" title="pyfk.Config"><em>Config</em></a><em>]</em><em>, </em><em>optional</em>) – the configuration of calculating the Green’s function, defaults to None</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>if npt==2 or 1, return a 2D list, and each row represents the static displacements; otherwise, return a list of Stream, each stream keeps the order of GF as in FK, and the order of streams is the same as the receiver_distance.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Union[List[Stream], List[Stream]]</p>
 </dd>
 </dl>
@@ -1230,7 +1242,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <span class="sig-prename descclassname"><span class="pre">pyfk.</span></span><span class="sig-name descname"><span class="pre">calculate_sync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">az</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_time_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyfk/sync/sync.html#calculate_sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyfk.calculate_sync" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute displacements in cm in the up, radial (outward), and transverse (clockwise) directions produced by different seismic sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>gf</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>Stream</em><em>]</em><em>, </em><em>Stream</em><em>]</em>) – the Green’s function list (or just an obspy Stream representing one distance) from calculate_gf; or read from the Green’s function database from FK</p></li>
 <li><p><strong>config</strong> (<a class="reference internal" href="#pyfk.Config" title="pyfk.Config"><em>Config</em></a>) – the configuration of sync calculation</p></li>
@@ -1238,7 +1250,7 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <li><p><strong>source_time_function</strong> (<em>Optional</em><em>[</em><em>Trace</em><em>]</em><em>, </em><em>optional</em>) – should be an obspy Trace with the data as the source time function, can use generate_source_time_function to generate a trapezoid shaped source time function, defaults to None</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – az must be a number</p></li>
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – must provide a source time function</p></li>
@@ -1246,10 +1258,10 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <li><p><a class="reference internal" href="utils/error_message/index.html#pyfk.utils.error_message.PyfkError" title="pyfk.utils.error_message.PyfkError"><strong>PyfkError</strong></a> – delta for the source time function and the Green’s function should be the same</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a list of three components stream (ordered as z, r, t)</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>List[Stream]</p>
 </dd>
 </dl>
@@ -1260,17 +1272,17 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 <span class="sig-prename descclassname"><span class="pre">pyfk.</span></span><span class="sig-name descname"><span class="pre">generate_source_time_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dura</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pyfk/sync/sync.html#generate_source_time_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyfk.generate_source_time_function" title="Permalink to this definition">#</a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dura</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.</p></li>
 <li><p><strong>rise</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.5</p></li>
 <li><p><strong>delta</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.1</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>[description]</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Trace</p>
 </dd>
 </dl>
@@ -1281,51 +1293,55 @@ The last layer (i.e. the bottom half space) thickness should be always be zero. 
 </section>
 
 
-              </div>
+              </article>
               
-              
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../index.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">API Reference</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="config/index.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.config</span></code></p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-              
-          </main>
-          
 
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">API Reference</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="config/index.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.config</span></code></p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
       </div>
     </div>
+
+  
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
     &copy; Copyright 2020-2022, Ziyi Xi.<br>
 </p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
-    </div>
-    
   </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+</p>
+  </div>
+  
+</div>
 </footer>
   </body>
 </html>

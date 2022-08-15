@@ -25,10 +25,10 @@ Classes
       :staticmethod:
 
 
-   .. py:method:: test_exceptions(self)
+   .. py:method:: test_exceptions()
 
 
-   .. py:method:: test_prem(self)
+   .. py:method:: test_prem()
 
 
 

@@ -28,25 +28,25 @@ Classes
 
       
 
-   .. py:method:: test__flattening(self)
+   .. py:method:: test__flattening()
 
 
-   .. py:method:: test_catch_exceptions(self)
+   .. py:method:: test_catch_exceptions()
 
 
-   .. py:method:: test_catch_warning(self)
+   .. py:method:: test_catch_warning()
 
 
-   .. py:method:: test_free_surface(self)
+   .. py:method:: test_free_surface()
 
 
-   .. py:method:: test_init(self)
+   .. py:method:: test_init()
 
 
-   .. py:method:: test_radiation_pattern(self)
+   .. py:method:: test_radiation_pattern()
 
 
-   .. py:method:: test_topo(self)
+   .. py:method:: test_topo()
 
 
 
@@ -59,43 +59,43 @@ Classes
 
       
 
-   .. py:method:: test_add_layer(self)
+   .. py:method:: test_add_layer()
 
 
-   .. py:method:: test_catch_exceptions(self)
+   .. py:method:: test_catch_exceptions()
 
 
-   .. py:method:: test_copy(self)
+   .. py:method:: test_copy()
 
 
-   .. py:method:: test_get_attribute(self)
+   .. py:method:: test_get_attribute()
 
 
-   .. py:method:: test_init_flattening_kappa_6column(self)
+   .. py:method:: test_init_flattening_kappa_6column()
 
 
-   .. py:method:: test_init_flattening_nokappa_6column(self)
+   .. py:method:: test_init_flattening_nokappa_6column()
 
 
-   .. py:method:: test_init_noflattening_kappa_6column(self)
+   .. py:method:: test_init_noflattening_kappa_6column()
 
 
-   .. py:method:: test_init_noflattening_nokappa_3column(self)
+   .. py:method:: test_init_noflattening_nokappa_3column()
 
 
-   .. py:method:: test_init_noflattening_nokappa_4column_abnormal(self)
+   .. py:method:: test_init_noflattening_nokappa_4column_abnormal()
 
 
-   .. py:method:: test_init_noflattening_nokappa_4column_normal(self)
+   .. py:method:: test_init_noflattening_nokappa_4column_normal()
 
 
-   .. py:method:: test_init_noflattening_nokappa_5column(self)
+   .. py:method:: test_init_noflattening_nokappa_5column()
 
 
-   .. py:method:: test_init_noflattening_nokappa_6column(self)
+   .. py:method:: test_init_noflattening_nokappa_6column()
 
 
-   .. py:method:: test_remove_topo(self)
+   .. py:method:: test_remove_topo()
 
 
 
@@ -103,13 +103,13 @@ Classes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: test_catch_exceptions(self)
+   .. py:method:: test_catch_exceptions()
 
 
-   .. py:method:: test_init(self)
+   .. py:method:: test_init()
 
 
-   .. py:method:: test_set_sdep(self)
+   .. py:method:: test_set_sdep()
 
 
 

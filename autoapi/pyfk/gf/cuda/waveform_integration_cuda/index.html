@@ -1,18 +1,22 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pyfk.gf.cuda.waveform_integration_cuda &#8212; PyFK 0.3.0 documentation</title>
-    
+    <title>pyfk.gf.cuda.waveform_integration_cuda &#8212; PyFK 0.3.1 documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
 
-    
+
   <link rel="stylesheet"
     href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
@@ -25,13 +29,14 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
-    
+
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
 
     <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
     <script src="../../../../../_static/jquery.js"></script>
     <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
     <script src="../../../../../_static/thebelab-helper.js"></script>
     <script src="../../../../../_static/clipboard.min.js"></script>
@@ -42,32 +47,40 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="pyfk.gf.gf" href="../../gf/index.html" />
     <link rel="prev" title="pyfk.gf.cuda.utils" href="../utils/index.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
 
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
 
   <div id="navbar-start">
     
     
-<a class="navbar-brand" href="../../../../../index.html">
-<p class="title">PyFK</p>
-</a>
+  
 
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">PyFK 0.3.1 documentation</p>
+  
+</a>
     
   </div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="fas fa-bars"></span>
   </button>
 
   
@@ -121,6 +134,14 @@
     <div id="navbar-end">
       
       <div class="navbar-end-item">
+        <span id="theme-switch" class="btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
       </ul>
       </div>
@@ -131,13 +152,13 @@
     </nav>
     
 
-    <div class="container-xl">
-      <div class="row">
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -449,19 +470,20 @@
 
   </div>
 </nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
-            </div>
-            
-          
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
 
           
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
 <div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
@@ -520,55 +542,49 @@
 </ul>
 
 </nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
-            
-          </div>
-          
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
 
           
           
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+          <div class="bd-content col-12 col-md-9 col-xl-7">
               
-              <div>
+              <article class="bd-article" role="main">
                 
   <section id="module-pyfk.gf.cuda.waveform_integration_cuda">
-<span id="pyfk-gf-cuda-waveform-integration-cuda"></span><h1><a class="reference internal" href="#module-pyfk.gf.cuda.waveform_integration_cuda" title="pyfk.gf.cuda.waveform_integration_cuda"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.cuda.waveform_integration_cuda</span></code></a><a class="headerlink" href="#module-pyfk.gf.cuda.waveform_integration_cuda" title="Permalink to this headline">#</a></h1>
+<span id="pyfk-gf-cuda-waveform-integration-cuda"></span><h1><a class="reference internal" href="#module-pyfk.gf.cuda.waveform_integration_cuda" title="pyfk.gf.cuda.waveform_integration_cuda"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.cuda.waveform_integration_cuda</span></code></a><a class="headerlink" href="#module-pyfk.gf.cuda.waveform_integration_cuda" title="Permalink to this heading">#</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda._waveform_integration" title="pyfk.gf.cuda.waveform_integration_cuda._waveform_integration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_waveform_integration</span></code></a>(nfft2, dw, pmin, dk, kc, pmax, receiver_distance, wc1, vs, vp, qs, qp, flip, filter_const, dynamic, wc2, t0, src_type, taper, wc, mu, thickness, si, src_layer, rcv_layer, updn, epsilon, sigma, sum_waveform, cuda_divide_num)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda._waveform_integration" title="pyfk.gf.cuda.waveform_integration_cuda._waveform_integration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_waveform_integration</span></code></a>(nfft2, dw, pmin, dk, kc, pmax, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.apply_filter" title="pyfk.gf.cuda.waveform_integration_cuda.apply_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_filter</span></code></a>(wc1, nfft2, dw, filter_const, dynamic, wc, taper, wc2, receiver_distance, t0, sum_waveform)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.apply_filter" title="pyfk.gf.cuda.waveform_integration_cuda.apply_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_filter</span></code></a>(wc1, nfft2, dw, filter_const, dynamic, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.fill_vals" title="pyfk.gf.cuda.waveform_integration_cuda.fill_vals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill_vals</span></code></a>(n_list, n_list_accumulate, ik_list, i_list, wc1, nfft2, current_n_all, current_offset)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.fill_vals" title="pyfk.gf.cuda.waveform_integration_cuda.fill_vals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill_vals</span></code></a>(n_list, n_list_accumulate, ik_list, i_list, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks" title="pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_n_list_kpks</span></code></a>(wc1, nfft2, kc, dw, pmin, pmax, dk, sigma, thickness, vp, vs, qp, qs, n_list, n_list_accumulate, kp_list, ks_list)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks" title="pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_n_list_kpks</span></code></a>(wc1, nfft2, kc, dw, pmin, pmax, dk, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.get_sum_waveform" title="pyfk.gf.cuda.waveform_integration_cuda.get_sum_waveform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sum_waveform</span></code></a>(sum_waveform, u, ik_list, receiver_distance, flip_val, z_list, aj0_list, aj1_list, aj2_list, current_n_all)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.get_sum_waveform" title="pyfk.gf.cuda.waveform_integration_cuda.get_sum_waveform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sum_waveform</span></code></a>(sum_waveform, u, ik_list, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.get_z_list" title="pyfk.gf.cuda.waveform_integration_cuda.get_z_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_z_list</span></code></a>(z_list, ik_list, i_list, receiver_distance, dw, pmin, dk, current_n_all)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.get_z_list" title="pyfk.gf.cuda.waveform_integration_cuda.get_z_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_z_list</span></code></a>(z_list, ik_list, i_list, receiver_distance, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.parallel_kernel" title="pyfk.gf.cuda.waveform_integration_cuda.parallel_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel_kernel</span></code></a>(u, ik_list, i_list, kp_list, ks_list, thickness, mu, si, dw, pmin, dk, src_layer, rcv_layer, updn, src_type, epsilon, wc1, current_n_all)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyfk.gf.cuda.waveform_integration_cuda.parallel_kernel" title="pyfk.gf.cuda.waveform_integration_cuda.parallel_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel_kernel</span></code></a>(u, ik_list, i_list, kp_list, ks_list, ...)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -577,7 +593,7 @@
 <dt class="sig sig-object py" id="pyfk.gf.cuda.waveform_integration_cuda._waveform_integration">
 <span class="sig-prename descclassname"><span class="pre">pyfk.gf.cuda.waveform_integration_cuda.</span></span><span class="sig-name descname"><span class="pre">_waveform_integration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nfft2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wc1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_const</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wc2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">taper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">si</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcv_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_waveform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda_divide_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/waveform_integration_cuda.html#_waveform_integration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyfk.gf.cuda.waveform_integration_cuda._waveform_integration" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>nfft2</strong> (<em>int</em>) – </p></li>
 <li><p><strong>dw</strong> (<em>float</em>) – </p></li>
@@ -623,7 +639,7 @@
 <dt class="sig sig-object py" id="pyfk.gf.cuda.waveform_integration_cuda.fill_vals">
 <span class="sig-prename descclassname"><span class="pre">pyfk.gf.cuda.waveform_integration_cuda.</span></span><span class="sig-name descname"><span class="pre">fill_vals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_list_accumulate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ik_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wc1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfft2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_n_all</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/waveform_integration_cuda.html#fill_vals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyfk.gf.cuda.waveform_integration_cuda.fill_vals" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n_list</strong> (<em>numpy.ndarray</em>) – </p></li>
 <li><p><strong>n_list_accumulate</strong> (<em>numpy.ndarray</em>) – </p></li>
@@ -642,7 +658,7 @@
 <dt class="sig sig-object py" id="pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks">
 <span class="sig-prename descclassname"><span class="pre">pyfk.gf.cuda.waveform_integration_cuda.</span></span><span class="sig-name descname"><span class="pre">get_n_list_kpks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wc1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfft2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_list_accumulate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kp_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/pyfk/gf/cuda/waveform_integration_cuda.html#get_n_list_kpks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyfk.gf.cuda.waveform_integration_cuda.get_n_list_kpks" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wc1</strong> (<em>int</em>) – </p></li>
 <li><p><strong>nfft2</strong> (<em>int</em>) – </p></li>
@@ -686,51 +702,55 @@
 </section>
 
 
-              </div>
+              </article>
               
-              
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../utils/index.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.cuda.utils</span></code></p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="../../gf/index.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.gf</span></code></p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-              
-          </main>
-          
 
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../utils/index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.cuda.utils</span></code></p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../../gf/index.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyfk.gf.gf</span></code></p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
       </div>
     </div>
+
+  
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
+  <script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
     &copy; Copyright 2020-2022, Ziyi Xi.<br>
 </p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
-    </div>
-    
   </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+</p>
+  </div>
+  
+</div>
 </footer>
   </body>
 </html>
