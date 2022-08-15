@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyfk"
-version = "0.3.0"
+version = "0.3.1"
 description = "Pyfk is the python version of FK used to calculate the Green's function and the synthetic waveforms for the 1D Earth model."
 authors = ["Ziyi Xi <xiziyi2015@gmail.com>"]
 license = "Apache-2.0"
@@ -61,7 +61,7 @@ sphinx-copybutton = "^0.5.0"
 mpi = ["mpi4py"]
 
 [build-system]
-requires = ["poetry-core@https://github.com/python-poetry/poetry-core/archive/refs/tags/1.1.0a7.zip","setuptools","numpy", "obspy", "cython", "scipy", "cysignals","mpi4py"]
+requires = ["poetry-core@https://github.com/python-poetry/poetry-core/archive/refs/tags/1.2.0b3.zip","setuptools","numpy", "obspy", "cython", "scipy", "cysignals","mpi4py"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.build]
