@@ -8,7 +8,7 @@ PyFK
     :target: https://codecov.io/gh/ziyixi/pyfk
 
 .. image:: https://img.shields.io/badge/docs-dev-blue.svg
-    :target: https://ziyixi.github.io/pyfk/
+    :target: https://pyfk.ziyixi.science/
 
 .. image:: https://badge.fury.io/py/pyfk.svg
     :target: https://badge.fury.io/py/pyfk
