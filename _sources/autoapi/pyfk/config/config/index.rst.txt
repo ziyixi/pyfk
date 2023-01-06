@@ -123,6 +123,62 @@ Classes
    :raises PyfkError: r_planet should be a float or integer number
    :raises PyfkError: r_planet must be a positive value
 
+   .. py:property:: flattening
+      :type: bool
+
+      get the flatten status of the model
+
+      :return: the flatten status of the model
+      :rtype: bool
+
+   .. py:property:: qp
+      :type: numpy.ndarray
+
+      get the attenuation qp array
+
+      :return: the attenuation qp array
+      :rtype: np.ndarray
+
+   .. py:property:: qs
+      :type: numpy.ndarray
+
+      get the attenuation qs array
+
+      :return: the attenuation qs array
+      :rtype: np.ndarray
+
+   .. py:property:: rh
+      :type: numpy.ndarray
+
+      get the density array
+
+      :return: the density array
+      :rtype: np.ndarray
+
+   .. py:property:: th
+      :type: numpy.ndarray
+
+      get the thickness array
+
+      :return: the thickness array
+      :rtype: np.ndarray
+
+   .. py:property:: vp
+      :type: numpy.ndarray
+
+      get the vp array
+
+      :return: the vp array
+      :rtype: np.ndarray
+
+   .. py:property:: vs
+      :type: numpy.ndarray
+
+      get the vs array
+
+      :return: the vs array
+      :rtype: np.ndarray
+
    .. py:method:: __copy__()
 
       make a copy of the current model, and the model numpy file will not be influenced
@@ -146,72 +202,9 @@ Classes
       :type idep: int
 
 
-   .. py:method:: flattening()
-      :property:
-
-      get the flatten status of the model
-
-      :return: the flatten status of the model
-      :rtype: bool
-
-
-   .. py:method:: qp()
-      :property:
-
-      get the attenuation qp array
-
-      :return: the attenuation qp array
-      :rtype: np.ndarray
-
-
-   .. py:method:: qs()
-      :property:
-
-      get the attenuation qs array
-
-      :return: the attenuation qs array
-      :rtype: np.ndarray
-
-
    .. py:method:: remove_topo()
 
       make the thickness for the first later to be 0 when the thickness is smaller than 0.
-
-
-   .. py:method:: rh()
-      :property:
-
-      get the density array
-
-      :return: the density array
-      :rtype: np.ndarray
-
-
-   .. py:method:: th()
-      :property:
-
-      get the thickness array
-
-      :return: the thickness array
-      :rtype: np.ndarray
-
-
-   .. py:method:: vp()
-      :property:
-
-      get the vp array
-
-      :return: the vp array
-      :rtype: np.ndarray
-
-
-   .. py:method:: vs()
-      :property:
-
-      get the vs array
-
-      :return: the vs array
-      :rtype: np.ndarray
 
 
 
@@ -228,6 +221,46 @@ Classes
    :param source_mechanism: a list with length of 1 (ep), 3 (sf), 4 or 7 (dc) with the same order as FK, or a Event of obspy (can read CMT solution file using obspy.read_events), defaults to None
    :type source_mechanism: Optional[Union[list, np.ndarray]], optional
    :raises PyfkError: [description]
+
+   .. py:property:: m0
+      :type: float
+
+      get the value associated with the magnitude in FK
+
+      :return: the value associated with the magnitude in FK
+      :rtype: float
+
+   .. py:property:: nn
+      :type: int
+
+      get the value associated with the source type
+
+      :return: the value associated with the source type
+      :rtype: int
+
+   .. py:property:: rad
+      :type: numpy.ndarray
+
+      get the radiation pattern
+
+      :return: the radiation pattern
+      :rtype: np.ndarray
+
+   .. py:property:: sdep
+      :type: float
+
+      get the source depth in km
+
+      :return: the source depth in km
+      :rtype: float
+
+   .. py:property:: srcType
+      :type: str
+
+      get the source type (ep, sf or dc)
+
+      :return: the source type (ep, sf or dc)
+      :rtype: str
 
    .. py:method:: __repr__()
 
@@ -252,51 +285,6 @@ Classes
       :param az: station azimuth in degree measured from the North (clockwise)
       :type az: float
       :raises PyfkError: length of source_mechanism must be 1, 3, 4, 7
-
-
-   .. py:method:: m0()
-      :property:
-
-      get the value associated with the magnitude in FK
-
-      :return: the value associated with the magnitude in FK
-      :rtype: float
-
-
-   .. py:method:: nn()
-      :property:
-
-      get the value associated with the source type
-
-      :return: the value associated with the source type
-      :rtype: int
-
-
-   .. py:method:: rad()
-      :property:
-
-      get the radiation pattern
-
-      :return: the radiation pattern
-      :rtype: np.ndarray
-
-
-   .. py:method:: sdep()
-      :property:
-
-      get the source depth in km
-
-      :return: the source depth in km
-      :rtype: float
-
-
-   .. py:method:: srcType()
-      :property:
-
-      get the source type (ep, sf or dc)
-
-      :return: the source type (ep, sf or dc)
-      :rtype: str
 
 
    .. py:method:: update_source_mechanism(source_mechanism)

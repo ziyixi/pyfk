@@ -35,11 +35,6 @@ Attributes
    pyfk.gf.cuda.utils.cujn
 
 
-.. py:data:: cujn
-   
-
-   
-
 .. py:function:: cal_cujn(n, x)
 
 
@@ -72,4 +67,9 @@ Attributes
 
 .. py:function:: sh_ch(a, kd)
 
+
+.. py:data:: cujn
+   
+
+   
 
