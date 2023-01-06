@@ -17,7 +17,7 @@ jobs:
           pip install poetry-core@https://github.com/python-poetry/poetry-core/archive/refs/tags/1.1.0a7.zip
           pip install numpy obspy cython scipy cysignals
           pip install . --no-build-isolation
-          pip install sphinx pydata-sphinx-theme sphinx-autoapi jupyter-sphinx sphinx-copybutton pytest
+          pip install sphinx==4.5 pydata-sphinx-theme sphinx-autoapi jupyter-sphinx sphinx-copybutton pytest
           cd docs
           make html
           cd ..
