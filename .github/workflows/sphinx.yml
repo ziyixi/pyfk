@@ -20,6 +20,7 @@ jobs:
           pip install sphinx==4.5 pydata-sphinx-theme sphinx-autoapi jupyter-sphinx sphinx-copybutton pytest
           cd docs
           make html
+          echo "pyfk.ziyixi.science" > _build/CNAME
           cd ..
       - name: push to github page
         if: ${{ !env.ACT }}
