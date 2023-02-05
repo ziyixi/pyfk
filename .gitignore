@@ -23,9 +23,9 @@ benchmark/*
 # docs
 docs/_build/*
 docs/_static/*
-docs/_template/*
 dist/*
 docs/autoapi/*
+!docs/_templates/layout.html
 
 token
 profile_pyfk/*
