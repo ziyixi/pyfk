@@ -24,7 +24,6 @@ Classes
    Bases: :py:obj:`object`
 
    .. py:attribute:: test_model_6column
-      
 
       
 
@@ -55,7 +54,6 @@ Classes
    Bases: :py:obj:`object`
 
    .. py:attribute:: test_model_6column
-      
 
       
 
