@@ -66,6 +66,10 @@ Todo
 ------------------
 The current bugs to fix or features to provide are listed in `TODO <https://github.com/ziyixi/pyfk/issues/5>`__.
 
+Citation
+------------------
+Xi, Z., Li, J., Chen, M. and Wei, S., 2021, December. PyFK: A Fast MPI and CUDA Accelerated Python Package for Calculating Synthetic Seismograms Based on the Frequencywavenumber Method. In AGU Fall Meeting Abstracts (Vol. 2021, pp. S15E-0288).
+
 License
 -------
 
