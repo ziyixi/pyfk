@@ -57,6 +57,7 @@ def calculate_sync(gf: Union[List[Stream], Stream],
     # * the main loop to conv the source with the gf
     sync_result = []
     cmpinc_list = [0., 90., 90.]
+    channel_list = ["Z", "R", "T"]
     for irec in range(len(sync_gf)):
         sync_result.append(Stream())
         for icom in range(3):
@@ -73,6 +74,7 @@ def calculate_sync(gf: Union[List[Stream], Stream],
             header["sac"]["az"] = az
             header["sac"]["cmpinc"] = cmpinc_list[icom]
             header["sac"]["cmpaz"] = cmpaz_list[icom]
+            header["channel"] = channel_list[icom]
             sync_result[-1] += Trace(header=header, data=data_conv)
     return sync_result
 
