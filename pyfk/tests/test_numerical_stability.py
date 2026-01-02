@@ -9,28 +9,12 @@ These tests help catch edge cases in numerical computations that may cause:
 import numpy as np
 import pytest
 
-try:
-    from hypothesis import given, settings, assume, HealthCheck
-    from hypothesis import strategies as st
-    from hypothesis.extra.numpy import arrays
-    HAS_HYPOTHESIS = True
-except ImportError:
-    HAS_HYPOTHESIS = False
-    # Create dummy decorators for when hypothesis is not installed
-    def given(*args, **kwargs):
-        def decorator(f):
-            return pytest.mark.skip(reason="hypothesis not installed")(f)
-        return decorator
-    def settings(*args, **kwargs):
-        def decorator(f):
-            return f
-        return decorator
-    st = None
+from hypothesis import given, settings, assume, HealthCheck
+from hypothesis import strategies as st
 
 from pyfk.config.config import Config, SeisModel, SourceModel
 
 
-@pytest.mark.skipif(not HAS_HYPOTHESIS, reason="hypothesis not installed")
 class TestNumericalStability:
     """Property-based tests for numerical stability."""
 
@@ -45,14 +29,14 @@ class TestNumericalStability:
         """Test that SeisModel can handle various reasonable input values."""
         # Ensure vp > vs (physically realistic)
         assume(vp > vs)
-        
+
         model_data = np.array([[thickness, vp, vs, density, 100., 50.]])
-        
+
         try:
             model = SeisModel(model=model_data)
             # Check that model attributes are finite
             assert np.all(np.isfinite(model.model_values))
-        except Exception as e:
+        except Exception:
             # Some parameter combinations may be rejected by validation
             # This is acceptable as long as it's handled gracefully
             pass
@@ -80,7 +64,7 @@ class TestNumericalStability:
             [20., 6.0, 3.5, 2.7, 100., 50.],
             [0., 8.0, 4.5, 3.3, 200., 100.]
         ])
-        
+
         try:
             model = SeisModel(model=model_data)
             source = SourceModel(sdep=10.0)
@@ -97,7 +81,6 @@ class TestNumericalStability:
             pass
 
 
-@pytest.mark.skipif(not HAS_HYPOTHESIS, reason="hypothesis not installed")
 class TestEdgeCases:
     """Tests for edge cases that may cause numerical issues."""
 
@@ -109,7 +92,7 @@ class TestEdgeCases:
         ])
         model = SeisModel(model=model_data)
         source = SourceModel(sdep=10.0)
-        
+
         # Very small timestep - should either work or raise a sensible error
         try:
             config = Config(
@@ -132,7 +115,7 @@ class TestEdgeCases:
         ])
         model = SeisModel(model=model_data)
         source = SourceModel(sdep=10.0)
-        
+
         # Large npt - should either work or raise a sensible error
         try:
             config = Config(
@@ -143,7 +126,7 @@ class TestEdgeCases:
                 receiver_distance=[10.]
             )
             assert config is not None
-        except (ValueError, MemoryError) as e:
+        except (ValueError, MemoryError):
             # Acceptable if validation catches unreasonable parameters
             pass
 
@@ -177,7 +160,7 @@ class TestEdgeCases:
         ])
         model = SeisModel(model=model_data)
         source = SourceModel(sdep=10.0)
-        
+
         config = Config(
             model=model,
             source=source,

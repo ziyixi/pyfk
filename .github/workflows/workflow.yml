@@ -37,7 +37,7 @@ jobs:
       - name: Generate coverage report
         run: |
           pip install .
-          pip install coverage pytest pytest-mpi
+          pip install coverage pytest pytest-mpi hypothesis
           mkdir coverage_test
           cd coverage_test
           coverage run --source=pyfk -m pytest --pyargs pyfk
