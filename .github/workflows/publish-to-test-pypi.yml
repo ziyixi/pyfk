@@ -4,7 +4,40 @@ on:
     branches:    
       - 'test/**'
 jobs:
+  # Run all tests including MPI tests before publishing
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenMPI
+        run: |
+          sudo apt update
+          sudo apt install openmpi-bin libopenmpi-dev -y
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run standard tests
+        run: |
+          pip install .
+          pip install pytest pytest-mpi
+          pytest --pyargs pyfk
+
+      - name: Run MPI tests
+        run: |
+          pip uninstall pyfk -y
+          pip install mpi4py
+          PYFK_USE_MPI=1 pip install ".[mpi]"
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+          mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
+          mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
+
   testpypi:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
