@@ -41,7 +41,7 @@ cpdef taup(const int src_lay_input, const int rcv_lay_input, const double[:] thi
         ray_len[(topp - 1):bttm] = thickness[(topp - 1):bttm]
         min_p2 = np.min(p2[(topp - 1):bttm])
         # set min_p as initial gauss of p0, the ray parameter
-        pd[irec] = findp0(distance, min_p2**0.5,
+        pd[irec] = findp0(distance, sqrt(min_p2),
                           topp, bttm, ray_len, p2)
         td[irec] = travel(distance, pd[irec], topp, bttm, ray_len, p2)
         # use td,pd as current p0,t0 (starting time)
@@ -53,7 +53,7 @@ cpdef taup(const int src_lay_input, const int rcv_lay_input, const double[:] thi
             ray_len[bttm - 1] = 2. * thickness[bttm - 1]
             if min_p2 > p2[bttm - 1]:
                 min_p2 = p2[bttm - 1]
-            p = findp0(distance, min_p2**0.5,
+            p = findp0(distance, sqrt(min_p2),
                        topp, bttm, ray_len, p2)
             if min_p2 > p2[bttm]:
                 min_p2 = p2[bttm]
@@ -72,7 +72,7 @@ cpdef taup(const int src_lay_input, const int rcv_lay_input, const double[:] thi
             # also consider sSMS?
             if min_p2 > p2[topp - 1]:
                 min_p2 = p2[topp - 1]
-            p = findp0(distance, min_p2**0.5,
+            p = findp0(distance, sqrt(min_p2),
                        topp, bttm, ray_len, p2)
             if (topp > 1) and (min_p2 > p2[topp - 2]):
                 min_p2 = p2[topp - 2]
@@ -102,13 +102,13 @@ cdef double travel(double distance, double p0_gauss, int topp, int bttm, double[
     # result += np.sum(np.sqrt(p2[topp-1:bttm]-p0_gauss2)*ray_len[topp-1:bttm])
     cdef int index
     for index in range(topp - 1, bttm):
-        result += ((p2[index] - p0_gauss2)**0.5) * ray_len[index]
+        result += sqrt(p2[index] - p0_gauss2) * ray_len[index]
     return result
 
 cdef double dtdp(double distance, double p0_gauss, int topp, int bttm, double[:] ray_len, double[:] p2):
     cdef double p0_gauss2 = p0_gauss**2, result = 0
     cdef int index
     for index in range(topp - 1, bttm):
-        result -= ray_len[index] / (p2[index] - p0_gauss2)**0.5
+        result -= ray_len[index] / sqrt(p2[index] - p0_gauss2)
     result = distance + p0_gauss * result
     return result

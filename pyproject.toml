@@ -55,7 +55,16 @@ sphinx-copybutton = ">=0.5.0"
 mpi = ["mpi4py"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0","setuptools","numpy", "obspy", "cython>=3.0", "scipy", "cysignals","mpi4py"]
+requires = [
+    "poetry-core>=1.0.0",
+    "setuptools",
+    "numpy",
+    "obspy",
+    "cython>=3.0",
+    "scipy",
+    "cysignals",
+    "mpi4py"
+]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.build]
