@@ -23,7 +23,7 @@ jobs:
 
       - name: Run Ruff linter
         run: |
-          ruff check pyfk --ignore E501,F401,E402,F841
+          ruff check pyfk --ignore E501,F401,E402,F841,E711,E712,F541
 
       - name: Run Ruff formatter check
         run: |

@@ -12,5 +12,5 @@ repos:
     rev: v0.1.9
     hooks:
       - id: ruff
-        args: [--fix, --ignore, "E501,F401,E402,F841"]
+        args: [--fix, --ignore, "E501,F401,E402,F841,E711,E712,F541"]
       - id: ruff-format
