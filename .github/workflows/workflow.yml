@@ -3,17 +3,20 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python: ["3.7", "3.8", "3.9"]
+        python: ["3.10", "3.11", "3.12"]
     env:
       OS: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install openmp on mac
         if: matrix.os == 'macos-latest'
@@ -27,7 +30,7 @@ jobs:
           sudo apt install openmpi-bin libopenmpi-dev -y
 
       - name: Set up python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
 
@@ -44,7 +47,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml

@@ -3,7 +3,7 @@
 # note even we have linetrace=True, it still need to be enabled by
 # define_macros=[("CYTHON_TRACE_NOGIL", "1")]
 import numpy as np
-from libc.math cimport fabs
+from libc.math cimport fabs, sqrt
 
 cpdef taup(const int src_lay_input, const int rcv_lay_input, const double[:] thickness, const double[:] velocity, const double[:] receiver_distance):
     # * init some values
@@ -57,8 +57,8 @@ cpdef taup(const int src_lay_input, const int rcv_lay_input, const double[:] thi
                        topp, bttm, ray_len, p2)
             if min_p2 > p2[bttm]:
                 min_p2 = p2[bttm]
-            if p > min_p2**0.5:
-                p = min_p2**0.5
+            if p > sqrt(min_p2):
+                p = sqrt(min_p2)
             # t for current assumed layers
             t = travel(distance, p, topp, bttm, ray_len, p2)
             if t < t0[irec]:
@@ -76,8 +76,8 @@ cpdef taup(const int src_lay_input, const int rcv_lay_input, const double[:] thi
                        topp, bttm, ray_len, p2)
             if (topp > 1) and (min_p2 > p2[topp - 2]):
                 min_p2 = p2[topp - 2]
-            if p > min_p2**0.5:
-                p = min_p2**0.5
+            if p > sqrt(min_p2):
+                p = sqrt(min_p2)
             t = travel(distance, p, topp, bttm, ray_len, p2)
             if t < t0[irec]:
                 t0[irec], p0[irec] = t, p
