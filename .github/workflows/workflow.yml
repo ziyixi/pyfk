@@ -42,8 +42,18 @@ jobs:
           cd coverage_test
           coverage run --source=pyfk -m pytest --pyargs pyfk
           coverage xml
+          coverage report --format=markdown > coverage_report.md
+          coverage report
           cd ..
           mv coverage_test/coverage.xml .
+          mv coverage_test/coverage_report.md .
+
+      - name: Display coverage report in job summary
+        run: |
+          echo "## Coverage Report for ${{ matrix.os }} - Python ${{ matrix.python }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat coverage_report.md >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload coverage to Codecov
         if: ${{ !env.ACT }}
@@ -65,3 +75,12 @@ jobs:
           mpirun --oversubscribe -np 1 pytest --with-mpi --pyargs pyfk
           mpirun --oversubscribe -np 3 pytest --with-mpi --pyargs pyfk
           cd ..
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ matrix.os }}-py${{ matrix.python }}
+          path: |
+            coverage.xml
+            coverage_report.md
+          retention-days: 30
